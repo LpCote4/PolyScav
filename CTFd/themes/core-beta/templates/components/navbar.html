@@ -29,8 +29,12 @@
             </a>
           </li>
         {% endfor %}
-
-        {% if Configs.account_visibility != 'admins' %}
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            Acceuil
+          </a>
+        </li>
+        {% if Configs.account_visibility != 'public' %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('users.listing') }}">
               {% trans %}Users{% endtrans %}
@@ -44,14 +48,6 @@
               </a>
             </li>
           {% endif %}
-        {% endif %}
-
-        {% if Configs.account_visibility != 'admins' and Configs.score_visibility != 'admins' %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('scoreboard.listing') }}">
-              {% trans %}Scoreboard{% endtrans %}
-            </a>
-          </li>
         {% endif %}
 
         <li class="nav-item">
