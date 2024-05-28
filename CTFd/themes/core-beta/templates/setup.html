@@ -58,9 +58,6 @@
 					<li class="nav-item">
 						<a class="nav-link" data-bs-toggle="pill" data-bs-target="#datetime" role="button">{% trans %}Date &amp; Time{% endtrans %}</a>
 					</li>
-					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="pill" data-bs-target="#integrations" role="button">{% trans %}Integrations{% endtrans %}</a>
-					</li>
 				</ul>
 
 				<div class="tab-content">
@@ -140,12 +137,7 @@
 						</div>
 					</div>
 					<div class="tab-pane fade" id="settings" role="tabpanel">
-						<b>{% trans %}Visibility Settings{% endtrans %}</b>
-						<br>
-						<small class="form-text text-muted">
-							{% trans %}Control the visibility of different sections of CTFd{% endtrans %}
-						</small>
-						<div class="row pt-3">
+						<div class="row pt-3" style="display: none;">
 							<div class="col-md-3 mb-3">
 								<b>
 									{{ form.challenge_visibility.label }}
@@ -179,7 +171,7 @@
 							</div>
 						</div>
 
-						<hr>
+						
 
 						<div class="mb-3">
 							<b>{{ form.verify_emails.label }}</b>
@@ -226,9 +218,9 @@
 							</small>
 						</div>
 
-						<div class="mb-3 form-check">
+						<div class="mb-3 form-check" style="display: none;">
 							<label class="form-check-label">
-								<input class="form-check-input" type="checkbox" value="" id="newsletter-checkbox" checked>
+								<input class="form-check-input" type="checkbox" value="" id="newsletter-checkbox">
 								{% trans %}Subscribe email address to the CTFd LLC Newsletter for news and updates{% endtrans %}
 							</label>
 						</div>
@@ -339,34 +331,6 @@
 								{{ form.end.description }}
 							</small>
 						</div>
-
-						<div class="text-right float-end">
-							<button type="button" class="btn btn-primary btn-outlined tab-next" data-href="#integrations" @click="switchTab">
-								{% trans %}Next{% endtrans %}
-							</button>
-						</div>
-					</div>
-					<div class="tab-pane fade" id="integrations" role="tabpanel">
-						<div class="mb-3">
-							<h4>MajorLeagueCyber Integration</h4>
-							<p>
-							MajorLeagueCyber (MLC) is a cyber security event tracker written and maintained by the developers of CTFd.
-							Set up MLC integration to:
-							<ul>
-								<li>display your event on the MLC website and mailing list</li>
-								<li>share and track participant statistics</li>
-								<li>provide live updates in team Slack or Discord groups</li>
-								<li>archive challenges, team participation &amp; more</li>
-							</ul>
-							</p>
-							<button type="button" id="integration-mlc" class="btn btn-primary btn-block" @click="mlcSetup()">
-								Setup
-							</button>
-						</div>
-
-						<br>
-						<hr>
-						<br>
 
 						<div class="submit-row text-right float-end">
 							{{ form.submit(class="btn btn-md btn-primary btn-outlined") }}
