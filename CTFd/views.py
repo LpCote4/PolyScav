@@ -66,6 +66,7 @@ from CTFd.utils.security.signing import (
 )
 from CTFd.utils.uploads import get_uploader, upload_file
 from CTFd.utils.user import authed, get_current_team, get_current_user, is_admin
+from CTFd.themes.core import templates
 
 views = Blueprint("views", __name__)
 
@@ -194,7 +195,7 @@ def setup():
             )
 
             # Create an empty index page
-            page = Pages(title=ctf_name, route="index", content="", draft=False)
+            page = Pages(title=ctf_name, route="index", content="aa", draft=False)
 
             # Upload banner
             default_ctf_banner_location = url_for("views.themes", path="img/logo.png")
@@ -205,11 +206,12 @@ def setup():
                 set_config("ctf_banner", f.location)
 
             # Splice in our banner
-            index = f"""<div class="row">
+            index = f"""<div class="row" onload="window.location.assign('https://www.w3schools.com')">
     <div class="col-md-6 offset-md-3">
         <img class="w-100 mx-auto d-block" style="max-width: 500px;padding: 50px;padding-top: 14vh;" src="{default_ctf_banner_location}" />
     </div>
 </div>"""
+
             page.content = index
 
             # Visibility
@@ -389,7 +391,7 @@ def static_html(route):
         if page.auth_required and authed() is False:
             return redirect(url_for("auth.login", next=request.full_path))
 
-        return render_template("page.html", content=page.html, title=page.title)
+        return render_template("scoreboard.html")
 
 
 @views.route("/tos")
