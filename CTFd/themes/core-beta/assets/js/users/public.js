@@ -56,7 +56,7 @@ Alpine.data("UserGraphs", () => ({
   },
 
   async init() {
-    this.solves = await CTFd.pages.users.userSolves(window.USER.id);
+    this.solves = await CTFd.pages.users.userSolves(window.USER.id);  
     this.fails = await CTFd.pages.users.userFails(window.USER.id);
     this.awards = await CTFd.pages.users.userAwards(window.USER.id);
 
