@@ -41,18 +41,12 @@ export function getOption(mode, places) {
     grid: {
       containLabel: true,
     },
-    xAxis: [
-      {
-        type: "time",
-        boundaryGap: false,
-        data: [],
-      },
-    ],
-    yAxis: [
-      {
-        type: "value",
-      },
-    ],
+    xAxis: {
+      type: 'category',
+    },
+    yAxis: {
+      type: 'value'
+    },
     dataZoom: [
       {
         id: "dataZoomX",
@@ -64,43 +58,19 @@ export function getOption(mode, places) {
         fillerColor: "rgba(233, 236, 241, 0.4)",
       },
     ],
-    series: [],
+    series: [{
+      type: 'bar',
+    }],
   };
 
   const teams = Object.keys(places);
+  let lsData = [];
+  let lsScore = [];
   for (let i = 0; i < teams.length; i++) {
-    const team_score = [];
-    const times = [];
-    for (let j = 0; j < places[teams[i]]["solves"].length; j++) {
-      team_score.push(places[teams[i]]["solves"][j].value);
-      const date = dayjs(places[teams[i]]["solves"][j].date);
-      times.push(date.toDate());
-    }
-
-    const total_scores = cumulativeSum(team_score);
-    let scores = times.map(function (e, i) {
-      return [e, total_scores[i]];
-    });
-
-    option.legend.data.push(places[teams[i]]["name"]);
-
-    const data = {
-      name: places[teams[i]]["name"],
-      type: "line",
-      label: {
-        normal: {
-          position: "top",
-        },
-      },
-      itemStyle: {
-        normal: {
-          color: colorHash(places[teams[i]]["name"] + places[teams[i]]["id"]),
-        },
-      },
-      data: scores,
-    };
-    option.series.push(data);
+    lsData.push(places[teams[i]]["name"]);
+    lsScore.push(places[teams[i]]["score"])
   }
-
+  option.xAxis.data = lsData;
+  option.series[0].data = lsScore;
   return option;
 }
