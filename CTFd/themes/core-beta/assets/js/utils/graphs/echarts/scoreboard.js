@@ -15,7 +15,7 @@ export function getOption(mode, places) {
   let option = {
     title: {
       left: "center",
-      text: "Top 10 " + (mode === "teams" ? "Teams" : "Users"),
+      text: (mode === "teams" ? "Teams" : "Users") + " Score",
     },
     tooltip: {
       trigger: "axis",
@@ -76,36 +76,26 @@ export function getOption(mode, places) {
 }
 
 
-export function getTenLast(places, dictIdNom,dictIdChallenge){
+export function getTenLast(places, standings, dictIdChallenge){
+  
   const teams = Object.keys(places);
   let last10 = [];
   let max = 10;
   
   for (let i = 0; i < ((teams.length >= max) ? max : teams.length); i++) {
     let solves = places[teams[i]]["solves"];
-    console.log(solves);
+    let dictIdNom = dictUserIdToUserName(standings[i]["members"]);
     
     for (let solved = 0; solved < solves.length; solved++) {
-      
+      let challengeDate = solves[solved].date;
       solves[solved]["team_name"] = places[teams[i]].name;
       solves[solved]["user_name"] = dictIdNom[solves[solved]["user_id"]];
       solves[solved]["challenge_name"] = dictIdChallenge[solves[solved]["challenge_id"]];
-      let tempsEcouler = dayjs() - dayjs(solves[solved].date);
-      if (tempsEcouler/(1000*60*60*24) >= 2){
-        solves[solved]["time"] = "il y a " + Math.floor(tempsEcouler/(1000*60*60*24)) + " jours";
-      }
-      else if (tempsEcouler/(1000*60*60) >=2){
-        solves[solved]["time"] = "il y a " + Math.floor(tempsEcouler/(1000*60*60)) + " heures";
-      }
-      else if (tempsEcouler/(1000*60) >=2){
-        solves[solved]["time"] = "il y a " + Math.floor(tempsEcouler/(1000*60)) + " minutes";
-      }
-      else{
-        solves[solved]["time"] = "il y a moin de 2 minutes";
-      }
+      solves[solved]["time"] = getTimeStamp(challengeDate);
+
+
       for (let x = last10.length; x > 0; x--){
-        
-        if (dayjs(solves[solved].date) > dayjs(last10[x-1].date)){
+        if (dayjs(challengeDate) > dayjs(last10[x-1].date)){
           let temp = last10[x-1]
           last10[x-1] = solves[solved];
           if (x < max){
@@ -132,4 +122,28 @@ export function getTenLast(places, dictIdNom,dictIdChallenge){
 
   }
   return last10;
+}
+
+export function getTimeStamp(challengeDate){
+  let timeBetween = dayjs() - dayjs(challengeDate);
+  if (timeBetween/(1000*60*60*24) >= 2){
+    return "il y a " + Math.floor(timeBetween/(1000*60*60*24)) + " jours";
+  }
+  else if (timeBetween/(1000*60*60) >=2){
+    return "il y a " + Math.floor(timeBetween/(1000*60*60)) + " heures";
+  }
+  else if (timeBetween/(1000*60) >=2){
+    return "il y a " + Math.floor(timeBetween/(1000*60)) + " minutes";
+  }
+  else{
+    return "il y a moin de 2 minutes";
+  }
+}
+
+export function dictUserIdToUserName(members){
+  let output = {};
+  for (let i = 0; i <members.length; i++){
+    output[members[i]["id"]] = members[i]["name"];
+  }
+  return output;
 }

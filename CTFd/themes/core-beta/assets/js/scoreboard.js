@@ -6,18 +6,22 @@ import * as echarts from 'echarts';
 
 window.Alpine = Alpine;
 window.CTFd = CTFd;
+window.ScoreboardDetail = 0;
+window.standings = 0;
 
 Alpine.data("ScoreboardDetail", () => ({
   data: {},
   show: true,
   
   async init() {
-    this.data = await CTFd.pages.scoreboard.getScoreboardDetail(10);
-    let option = getOption(CTFd.config.userMode, this.data);
+    window.standings = await CTFd.pages.scoreboard.getScoreboard();
+    window.ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(window.standings.length)
+    let option = getOption(CTFd.config.userMode, window.standings);
     var chartDom = document.getElementById('score-graph');
     var myChart = echarts.init(chartDom);
     myChart.setOption(option);
-    this.show = Object.keys(this.data).length > 0;
+    this.show = window.standings.length > 0;
+    
   },
 }));
 
@@ -27,42 +31,26 @@ Alpine.data("ScoreboardList", () => ({
   activeBracket: null,
 
   async init() {
-    let response = await CTFd.fetch(`/api/v1/brackets?type=${CTFd.config.userMode}`, {
-      method: "GET",
-    });
-    const body = await response.json();
-
-    let response2 = await CTFd.fetch(`/api/v1/users`, {
-      method: "GET",
-    });
-    const body2 = await response2.json();
-    console.log(body2["data"])
-    let UserIdToUserName = {}
-    for (let i = 0; i < body2["data"].length; i++){
-      UserIdToUserName[body2["data"][i]["id"]] = body2["data"][i]["name"];
-    }
-    console.log(UserIdToUserName);
-    this.brackets = body["data"];
-    this.standings = await CTFd.pages.scoreboard.getScoreboard();
     
-    let response3= await CTFd.fetch(`/api/v1/challenges`, {
+    let responseBrackets = await CTFd.fetch(`/api/v1/brackets?type=${CTFd.config.userMode}`, {
       method: "GET",
     });
-    const body3 = await response3.json();
-    console.log(body3["data"])
+    const bodyBrackets = await responseBrackets.json();
+    this.brackets = bodyBrackets["data"];
+    
+    let responseChallenges= await CTFd.fetch(`/api/v1/challenges`, {
+      method: "GET",
+    });
+    const bodyChallenges = await responseChallenges.json();
     let ChallengeIdToChallengeName = {}
-    for (let i = 0; i < body3["data"].length; i++){
-      ChallengeIdToChallengeName[body3["data"][i]["id"]] = body3["data"][i]["name"];
+    for (let i = 0; i < bodyChallenges["data"].length; i++){
+      ChallengeIdToChallengeName[bodyChallenges["data"][i]["id"]] = bodyChallenges["data"][i]["name"];
     }
-    console.log(this.standings);
-    let last = getTenLast(await CTFd.pages.scoreboard.getScoreboardDetail(this.standings.length), UserIdToUserName, ChallengeIdToChallengeName);
-    console.log(Object.assign({}, last));
+   
+    let last = getTenLast(window.ScoreboardDetail, window.standings, ChallengeIdToChallengeName);
     for (let i = 0; i < last.length; i++){
       this.standings[i] = last[i];
     }
-    
-    console.log(this.standings);
-    //this.standings = Object.assign({}, last);
    
   },
 }));
