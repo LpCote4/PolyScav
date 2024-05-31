@@ -18,8 +18,8 @@ Alpine.data("ScoreboardDetail", () => ({
     window.ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(window.standings.length)
     let option = getOption(CTFd.config.userMode, window.standings);
     var chartDom = document.getElementById('score-graph');
-    var myChart = echarts.init(chartDom);
-    myChart.setOption(option);
+    embed(chartDom, option);
+    
     this.show = window.standings.length > 0;
     
   },
