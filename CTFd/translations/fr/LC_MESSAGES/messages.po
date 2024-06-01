@@ -89,16 +89,16 @@ msgid "Event Name"
 msgstr "Nom de l'évènement"
 
 #: CTFd/forms/setup.py:29
-msgid "The name of your CTF event/workshop"
-msgstr "Le nom de votre CTF/atelier"
+msgid "The name of your Poly-Scav event/workshop"
+msgstr "Le nom de votre Poly-Scav/atelier"
 
 #: CTFd/forms/setup.py:32
 msgid "Event Description"
 msgstr "Description de l'évènement"
 
 #: CTFd/forms/setup.py:32
-msgid "Description for the CTF"
-msgstr "Description du CTF"
+msgid "Description for the Poly-Scav"
+msgstr "Description du Poly-Scav"
 
 #: CTFd/forms/setup.py:35 CTFd/forms/setup.py:36
 msgid "User Mode"
@@ -141,7 +141,7 @@ msgid "Logo"
 msgstr "Logo"
 
 #: CTFd/forms/setup.py:62
-msgid "Logo to use for the website instead of a CTF name. Used as the home page button. Optional."
+msgid "Logo to use for the website instead of a PolyScav name. Used as the home page button. Optional."
 msgstr "Logo à utiliser pour le site web plutôt que le nom de l'évènement. Utilisé comme bouton d'accueil. Optionnel."
 
 #: CTFd/forms/setup.py:67
@@ -165,8 +165,8 @@ msgid "Theme"
 msgstr "Thème"
 
 #: CTFd/forms/setup.py:77
-msgid "CTFd Theme to use. Can be changed later."
-msgstr "Thème de CTFd à utiliser. Peut être changé ultérieurement."
+msgid "PolyScav Theme to use. Can be changed later."
+msgstr "Thème de PolyScav à utiliser. Peut être changé ultérieurement."
 
 #: CTFd/forms/setup.py:84
 msgid "Theme Color"
@@ -185,16 +185,16 @@ msgid "Start Time"
 msgstr "Date de lancement"
 
 #: CTFd/forms/setup.py:144
-msgid "Time when your CTF is scheduled to start. Optional."
-msgstr "Date planifiée du lancement du CTF. Optionnel."
+msgid "Time when your PolyScav is scheduled to start. Optional."
+msgstr "Date planifiée du lancement du PolyScav. Optionnel."
 
 #: CTFd/forms/setup.py:147
 msgid "End Time"
 msgstr "Date de fin"
 
 #: CTFd/forms/setup.py:148
-msgid "Time when your CTF is scheduled to end. Optional."
-msgstr "Date planifiée de fin du CTF. Optionnel."
+msgid "Time when your PolyScav is scheduled to end. Optional."
+msgstr "Date planifiée de fin du PolyScav. Optionnel."
 
 #: CTFd/forms/setup.py:150
 msgid "Finish"
@@ -526,8 +526,8 @@ msgid "Visibility Settings"
 msgstr "Paramètres de visibilité"
 
 #: CTFd/themes/core-beta/templates/setup.html:146
-msgid "Control the visibility of different sections of CTFd"
-msgstr "Contrôler la visibilité des différentes sections du CTFd"
+msgid "Control the visibility of different sections of PolyScav"
+msgstr "Contrôler la visibilité des différentes sections du PolyScav"
 
 #: CTFd/themes/core-beta/templates/setup.html:232
 msgid "Subscribe email address to the CTFd LLC Newsletter for news and updates"
@@ -727,8 +727,8 @@ msgid "Visibility Settings"
 msgstr "Paramètres de visibilité"
 
 #: CTFd/themes/core-beta/templates/setup.html:146
-msgid "Control the visibility of different sections of CTFd"
-msgstr "Contrôler la visibilité des différentes sections du CTFd"
+msgid "Control the visibility of different sections of PolyScav"
+msgstr "Contrôler la visibilité des différentes sections du PolyScav"
 
 #: CTFd/themes/core-beta/templates/teams/private.html:8
 msgid "Edit Team"
