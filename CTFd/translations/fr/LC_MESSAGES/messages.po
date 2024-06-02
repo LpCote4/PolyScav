@@ -89,8 +89,8 @@ msgid "Event Name"
 msgstr "Nom de l'évènement"
 
 #: CTFd/forms/setup.py:29
-msgid "The name of your Poly-Scav event/workshop"
-msgstr "Le nom de votre Poly-Scav/atelier"
+msgid "The name of your PolyScav event/workshop"
+msgstr "Le nom de votre PolyScav/atelier"
 
 #: CTFd/forms/setup.py:32
 msgid "Event Description"

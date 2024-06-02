@@ -26,10 +26,10 @@ from CTFd.utils.config import get_themes
 
 class SetupForm(BaseForm):
     ctf_name = StringField(
-        _l("Event Name"), description=_l("The name of your Poly-Scav event/workshop")
+        _l("Event Name"), description=_l("The name of your PolyScav event/workshop")
     )
     ctf_description = TextAreaField(
-        _l("Event Description"), description=_l("Description for the Poly-Scav")
+        _l("Event Description"), description=_l("Description for the PolyScav")
     )
     user_mode = RadioField(
         _l("User Mode"),
