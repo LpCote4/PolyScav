@@ -3,8 +3,10 @@ import dayjs from "dayjs";
 
 import CTFd from "./index";
 
+
 import { Modal, Tab, Tooltip } from "bootstrap";
 import highlight from "./theme/highlight";
+import favicon from ".";
 
 function addTargetBlank(html) {
   let dom = new DOMParser();
@@ -165,16 +167,28 @@ Alpine.data("Challenge", () => ({
       this.id,
       this.submission,
     );
-
     await this.renderSubmissionResponse();
   },
-
+  
   async renderSubmissionResponse() {
     if (this.response.data.status === "correct") {
       this.submission = "";
     }
 
     // Dispatch load-challenges event to call loadChallenges in the ChallengeBoard
+    this.$dispatch("load-challenges");
+  },
+
+  async submitManualChallenge() {
+    this.response = await CTFd.pages.challenge.submitChallenge(
+      this.id,
+      "IntantionalError",
+    );
+    
+    if (this.response.success){
+      this.response.data.status = "correct";
+      this.response.data.message = "succesfuly send!";
+    }
     this.$dispatch("load-challenges");
   },
 }));
@@ -186,6 +200,10 @@ Alpine.data("ChallengeBoard", () => ({
 
   async init() {
     this.challenges = await CTFd.pages.challenges.getChallenges();
+    let standings = await CTFd.pages.scoreboard.getScoreboard();
+    let ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(standings.length)
+
+
     this.loaded = true;
 
     if (window.location.hash) {
@@ -227,6 +245,7 @@ Alpine.data("ChallengeBoard", () => ({
 
   getChallenges(category) {
     let challenges = this.challenges;
+    console.log(this.challenges);
 
     if (category !== null) {
       challenges = this.challenges.filter(challenge => challenge.category === category);
@@ -249,6 +268,9 @@ Alpine.data("ChallengeBoard", () => ({
 
   async loadChallenges() {
     this.challenges = await CTFd.pages.challenges.getChallenges();
+    
+    
+    
   },
 
   async loadChallenge(challengeId) {

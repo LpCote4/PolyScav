@@ -5,7 +5,7 @@ from flask_restx import Namespace, Resource
 from sqlalchemy import select
 
 from CTFd.cache import cache, make_cache_key, make_cache_key_with_query_string
-from CTFd.models import Awards, Brackets, Solves, Users, db
+from CTFd.models import Awards, Brackets, Solves, Users, db, Teams, Fails
 from CTFd.utils import get_config
 from CTFd.utils.dates import isoformat, unix_time_to_utc
 from CTFd.utils.decorators.visibility import (
@@ -105,6 +105,7 @@ class ScoreboardDetail(Resource):
 
         team_ids = [team.account_id for team in standings]
 
+        
         solves = Solves.query.filter(Solves.account_id.in_(team_ids))
         awards = Awards.query.filter(Awards.account_id.in_(team_ids))
 
@@ -113,12 +114,16 @@ class ScoreboardDetail(Resource):
         if freeze:
             solves = solves.filter(Solves.date < unix_time_to_utc(freeze))
             awards = awards.filter(Awards.date < unix_time_to_utc(freeze))
+            
 
         solves = solves.all()
         awards = awards.all()
+        
 
         # Build a mapping of accounts to their solves and awards
         solves_mapper = defaultdict(list)
+        
+
         for solve in solves:
             solves_mapper[solve.account_id].append(
                 {
@@ -143,11 +148,14 @@ class ScoreboardDetail(Resource):
                 }
             )
 
+        
         # Sort all solves by date
         for team_id in solves_mapper:
             solves_mapper[team_id] = sorted(
                 solves_mapper[team_id], key=lambda k: k["date"]
             )
+
+        
 
         for i, x in enumerate(standings):
             response[i + 1] = {
@@ -158,5 +166,6 @@ class ScoreboardDetail(Resource):
                 "bracket_id": x.bracket_id,
                 "bracket_name": x.bracket_name,
                 "solves": solves_mapper.get(x.account_id, []),
+                
             }
         return {"success": True, "data": response}

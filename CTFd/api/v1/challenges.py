@@ -10,7 +10,7 @@ from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessRespon
 from CTFd.cache import clear_challenges, clear_standings
 from CTFd.constants import RawEnum
 from CTFd.models import ChallengeFiles as ChallengeFilesModel
-from CTFd.models import Challenges
+from CTFd.models import Challenges, Teams
 from CTFd.models import ChallengeTopics as ChallengeTopicsModel
 from CTFd.models import Fails, Flags, Hints, HintUnlocks, Solves, Submissions, Tags, db
 from CTFd.plugins.challenges import CHALLENGE_CLASSES, get_chal_class
@@ -165,7 +165,7 @@ class ChallengeList(Resource):
         # will be JSONified back to the client
         response = []
         tag_schema = TagSchema(view="user", many=True)
-
+        
         # Gather all challenge IDs so that we can determine invalid challenge prereqs
         all_challenge_ids = {
             c.id for c in Challenges.query.with_entities(Challenges.id).all()
@@ -202,6 +202,15 @@ class ChallengeList(Resource):
                 # Challenge type does not exist. Fall through to next challenge.
                 continue
 
+            team = get_current_team()
+            user_submited = {}
+            for fail in team.fails:
+                if challenge_type.name == "manual" and fail.challenge_id == challenge.id:
+                    is_submited = True
+                    break
+                else:
+                    is_submited = False
+
             # Challenge passes all checks, add it to response
             response.append(
                 {
@@ -211,6 +220,7 @@ class ChallengeList(Resource):
                     "value": challenge.value,
                     "solves": solve_counts.get(challenge.id, solve_count_dfl),
                     "solved_by_me": challenge.id in user_solves,
+                    "submited" : is_submited,
                     "category": challenge.category,
                     "tags": tag_schema.dump(challenge.tags).data,
                     "template": challenge_type.templates["view"],

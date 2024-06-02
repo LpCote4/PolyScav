@@ -27,11 +27,13 @@
       <div>
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane fade show active" id="challenge">
+           
             <h2 class="challenge-name text-center pt-3">
               {{ challenge.name }}
             </h2>
             <h3 class="challenge-value text-center">
               {{ challenge.value }}
+              
             </h3>
 
 
@@ -124,28 +126,46 @@
             <div class="row submit-row">
               <div class="col-12 col-sm-8">
                 {% block input %}
+                  {% if challenge.type != "manual" %}
+                    <input
+                        id="challenge-id" class="challenge-id" type="hidden"
+                        value="{{ challenge.id }}"
+                    >
+                    <input
+                        id="challenge-input" class="challenge-input form-control"
+                        type="text" name="submission"
+                        @keyup.enter="submitChallenge()"
+                        placeholder="{% trans %}Flag{% endtrans %}" x-model="submission"
+                    >
+                  {% else %}
                   <input
-                      id="challenge-id" class="challenge-id" type="hidden"
-                      value="{{ challenge.id }}"
-                  >
-                  <input
-                      id="challenge-input" class="challenge-input form-control"
-                      type="text" name="submission"
-                      @keyup.enter="submitChallenge()"
-                      placeholder="{% trans %}Flag{% endtrans %}" x-model="submission"
-                  >
+                  id="challenge-id" class="challenge-id" type="hidden"
+                  value="{{ challenge.id }}">
+                  <p>generateur de lien</p>
+                  {% endif %}
                 {% endblock %}
               </div>
 
               <div class="col-12 col-sm-4 mt-3 mt-sm-0 key-submit">
                 {% block submit %}
-                  <button
-                      id="challenge-submit"
-                      class="challenge-submit btn btn-outline-secondary w-100 h-100" type="submit"
-                      @click.debounce.500ms="submitChallenge()"
-                  >
-                    {% trans %}Submit{% endtrans %}
-                  </button>
+                {% if challenge.type != "manual" %}
+                      <button
+                            id="challenge-submit"
+                            class="challenge-submit btn btn-outline-secondary w-100 h-100" type="submit" 
+                            @click.debounce.500ms="submitChallenge()"
+                      >
+                        {% trans %}Submit{% endtrans %}
+                      </button>
+                  {% else %}
+                      <button
+                            id="challenge-submit"
+                            class="challenge-submit btn btn-outline-secondary w-100 h-100" type="submit" 
+                            @click.debounce.500ms="submitManualChallenge()"
+                        >
+                          {% trans %}Submit{% endtrans %}
+                        </button>
+                  {% endif %}
+                  
                 {% endblock %}
               </div>
             </div>

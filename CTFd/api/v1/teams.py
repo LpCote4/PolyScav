@@ -192,7 +192,7 @@ class TeamPublic(Resource):
     )
     def get(self, team_id):
         team = Teams.query.filter_by(id=team_id).first_or_404()
-
+        
         if (team.banned or team.hidden) and is_admin() is False:
             abort(404)
 
@@ -204,6 +204,7 @@ class TeamPublic(Resource):
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
+        
         response.data["place"] = team.place
         response.data["score"] = team.score
         return {"success": True, "data": response.data}

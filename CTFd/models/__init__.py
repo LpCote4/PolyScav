@@ -825,7 +825,7 @@ class Submissions(db.Model):
     challenge = db.relationship(
         "Challenges", foreign_keys="Submissions.challenge_id", lazy="select"
     )
-
+    
     __mapper_args__ = {"polymorphic_on": type}
 
     @hybrid_property

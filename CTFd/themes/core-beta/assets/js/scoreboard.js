@@ -16,6 +16,8 @@ Alpine.data("ScoreboardDetail", () => ({
   async init() {
     window.standings = await CTFd.pages.scoreboard.getScoreboard();
     window.ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(window.standings.length)
+    console.log(window.ScoreboardDetail);
+    console.log(window.standings);
     let option = getOption(CTFd.config.userMode, window.standings);
     var chartDom = document.getElementById('score-graph');
     embed(chartDom, option);
@@ -42,6 +44,8 @@ Alpine.data("ScoreboardList", () => ({
       method: "GET",
     });
     const bodyChallenges = await responseChallenges.json();
+    console.log(bodyChallenges);
+  
     let ChallengeIdToChallengeName = {}
     for (let i = 0; i < bodyChallenges["data"].length; i++){
       ChallengeIdToChallengeName[bodyChallenges["data"][i]["id"]] = bodyChallenges["data"][i]["name"];
