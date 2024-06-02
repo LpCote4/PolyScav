@@ -97,8 +97,8 @@ msgid "Event Description"
 msgstr "Description de l'évènement"
 
 #: CTFd/forms/setup.py:32
-msgid "Description for the Poly-Scav"
-msgstr "Description du Poly-Scav"
+msgid "Description for the PolyScav"
+msgstr "Description du PolyScav"
 
 #: CTFd/forms/setup.py:35 CTFd/forms/setup.py:36
 msgid "User Mode"
