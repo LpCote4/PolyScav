@@ -4,8 +4,10 @@
   <title>{{ title or Configs.ctf_name }}</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="start_in" content="{{ ctf_starts_in() }}">
+  <meta name="ends_in" content="{{ ctf_ends_in() }}">
   <link rel="shortcut icon" href="{{ Configs.ctf_small_icon }}" type="image/x-icon">
-
+  
   {{ meta | safe }}
 
   {% block stylesheets %}
