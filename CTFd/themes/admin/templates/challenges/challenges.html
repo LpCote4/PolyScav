@@ -91,7 +91,7 @@
 									<input type="checkbox" class="form-check-input" value="{{ challenge.id }}" autocomplete="off" data-challenge-id="{{ challenge.id }}">&nbsp;
 								</div>
 							</td>
-							<td class="text-center">{{ challenge.id }}</td>
+							<td class="text-center id">{{ challenge.id }}</td>
 							<td><a href="{{ url_for('admin.challenges_detail', challenge_id=challenge.id) }}">{{ challenge.name }}</a></td>
 							<td>{{ challenge.category }}</td>
 							<td class="text-center">{{ challenge.value }}</td>
@@ -102,6 +102,64 @@
 							</td>
 						</tr>
 					{% endfor %}
+					<style>
+						.editable {
+							cursor: pointer;
+							border: 1px solid #ccc;
+							padding: 5px;
+						}
+						.input-field {
+							width: 100%;
+							box-sizing: border-box;
+						}
+						input {
+							width: 100%;
+						}
+						.text-center[data-editable="visibility"] {
+							min-width: 120px; /* Ajustez cette valeur selon vos besoins */
+							width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
+						}
+						.text-center[data-editable="type"] {
+							min-width: 130px; /* Ajustez cette valeur selon vos besoins */
+							width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
+						}
+						.text-center[data-editable="category"] {
+							min-width: 150px; /* Ajustez cette valeur selon vos besoins */
+							width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
+						}
+					</style>
+					<tr data-href="">
+						<td class="d-block border-right text-center" data-checkbox>
+							<div class="form-check">
+								<input type="checkbox" class="form-check-input" value="0" autocomplete="off" data-challenge-id="0">&nbsp;
+							</div>
+						</td>
+						<td class="text-center" id="new-id">ID</td>
+						<td class="editable" data-editable="name">
+							<input></input>
+						</td>
+						<td class="editable text-center" data-editable="category">
+							<select class="form-control custom-select" name="category">
+								<option value="Classique" selected="">Classique</option>
+							</select>
+						</td>
+						<td class="editable text-center" data-editable="value">
+							<input></input>
+						</td>
+						<td class="editable text-center" data-editable="type">
+							<select class="form-control custom-select" name="type">
+								<option value="manual" selected="">manual</option>
+								<option value="standard">standard</option>
+								<option value="dynamic">dynamic</option>
+							</select>
+						</td>
+						<td class="text-center" data-editable="visibility">
+							<select class="form-control custom-select" name="state">
+								<option value="visible" selected="">visible</option>
+								<option value="hidden">hidden</option>
+							</select>
+						</td>
+					</tr>
 					</tbody>
 				</table>
 			</div>
@@ -111,6 +169,22 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+	document.addEventListener('DOMContentLoaded', function() {
+		// Find the highest current ID in the table
+		let maxId = 0;
+		document.querySelectorAll('td.id').forEach(function(td) {
+			const id = parseInt(td.textContent);
+			if (!isNaN(id) && id > maxId) {
+				maxId = id;
+			}
+		});
+	
+		// Set the new ID
+		const newId = maxId + 1;
+		document.getElementById('new-id').textContent = newId;
+	});
+</script>
 {% endblock %}
 
 {% block entrypoint %}
