@@ -51,10 +51,10 @@ function createTeam(event) {
             ezBadge({
               type: "error",
               body: response.errors[key],
-            }),
+            })
           );
           const i = $("#team-info-create-form").find(
-            "input[name={0}]".format(key),
+            "input[name={0}]".format(key)
           );
           const input = $(i);
           input.addClass("input-filled-invalid");
@@ -103,7 +103,7 @@ function updateTeam(event) {
             ezBadge({
               type: "error",
               body: response.errors[key],
-            }),
+            })
           );
           const i = $("#team-info-form").find("input[name={0}]".format(key));
           const input = $(i);
@@ -218,7 +218,7 @@ function solveSelectedMissingChallenges(event) {
   let challengeIDs = $("input[data-missing-challenge-id]:checked").map(
     function () {
       return $(this).data("missing-challenge-id");
-    },
+    }
   );
   let target = challengeIDs.length === 1 ? "challenge" : "challenges";
 
@@ -297,7 +297,7 @@ const createGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     createGraph(
       "category_breakdown",
@@ -306,7 +306,7 @@ const createGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     createGraph(
       "solve_percentages",
@@ -315,7 +315,7 @@ const createGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
   });
 };
@@ -335,7 +335,7 @@ const updateGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     updateGraph(
       "category_breakdown",
@@ -344,7 +344,7 @@ const updateGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     updateGraph(
       "solve_percentages",
@@ -353,7 +353,7 @@ const updateGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
   });
 };
@@ -385,10 +385,10 @@ $(() => {
               ezBadge({
                 type: "error",
                 body: response.errors[key],
-              }),
+              })
             );
             const i = $("#team-captain-form").find(
-              "select[name={0}]".format(key),
+              "select[name={0}]".format(key)
             );
             const input = $(i);
             input.addClass("input-filled-invalid");
@@ -457,7 +457,7 @@ $(() => {
         ezBadge({
           type: "error",
           body: "Please select a team member",
-        }),
+        })
       );
       return;
     }
@@ -485,7 +485,7 @@ $(() => {
               ezBadge({
                 type: "error",
                 body: response.errors[key],
-              }),
+              })
             );
             const i = $("#user-award-form").find("input[name={0}]".format(key));
             const input = $(i);
@@ -511,7 +511,7 @@ $(() => {
       title: "Remove Member",
       body: "Are you sure you want to remove {0} from {1}? <br><br><strong>All of their challenge solves, attempts, awards, and unlocked hints will also be deleted!</strong>".format(
         "<strong>" + htmlEntities(member_name) + "</strong>",
-        "<strong>" + htmlEntities(window.TEAM_NAME) + "</strong>",
+        "<strong>" + htmlEntities(window.TEAM_NAME) + "</strong>"
       ),
       success: function () {
         CTFd.fetch("/api/v1/teams/" + window.TEAM_ID + "/members", {
@@ -534,7 +534,7 @@ $(() => {
     ezQuery({
       title: "Delete Team",
       body: "Are you sure you want to delete {0}".format(
-        "<strong>" + htmlEntities(window.TEAM_NAME) + "</strong>",
+        "<strong>" + htmlEntities(window.TEAM_NAME) + "</strong>"
       ),
       success: function () {
         CTFd.fetch("/api/v1/teams/" + window.TEAM_ID, {
@@ -559,6 +559,12 @@ $(() => {
   $("#correct-fail-button").click(correctSubmissions);
 
   $("#fails-delete-button").click(function (e) {
+    deleteSelectedSubmissions(e, "fails");
+  });
+
+  $("#correct-submissions-button").click(correctSubmissions);
+
+  $("#submissions-delete-button").click(function (e) {
     deleteSelectedSubmissions(e, "fails");
   });
 

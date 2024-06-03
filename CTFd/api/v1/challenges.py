@@ -204,13 +204,16 @@ class ChallengeList(Resource):
 
             team = get_current_team()
             user_submited = {}
-            for fail in team.fails:
-                if challenge_type.name == "manual" and fail.challenge_id == challenge.id:
-                    is_submited = True
-                    break
-                else:
-                    is_submited = False
+            is_submited = False
+            if team != None:
+                for fail in team.fails:
+                    if challenge_type.name == "manual" and fail.challenge_id == challenge.id:
+                        is_submited = True
+                        break
+                    else:
+                        is_submited = False
 
+            
             # Challenge passes all checks, add it to response
             response.append(
                 {
