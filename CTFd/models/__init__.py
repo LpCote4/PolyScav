@@ -1006,11 +1006,13 @@ class Comments(db.Model):
 
 
 class ChallengeComments(Comments):
+    
     __mapper_args__ = {"polymorphic_identity": "challenge"}
     challenge_id = db.Column(
         db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE")
-    )
-
+    
+)
+    
 
 class UserComments(Comments):
     __mapper_args__ = {"polymorphic_identity": "user"}

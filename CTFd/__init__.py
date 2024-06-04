@@ -229,7 +229,7 @@ def create_app(config="CTFd.config.Config"):
         babel = Babel()
         babel.locale_selector_func = get_locale
         babel.init_app(app)
-
+        print("0000000000000000000000000000000000000000000000000000000000")
         # Alembic sqlite support is lacking so we should just create_all anyway
         if url.drivername.startswith("sqlite"):
             # Enable foreign keys for SQLite. This must be before the
@@ -244,12 +244,14 @@ def create_app(config="CTFd.config.Config"):
                 cursor = dbapi_connection.cursor()
                 cursor.execute("PRAGMA foreign_keys=ON")
                 cursor.close()
-
+            
             db.create_all()
+            
             stamp_latest_revision()
         else:
             # This creates tables instead of db.create_all()
             # Allows migrations to happen properly
+            
             upgrade()
 
         from CTFd.models import ma

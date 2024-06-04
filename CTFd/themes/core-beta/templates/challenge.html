@@ -11,7 +11,6 @@
               {% trans %}Challenge{% endtrans %}
             </button>
           </li>
-
           {% block solves %}
             <li class="nav-item">
               <button class="nav-link challenge-solves" data-bs-target="#solves" @click="showSolves()">
@@ -21,6 +20,11 @@
               </button>
             </li>
           {% endblock %}
+            <li class="nav-item">
+              <button class="nav-link challenge-solves" data-bs-target="#comment" @click="showComments()">
+                Commentaire
+              </button>
+            </li>
         </ul>
       </div>
 
@@ -215,7 +219,7 @@
               </div>
             </div>
           </div>
-
+          
           <div role="tabpanel" class="tab-pane fade" id="solves">
             <div class="row">
               <div class="col-md-12">
@@ -241,6 +245,18 @@
                   </template>
                   </tbody>
                 </table>
+              </div>
+            </div>
+          </div>
+          <div role="tabpanel" class="tab-pane fade" id="comment">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row min-vh-25 pt-5">
+                  <div class="col-md-10 offset-md-1">
+                    <div id="comment-box">
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

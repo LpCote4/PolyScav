@@ -86,7 +86,6 @@ const comments = {
       type: type,
       ...extra_args,
     };
-
     CTFd.fetch("/api/v1/comments", {
       method: "POST",
       credentials: "same-origin",

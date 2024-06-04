@@ -8,8 +8,8 @@ from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
 from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessResponse
 from CTFd.constants import RawEnum
 from CTFd.models import (
-    ChallengeComments,
     Comments,
+    ChallengeComments,
     PageComments,
     TeamComments,
     UserComments,
@@ -43,6 +43,7 @@ comments_namespace.schema_model(
 
 
 def get_comment_model(data):
+
     model = Comments
     if "challenge_id" in data:
         model = ChallengeComments
@@ -59,7 +60,6 @@ def get_comment_model(data):
 
 @comments_namespace.route("")
 class CommentList(Resource):
-    @admins_only
     @comments_namespace.doc(
         description="Endpoint to list Comment objects in bulk",
         responses={
@@ -72,6 +72,7 @@ class CommentList(Resource):
     )
     @validate_args(
         {
+            "challengeid": (int, None),
             "challenge_id": (int, None),
             "user_id": (int, None),
             "team_id": (int, None),
@@ -82,20 +83,40 @@ class CommentList(Resource):
         location="query",
     )
     def get(self, query_args):
+        try:
+            challengeid = query_args.pop("challengeid")
+            isChallengeDefine = True
+        except:
+            isChallengeDefine = False
+
+
         q = query_args.pop("q", None)
         field = str(query_args.pop("field", None))
         CommentModel = get_comment_model(data=query_args)
         filters = build_model_filters(model=CommentModel, query=q, field=field)
+        
+        
 
-        comments = (
+        if isChallengeDefine:
+            looking_for = '%{0}%'.format("#"+str(challengeid))
+            comments = (
+            CommentModel.query.filter_by(**query_args)
+            .filter(*filters)
+            .filter(CommentModel.content.ilike(looking_for))
+            .order_by(CommentModel.id.desc())
+            .paginate(max_per_page=100)
+            )
+        else:
+            comments = (
             CommentModel.query.filter_by(**query_args)
             .filter(*filters)
             .order_by(CommentModel.id.desc())
             .paginate(max_per_page=100)
-        )
+            )
+        
         schema = CommentSchema(many=True)
         response = schema.dump(comments.items)
-
+        
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
@@ -114,7 +135,6 @@ class CommentList(Resource):
             "data": response.data,
         }
 
-    @admins_only
     @comments_namespace.doc(
         description="Endpoint to create a Comment object",
         responses={

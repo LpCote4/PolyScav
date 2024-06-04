@@ -3,7 +3,8 @@ import dayjs from "dayjs";
 
 import CTFd from "./index";
 
-
+import CommentBox from "./components/comments/CommentBox.vue";
+import Vue from "vue";
 import { Modal, Tab, Tooltip } from "bootstrap";
 import highlight from "./theme/highlight";
 import favicon from ".";
@@ -107,10 +108,22 @@ Alpine.data("Challenge", () => ({
 
   async showSolves() {
     this.solves = await CTFd.pages.challenge.loadSolves(this.id);
+    console.log(this.solves)
     this.solves.forEach(solve => {
       solve.date = dayjs(solve.date).format("MMMM Do, h:mm:ss A");
       return solve;
     });
+    new Tab(this.$el).show();
+  },
+
+  async showComments() {
+    const commentBox = Vue.extend(CommentBox);
+    let vueContainer = document.createElement("div");
+    console.log(window);
+    document.querySelector("#comment-box").appendChild(vueContainer);
+    new commentBox({
+      propsData: { type: "team", id: window.TEAM_ID, challenge_id: this.id },
+    }).$mount(vueContainer);
     new Tab(this.$el).show();
   },
 
@@ -162,6 +175,7 @@ Alpine.data("Challenge", () => ({
     }, 2000);
   },
 
+
   async submitChallenge() {
     this.response = await CTFd.pages.challenge.submitChallenge(
       this.id,
@@ -199,6 +213,7 @@ Alpine.data("ChallengeBoard", () => ({
   challenge: null,
 
   async init() {
+    window.TEAM_ID = CTFd.team.id;
     this.challenges = await CTFd.pages.challenges.getChallenges();
     let standings = await CTFd.pages.scoreboard.getScoreboard();
     let ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(standings.length)
@@ -245,7 +260,7 @@ Alpine.data("ChallengeBoard", () => ({
 
   getChallenges(category) {
     let challenges = this.challenges;
-    console.log(this.challenges);
+    
 
     if (category !== null) {
       challenges = this.challenges.filter(challenge => challenge.category === category);
@@ -299,3 +314,5 @@ Alpine.data("ChallengeBoard", () => ({
 }));
 
 Alpine.start();
+
+
