@@ -264,6 +264,7 @@ class ChallengeList(Resource):
         return {"success": True, "data": response}
 
 
+
 @challenges_namespace.route("/types")
 class ChallengeTypes(Resource):
     @admins_only

@@ -65,7 +65,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-12 table-responsive">
+		<div class="col-md-12 table-responsive" id="challenge-create-options">
 			<div>
 				<table id="challenges" class="table table-striped border">
 					<thead>
@@ -102,64 +102,97 @@
 							</td>
 						</tr>
 					{% endfor %}
-					<style>
-						.editable {
-							cursor: pointer;
-							border: 1px solid #ccc;
-							padding: 5px;
-						}
-						.input-field {
-							width: 100%;
-							box-sizing: border-box;
-						}
-						input {
-							width: 100%;
-						}
-						.text-center[data-editable="visibility"] {
-							min-width: 120px; /* Ajustez cette valeur selon vos besoins */
-							width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
-						}
-						.text-center[data-editable="type"] {
-							min-width: 130px; /* Ajustez cette valeur selon vos besoins */
-							width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
-						}
-						.text-center[data-editable="category"] {
-							min-width: 150px; /* Ajustez cette valeur selon vos besoins */
-							width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
-						}
-					</style>
-					<tr data-href="">
-						<td class="d-block border-right text-center" data-checkbox>
-							<div class="form-check">
-								<input type="checkbox" class="form-check-input" value="0" autocomplete="off" data-challenge-id="0">&nbsp;
+						<style>
+							.editable {
+								cursor: pointer;
+								border: 1px solid #ccc;
+								padding: 5px;
+							}
+							.input-field {
+								width: 100%;
+								box-sizing: border-box;
+							}
+							input {
+								width: 100%;
+							}
+							.text-center[data-editable="visibility"] {
+								min-width: 120px; /* Ajustez cette valeur selon vos besoins */
+								width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
+							}
+							.text-center[data-editable="type"] {
+								min-width: 130px; /* Ajustez cette valeur selon vos besoins */
+								width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
+							}
+							.text-center[data-editable="category"] {
+								min-width: 150px; /* Ajustez cette valeur selon vos besoins */
+								width: auto; /* Permet à la cellule de s'adapter dynamiquement à la taille du contenu */
+							}
+						</style>
+						<form method="POST" enctype="multipart/form-data" id="create-challenge-form">
+							<tr data-href="">
+								<td class="d-block border-right text-center" data-checkbox>
+									<div class="form-check">
+										<input type="checkbox" class="form-check-input" value="0" autocomplete="off" data-challenge-id="0">&nbsp;
+									</div>
+								</td>
+								<td class="text-center" id="challenge_id" >ID</td>
+								<td class="editable" data-editable="name">
+									<input></input>
+								</td>
+								<td class="editable text-center" data-editable="category">
+									<select class="form-control custom-select" name="category">
+										<option value="Classique" selected="">Classique</option>
+									</select>
+								</td>
+								<td class="editable text-center" data-editable="value">
+									<input></input>
+								</td>
+								<td class="editable text-center" data-editable="type">
+									<select class="form-control custom-select" name="type">
+										<option value="manual" selected="">manual</option>
+										<option value="standard">standard</option>
+										<option value="dynamic">dynamic</option>
+									</select>
+								</td>
+								<td class="text-center" data-editable="visibility">
+									<select class="form-control custom-select" name="state">
+										<option value="visible" selected>visible</option>
+										<option value="hidden">hidden</option>
+									</select>	
+								</td>
+								<input type="hidden" name="flag_type" value="static">
+								<input id="challenge_id" type="hidden" name="challenge_id" value=>
+							</tr>
+							<div class="form-group">
+								<button class="btn btn-primary float-right create-challenge-submit" type="submit">Update</button>
 							</div>
-						</td>
-						<td class="text-center" id="new-id">ID</td>
-						<td class="editable" data-editable="name">
-							<input></input>
-						</td>
-						<td class="editable text-center" data-editable="category">
-							<select class="form-control custom-select" name="category">
-								<option value="Classique" selected="">Classique</option>
-							</select>
-						</td>
-						<td class="editable text-center" data-editable="value">
-							<input></input>
-						</td>
-						<td class="editable text-center" data-editable="type">
-							<select class="form-control custom-select" name="type">
-								<option value="manual" selected="">manual</option>
-								<option value="standard">standard</option>
-								<option value="dynamic">dynamic</option>
-							</select>
-						</td>
-						<td class="text-center" data-editable="visibility">
-							<select class="form-control custom-select" name="state">
-								<option value="visible" selected="">visible</option>
-								<option value="hidden">hidden</option>
-							</select>
-						</td>
-					</tr>
+						</form>
+						<!-- <script>
+							document.getElementById("create-challenge-form").addEventListener("submit", function(event) {
+								event.preventDefault(); // Prevent default form submission
+							
+								// Get form data
+								const formData = new FormData(event.target);
+							
+								// Make POST request
+								fetch("/api/v1/challenges", {
+									method: "POST",
+									body: formData
+								})
+								.then(response => {
+									if (!response.ok) {
+										throw new Error("Network response was not ok");
+									}
+									return response.json();
+								})
+								.then(data => {
+									console.log(data); // Handle response data
+								})
+								.catch(error => {
+									console.error("There was a problem with the request:", error);
+								});
+							});
+							</script> -->
 					</tbody>
 				</table>
 			</div>
@@ -182,7 +215,7 @@
 	
 		// Set the new ID
 		const newId = maxId + 1;
-		document.getElementById('new-id').textContent = newId;
+		document.getElementById('challenge_id').textContent = newId;
 	});
 </script>
 {% endblock %}
