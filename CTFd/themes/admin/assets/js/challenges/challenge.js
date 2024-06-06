@@ -26,7 +26,7 @@ function renderSubmissionResponse(response, cb) {
   } else if (result.status === "incorrect") {
     // Incorrect key
     result_notification.addClass(
-      "alert alert-danger alert-dismissable text-center",
+      "alert alert-danger alert-dismissable text-center"
     );
     result_notification.slideDown();
 
@@ -38,12 +38,12 @@ function renderSubmissionResponse(response, cb) {
   } else if (result.status === "correct") {
     // Challenge Solved
     result_notification.addClass(
-      "alert alert-success alert-dismissable text-center",
+      "alert alert-success alert-dismissable text-center"
     );
     result_notification.slideDown();
 
     $(".challenge-solves").text(
-      parseInt($(".challenge-solves").text().split(" ")[0]) + 1 + " Solves",
+      parseInt($(".challenge-solves").text().split(" ")[0]) + 1 + " Solves"
     );
 
     answer_input.val("");
@@ -52,7 +52,7 @@ function renderSubmissionResponse(response, cb) {
   } else if (result.status === "already_solved") {
     // Challenge already solved
     result_notification.addClass(
-      "alert alert-info alert-dismissable text-center",
+      "alert alert-info alert-dismissable text-center"
     );
     result_notification.slideDown();
 
@@ -60,13 +60,13 @@ function renderSubmissionResponse(response, cb) {
   } else if (result.status === "paused") {
     // CTF is paused
     result_notification.addClass(
-      "alert alert-warning alert-dismissable text-center",
+      "alert alert-warning alert-dismissable text-center"
     );
     result_notification.slideDown();
   } else if (result.status === "ratelimited") {
     // Keys per minute too high
     result_notification.addClass(
-      "alert alert-warning alert-dismissable text-center",
+      "alert alert-warning alert-dismissable text-center"
     );
     result_notification.slideDown();
 
@@ -107,7 +107,7 @@ $(() => {
                 window.challenge.preRender();
 
                 challenge_data["description"] = window.challenge.render(
-                  challenge_data["description"],
+                  challenge_data["description"]
                 );
                 challenge_data["script_root"] = CTFd.config.urlRoot;
 
@@ -146,15 +146,15 @@ $(() => {
 
                 window.challenge.postRender();
                 window.location.replace(
-                  window.location.href.split("#")[0] + "#preview",
+                  window.location.href.split("#")[0] + "#preview"
                 );
 
                 $("#challenge-window").modal();
-              },
+              }
             );
-          },
+          }
         );
-      },
+      }
     );
   });
 
@@ -162,7 +162,7 @@ $(() => {
     ezQuery({
       title: "Delete Challenge",
       body: "Are you sure you want to delete {0}".format(
-        "<strong>" + htmlEntities(window.CHALLENGE_NAME) + "</strong>",
+        "<strong>" + htmlEntities(window.CHALLENGE_NAME) + "</strong>"
       ),
       success: function () {
         CTFd.fetch("/api/v1/challenges/" + window.CHALLENGE_ID, {

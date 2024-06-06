@@ -17,6 +17,56 @@ import ChallengeFilesList from "../components/files/ChallengeFilesList.vue";
 import HintsList from "../components/hints/HintsList.vue";
 import NextChallenge from "../components/next/NextChallenge.vue";
 
+let categories = {};
+function updateCategories(e) {
+  console.log(e);
+  categories[e] = true;
+}
+
+//To create challenge in one click with one simple interface
+function loadAndhandleChallenge(event) {
+  event.preventDefault();
+
+  const params = $("#challenge-create-options-quick form").serializeJSON();
+  delete params.challenge_id;
+  delete params.flag_type;
+  params.description = "";
+  if (params.category == "") {
+    params.category = document.getElementById(
+      "categories-selector-input"
+    ).placeholder;
+  }
+  CTFd.fetch("/api/v1/challenges", {
+    method: "POST",
+    credentials: "same-origin",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(params),
+  })
+    .then(function (response) {
+      return response.json();
+    })
+    .then(function (response) {
+      if (response.success) {
+        handleChallengeOptions(event);
+      } else {
+        let body = "";
+        for (const k in response.errors) {
+          body += response.errors[k].join("\n");
+          body += "\n";
+        }
+
+        ezAlert({
+          title: "Error",
+          body: body,
+          button: "OK",
+        });
+      }
+    });
+}
+
 function loadChalTemplate(challenge) {
   CTFd._internal.challenge = {};
   $.getScript(CTFd.config.urlRoot + challenge.scripts.view, function () {
@@ -28,6 +78,7 @@ function loadChalTemplate(challenge) {
       $("#create-chal-entry-div form").submit(function (event) {
         event.preventDefault();
         const params = $("#create-chal-entry-div form").serializeJSON();
+
         CTFd.fetch("/api/v1/challenges", {
           method: "POST",
           credentials: "same-origin",
@@ -43,7 +94,7 @@ function loadChalTemplate(challenge) {
           .then(function (response) {
             if (response.success) {
               $("#challenge-create-options #challenge_id").val(
-                response.data.id,
+                response.data.id
               );
               $("#challenge-create-options").modal();
             } else {
@@ -68,6 +119,7 @@ function loadChalTemplate(challenge) {
 function handleChallengeOptions(event) {
   event.preventDefault();
   var params = $(event.target).serializeJSON(true);
+
   let flag_params = {
     challenge_id: params.challenge_id,
     content: params.flag || "",
@@ -93,13 +145,11 @@ function handleChallengeOptions(event) {
       .then(function (data) {
         if (data.success) {
           setTimeout(function () {
-            window.location =
-              CTFd.config.urlRoot + "/admin/challenges/" + params.challenge_id;
+            window.location = CTFd.config.urlRoot + "/admin/challenges";
           }, 700);
         }
       });
   };
-
   Promise.all([
     // Save flag
     new Promise(function (resolve, _reject) {
@@ -141,7 +191,7 @@ $(() => {
   $(".preview-challenge").click(function (_e) {
     let url = `${CTFd.config.urlRoot}/admin/challenges/preview/${window.CHALLENGE_ID}`;
     $("#challenge-window").html(
-      `<iframe src="${url}" height="100%" width="100%" frameBorder=0></iframe>`,
+      `<iframe src="${url}" height="100%" width="100%" frameBorder=0></iframe>`
     );
     $("#challenge-modal").modal();
   });
@@ -154,7 +204,7 @@ $(() => {
     ezQuery({
       title: "Delete Challenge",
       body: `Are you sure you want to delete <strong>${htmlEntities(
-        window.CHALLENGE_NAME,
+        window.CHALLENGE_NAME
       )}</strong>`,
       success: function () {
         CTFd.fetch("/api/v1/challenges/" + window.CHALLENGE_ID, {
@@ -250,8 +300,8 @@ $(() => {
       });
   });
 
-  $("#challenge-create-options form").submit(handleChallengeOptions);
-
+  $("#challenge-create-options").submit(handleChallengeOptions);
+  $("#challenge-create-options-quick").submit(loadAndhandleChallenge);
   // Load FlagList component
   if (document.querySelector("#challenge-flags")) {
     const flagList = Vue.extend(FlagList);

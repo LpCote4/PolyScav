@@ -65,7 +65,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-12 table-responsive" id="challenge-create-options">
+		<div class="col-md-12 table-responsive" id="challenge-create-options-quick">
 			<div>
 				<table id="challenges" class="table table-striped border">
 					<thead>
@@ -83,8 +83,17 @@
 						<th class="sort-col text-center"><b>State</b></th>
 					</tr>
 					</thead>
+					<script>
+						document.categories = {};
+						document.lastCategorie = "Chose a faire...";
+					</script>
 					<tbody>
 					{% for challenge in challenges %}
+						
+						<script>
+							document.categories["{{challenge.category}}"] = true;
+							document.lastCategorie = "{{challenge.category}}";
+						</script>
 						<tr data-href="{{ url_for('admin.challenges_detail', challenge_id=challenge.id) }}">
 							<td class="d-block border-right text-center" data-checkbox>
 								<div class="form-check">
@@ -135,17 +144,24 @@
 										<input type="checkbox" class="form-check-input" value="0" autocomplete="off" data-challenge-id="0">&nbsp;
 									</div>
 								</td>
-								<td class="text-center" id="challenge_id" >ID</td>
+								<td class="text-center" id="challenge_id_texte">ID</td>
 								<td class="editable" data-editable="name">
-									<input></input>
+									<input class="form-text-input" name="name"></input>
 								</td>
 								<td class="editable text-center" data-editable="category">
-									<select class="form-control custom-select" name="category">
-										<option value="Classique" selected="">Classique</option>
-									</select>
+									<input type="text" list="categories-selector" id="categories-selector-input" name="category" placeholder=""/>
+									<datalist class="" id="categories-selector">
+										<script>
+											document.getElementById("categories-selector-input").placeholder = document.lastCategorie;
+											for (category in document.categories){
+												document.getElementById("categories-selector").innerHTML += "<option value='"+category+"' selected=''>"+category+"</option>";
+											}
+										</script>
+										
+									</datalist>
 								</td>
-								<td class="editable text-center" data-editable="value">
-									<input></input>
+								<td class="editable text-center" data-editable="value" >
+									<input class="form-text-input" name="value"></input>
 								</td>
 								<td class="editable text-center" data-editable="type">
 									<select class="form-control custom-select" name="type">
@@ -161,38 +177,15 @@
 									</select>	
 								</td>
 								<input type="hidden" name="flag_type" value="static">
-								<input id="challenge_id" type="hidden" name="challenge_id" value=>
+								<input id="challenge_id" type="hidden" name="challenge_id">
+								
 							</tr>
 							<div class="form-group">
 								<button class="btn btn-primary float-right create-challenge-submit" type="submit">Update</button>
 							</div>
 						</form>
-						<!-- <script>
-							document.getElementById("create-challenge-form").addEventListener("submit", function(event) {
-								event.preventDefault(); // Prevent default form submission
-							
-								// Get form data
-								const formData = new FormData(event.target);
-							
-								// Make POST request
-								fetch("/api/v1/challenges", {
-									method: "POST",
-									body: formData
-								})
-								.then(response => {
-									if (!response.ok) {
-										throw new Error("Network response was not ok");
-									}
-									return response.json();
-								})
-								.then(data => {
-									console.log(data); // Handle response data
-								})
-								.catch(error => {
-									console.error("There was a problem with the request:", error);
-								});
-							});
-							</script> -->
+						<!-- <script>document.getElementById("create-challenge-form").addEventListener("submit",handleChallengeOptions);</script> -->
+						
 					</tbody>
 				</table>
 			</div>
@@ -215,11 +208,13 @@
 	
 		// Set the new ID
 		const newId = maxId + 1;
-		document.getElementById('challenge_id').textContent = newId;
+		document.getElementById('challenge_id_texte').textContent = newId;
+		document.getElementById('challenge_id').value = newId;
 	});
 </script>
 {% endblock %}
 
 {% block entrypoint %}
 	{{ Assets.js("assets/js/pages/challenges.js", theme="admin") }}
+	{{ Assets.js("assets/js/pages/challenge.js", theme="admin") }}
 {% endblock %}

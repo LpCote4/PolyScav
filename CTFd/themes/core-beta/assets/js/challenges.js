@@ -10,6 +10,7 @@ import highlight from "./theme/highlight";
 import favicon from ".";
 import { default as helpers } from "./compat/helpers";
 
+
 function addTargetBlank(html) {
   let dom = new DOMParser();
   let view = dom.parseFromString(html, "text/html");
