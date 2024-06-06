@@ -241,6 +241,7 @@ Alpine.data("ChallengeBoard", () => ({
       this.maxScore += score;
     }
 
+    document.getElementById("scoreProgressTitle").textContent = (this.solveScore + this.submitScore) + " points";
     document.getElementById("scoreProgressBar").value = 100*((this.solveScore + this.submitScore)/this.maxScore)
     document.getElementById("scoreProgressText").textContent = ""+ parseInt(100*(this.submitScore/(this.solveScore + this.submitScore))) + "% des points en approbations"
     
