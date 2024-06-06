@@ -250,7 +250,7 @@ Alpine.data("ChallengeBoard", () => ({
 
     for (let i in this.commentsChallengeDict){
       document.getElementById(i+"a").className = "fas fa-comments float-end";
-      document.getElementById(i).textContent = this.commentsChallengeDict[i];
+      document.getElementById(i).textContent = this.commentsChallengeDict[i] > 99 ? 99 : this.commentsChallengeDict[i];
      
     }
 
