@@ -2,7 +2,6 @@ import $ from "jquery";
 import dayjs from "dayjs";
 import MarkdownIt from "markdown-it";
 
-import "./patch";
 import fetch from "./fetch";
 import config from "./config";
 import API from "./api";
