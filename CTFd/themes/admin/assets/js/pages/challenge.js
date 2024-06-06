@@ -17,12 +17,6 @@ import ChallengeFilesList from "../components/files/ChallengeFilesList.vue";
 import HintsList from "../components/hints/HintsList.vue";
 import NextChallenge from "../components/next/NextChallenge.vue";
 
-let categories = {};
-function updateCategories(e) {
-  console.log(e);
-  categories[e] = true;
-}
-
 //To create challenge in one click with one simple interface
 function loadAndhandleChallenge(event) {
   event.preventDefault();
