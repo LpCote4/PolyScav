@@ -227,7 +227,23 @@ Alpine.data("ChallengeBoard", () => ({
     let standings = await CTFd.pages.scoreboard.getScoreboard();
     let ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(standings.length)
     this.comments = await helpers.comments.get_comments(apiArgs);
+    this.maxScore = 0;
+    this.solveScore = 0;
+    this.submitScore = 0;
+    for (let challenge in this.challenges){
+      let score = this.challenges[challenge].value
+      if (this.challenges[challenge].solved_by_me){
+        this.solveScore += score
+      }
+      else if (this.challenges[challenge].submited){
+        this.submitScore += score
+      }
+      this.maxScore += score;
+    }
 
+    document.getElementById("scoreProgressBar").value = 100*((this.solveScore + this.submitScore)/this.maxScore)
+    document.getElementById("scoreProgressText").textContent = ""+ parseInt(100*(this.submitScore/(this.solveScore + this.submitScore))) + "% des points en approbations"
+    
     this.commentsChallengeDict = {};
 
     for (let i in this.comments.data){
