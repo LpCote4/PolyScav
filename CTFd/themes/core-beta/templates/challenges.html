@@ -48,9 +48,15 @@
                     <button
                         class="challenge-button btn btn-dark w-100 text-truncate my-3"
                         :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited': ''"
-                        :value="c.id" @click="loadChallenge(c.id)"
+                        :value="c.id" @click="loadChallenge(c.id)" 
                     >
-
+                    
+                    <div style="position: absolute;">
+                    <i class="float-end" :id="c.id+'a'" style="left: 900%; position: relative;"></i>
+                    <p style="left: 800%; top: -4px; ;position: relative; color: white;" :id="c.id"><p>
+                    </div>
+                    
+                      
                       <div class="challenge-inner my-3">
                         <p x-text="c.name"></p>
                         <span x-text="c.value"></span>

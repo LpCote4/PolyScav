@@ -8,6 +8,7 @@ import Vue from "vue";
 import { Modal, Tab, Tooltip } from "bootstrap";
 import highlight from "./theme/highlight";
 import favicon from ".";
+import { default as helpers } from "./compat/helpers";
 
 function addTargetBlank(html) {
   let dom = new DOMParser();
@@ -213,14 +214,48 @@ Alpine.data("ChallengeBoard", () => ({
   challenge: null,
 
   async init() {
+   
+
     window.TEAM_ID = CTFd.team.id;
+    let args = {};
+    args[`team_id`] = window.TEAM_ID;
+    let apiArgs = args;
+    apiArgs[`page`] = 1;
+    apiArgs[`per_page`] = 10000;
+    
     this.challenges = await CTFd.pages.challenges.getChallenges();
     let standings = await CTFd.pages.scoreboard.getScoreboard();
     let ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(standings.length)
+    this.comments = await helpers.comments.get_comments(apiArgs);
 
+    this.commentsChallengeDict = {};
+
+    for (let i in this.comments.data){
+      let message = this.comments.data[i].content
+      if (message.search("#") != -1){
+        message = message.split("#")[1];
+        let fin = message.search(":");
+        let id = 0;
+        if (fin != -1) {id = parseInt(message.split(":")[0]);}
+        else {id = parseInt(message.split(":")[0]);}
+        
+        if (this.commentsChallengeDict[id] != undefined){
+          this.commentsChallengeDict[id] = this.commentsChallengeDict[id]+1;
+        }
+        else {
+          this.commentsChallengeDict[id] = 1;
+        }
+      }
+    }
+
+    for (let i in this.commentsChallengeDict){
+      document.getElementById(i+"a").className = "fas fa-comments float-end";
+      document.getElementById(i).textContent = this.commentsChallengeDict[i];
+     
+    }
 
     this.loaded = true;
-
+    
     if (window.location.hash) {
       let chalHash = decodeURIComponent(window.location.hash.substring(1));
       let idx = chalHash.lastIndexOf("-");
@@ -231,10 +266,15 @@ Alpine.data("ChallengeBoard", () => ({
       }
     }
   },
-
   getCategories() {
+    
+    
+    
+      
+    
     const categories = [];
-
+    
+    
     this.challenges.forEach(challenge => {
       const { category } = challenge;
 
@@ -257,11 +297,10 @@ Alpine.data("ChallengeBoard", () => ({
 
     return categories;
   },
-
   getChallenges(category) {
     let challenges = this.challenges;
     
-
+    
     if (category !== null) {
       challenges = this.challenges.filter(challenge => challenge.category === category);
     }
@@ -283,12 +322,13 @@ Alpine.data("ChallengeBoard", () => ({
 
   async loadChallenges() {
     this.challenges = await CTFd.pages.challenges.getChallenges();
-    
+    console.log(this.comments);
     
     
   },
 
   async loadChallenge(challengeId) {
+    
     await CTFd.pages.challenge.displayChallenge(challengeId, challenge => {
       challenge.data.view = addTargetBlank(challenge.data.view);
       Alpine.store("challenge").data = challenge.data;
