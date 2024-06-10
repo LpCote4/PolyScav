@@ -3,28 +3,8 @@
     "file": "assets/CommentBox-Cv-MSlYY.css",
     "src": "_CommentBox-!~{00n}~.js"
   },
-  "_CommentBox-BF8phx4O.js": {
-    "file": "assets/CommentBox-BF8phx4O.js",
-    "name": "CommentBox",
-    "imports": [
-      "assets/js/pages/main.js"
-    ],
-    "css": [
-      "assets/CommentBox-Cv-MSlYY.css"
-    ]
-  },
   "_CommentBox-BcKaA7DT.js": {
     "file": "assets/CommentBox-BcKaA7DT.js",
-    "name": "CommentBox",
-    "imports": [
-      "assets/js/pages/main.js"
-    ],
-    "css": [
-      "assets/CommentBox-Cv-MSlYY.css"
-    ]
-  },
-  "_CommentBox-W1C3xIAL.js": {
-    "file": "assets/CommentBox-W1C3xIAL.js",
     "name": "CommentBox",
     "imports": [
       "assets/js/pages/main.js"
@@ -47,20 +27,6 @@
     "file": "assets/echarts-l0sNRNKZ.js",
     "name": "echarts"
   },
-  "_echarts.common-BEKuw279.js": {
-    "file": "assets/echarts.common-BEKuw279.js",
-    "name": "echarts.common",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_echarts.common-B_5rseBe.js": {
-    "file": "assets/echarts.common-B_5rseBe.js",
-    "name": "echarts.common",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
   "_echarts.common-Dmu4XbXS.js": {
     "file": "assets/echarts.common-Dmu4XbXS.js",
     "name": "echarts.common",
@@ -73,14 +39,6 @@
     "name": "echarts.common",
     "imports": [
       "assets/js/pages/main.js"
-    ]
-  },
-  "_graphs-0s2TRwfr.js": {
-    "file": "assets/graphs-0s2TRwfr.js",
-    "name": "graphs",
-    "imports": [
-      "assets/js/pages/main.js",
-      "_echarts.common-BEKuw279.js"
     ]
   },
   "_graphs-7-G8mGvb.js": {
@@ -99,37 +57,8 @@
       "_echarts.common-WIBZNyRO.js"
     ]
   },
-  "_graphs-CTvA9AVS.js": {
-    "file": "assets/graphs-CTvA9AVS.js",
-    "name": "graphs",
-    "imports": [
-      "assets/js/pages/main.js",
-      "_echarts.common-B_5rseBe.js"
-    ]
-  },
-  "_htmlmixed-CSviMle6.js": {
-    "file": "assets/htmlmixed-CSviMle6.js",
-    "name": "htmlmixed",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
   "_htmlmixed-DFrYWi--.js": {
     "file": "assets/htmlmixed-DFrYWi--.js",
-    "name": "htmlmixed",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_htmlmixed-EOg4V368.js": {
-    "file": "assets/htmlmixed-EOg4V368.js",
-    "name": "htmlmixed",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_htmlmixed-Fugdj3mm.js": {
-    "file": "assets/htmlmixed-Fugdj3mm.js",
     "name": "htmlmixed",
     "imports": [
       "assets/js/pages/main.js"
@@ -151,20 +80,6 @@
   },
   "_tab-CzjXJgQS.js": {
     "file": "assets/tab-CzjXJgQS.js",
-    "name": "tab",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_tab-DV12_ZJ6.js": {
-    "file": "assets/tab-DV12_ZJ6.js",
-    "name": "tab",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_tab-HR-fzFKX.js": {
-    "file": "assets/tab-HR-fzFKX.js",
     "name": "tab",
     "imports": [
       "assets/js/pages/main.js"
@@ -302,7 +217,7 @@
     ]
   },
   "assets/js/pages/team.js": {
-    "file": "assets/pages/team-Bat9s4Eg.js",
+    "file": "assets/pages/team-RwKZ4C0y.js",
     "name": "pages/team",
     "src": "assets/js/pages/team.js",
     "isEntry": true,

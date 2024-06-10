@@ -11,6 +11,27 @@ import CommentBox from "../components/comments/CommentBox.vue";
 import UserAddForm from "../components/teams/UserAddForm.vue";
 import { copyToClipboard } from "../compat/ui";
 
+function blobToDataURL(blob, callback) {
+  var a = new FileReader();
+  a.onload = function (e) {
+    callback(e.target.result);
+  };
+  a.readAsDataURL(blob);
+}
+function blobToImage(element) {
+  console.log(element.childNodes);
+  let element2 = element.childNodes[0];
+  if (element2.id.length < 5000) {
+    element.removeChild(element2);
+    element.innerHTML = element2.id;
+  } else {
+    element2.src = "data:text/plain;base64," + atob(element2.id);
+
+    element2.id = "";
+    element2.onclick = showLargeSubmissions;
+  }
+}
+
 function createTeam(event) {
   event.preventDefault();
   const params = $("#team-info-create-form").serializeJSON(true);
@@ -112,6 +133,18 @@ function updateTeam(event) {
         });
       }
     });
+}
+
+function showLargeSubmissions(_event) {
+  console.log(_event.srcElement);
+  ezAlert({
+    title: "Visioneurs",
+    body:
+      `<img src="` +
+      _event.srcElement.src +
+      `" style="width: 100%;" height="auto">`,
+    button: "retour",
+  });
 }
 
 function correctSubmissions(_event) {
@@ -275,6 +308,7 @@ const api_funcs = {
     (x) => CTFd.api.get_team_fails({ teamId: x }),
     (x) => CTFd.api.get_team_awards({ teamId: x }),
   ],
+
   user: [
     (x) => CTFd.api.get_user_solves({ userId: x }),
     (x) => CTFd.api.get_user_fails({ userId: x }),
@@ -427,6 +461,11 @@ $(() => {
   $("#team-invite-link-copy").click(function (e) {
     copyToClipboard(e, "#team-invite-link");
   });
+
+  let elements = document.getElementsByClassName("imageContainer");
+  for (let i = 0; i < elements.length; i++) {
+    blobToImage(elements[i]);
+  }
 
   $(".members-team").click(function (_e) {
     $("#team-add-modal").modal("toggle");

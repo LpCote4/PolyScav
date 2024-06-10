@@ -179,13 +179,18 @@ Alpine.data("Challenge", () => ({
 
 
   async submitChallenge() {
+    console.log(this.submission);
     this.response = await CTFd.pages.challenge.submitChallenge(
       this.id,
       this.submission,
     );
+    
     await this.renderSubmissionResponse();
   },
   
+  
+
+
   async renderSubmissionResponse() {
     if (this.response.data.status === "correct") {
       this.submission = "";
@@ -196,16 +201,77 @@ Alpine.data("Challenge", () => ({
   },
 
   async submitManualChallenge() {
+    
+    this.submission = document.getElementById("challenge-input").value;
     this.response = await CTFd.pages.challenge.submitChallenge(
       this.id,
-      "IntantionalError",
+      this.submission,
     );
-    
     if (this.response.success){
       this.response.data.status = "correct";
       this.response.data.message = "succesfuly send!";
     }
     this.$dispatch("load-challenges");
+  },
+  
+ 
+
+  compressAnImage(blobURL, operation){
+    const img = new Image();
+    img.src = blobURL;
+    img.onerror = function () {
+      URL.revokeObjectURL(this.src);
+      // Handle the failure properly
+      console.log("Cannot load image");
+    };
+    img.onload = function () {
+      URL.revokeObjectURL(this.src);
+      const [newWidth, newHeight] = calculateSize(img, 400, 400);
+      const canvas = document.createElement("canvas");
+      canvas.width = newWidth;
+      canvas.height = newHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, newWidth, newHeight);
+      canvas.toBlob((blob) => operation(blob),"image/png", 0.7);
+      
+    };
+    function calculateSize(img, maxWidth, maxHeight) {
+      let width = img.width;
+      let height = img.height;
+    
+      // calculate the width and height, constraining the proportions
+      if (width > height) {
+        if (width > maxWidth) {
+          height = Math.round((height * maxWidth) / width);
+          width = maxWidth;
+        }
+      } else {
+        if (height > maxHeight) {
+          width = Math.round((width * maxHeight) / height);
+          height = maxHeight;
+        }
+      }
+      return [width, height];
+    };
+  },
+  uploadFile(event){
+    
+    var file = event.srcElement.files[0];
+    const blobURL = URL.createObjectURL(file);
+    let operation = function(blob){
+      var reader = new FileReader();
+      reader.onloadend = function() {
+        
+        var data=(reader.result).split(',')[1];
+        var binaryBlob = btoa(data);
+        console.log(binaryBlob);
+        document.getElementById("challenge-input").value = binaryBlob;
+      }
+      reader.readAsDataURL(blob);
+    }
+    this.compressAnImage(blobURL, operation);
+
+
   },
 }));
 

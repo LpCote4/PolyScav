@@ -145,7 +145,13 @@
                   <input
                   id="challenge-id" class="challenge-id" type="hidden"
                   value="{{ challenge.id }}">
-                  <p>generateur de lien</p>
+                  <input
+                        id="challenge-input"
+                        type="hidden"
+                    >
+                  <input class="challenge-input form-control"
+                   type="file" accept="image/png, image/jpeg" @input="uploadFile(event)">
+                   
                   {% endif %}
                 {% endblock %}
               </div>
