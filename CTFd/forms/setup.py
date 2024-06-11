@@ -60,7 +60,7 @@ class SetupForm(BaseForm):
     ctf_logo = FileField(
         _l("Logo"),
         description=_l(
-            "Logo to use for the website instead of a CTF name. Used as the home page button. Optional."
+            "Logo to use for the website instead of a PolyScav name. Used as the home page button. Optional."
         ),
     )
     ctf_banner = FileField(
@@ -74,7 +74,7 @@ class SetupForm(BaseForm):
     )
     ctf_theme = SelectField(
         _l("Theme"),
-        description=_l("CTFd Theme to use. Can be changed later."),
+        description=_l("PolyScav Theme to use. Can be changed later."),
         choices=list(zip(get_themes(), get_themes())),
         ## TODO: Replace back to DEFAULT_THEME (aka core) in CTFd 4.0
         default="core-beta",
@@ -141,10 +141,10 @@ class SetupForm(BaseForm):
 
     start = StringField(
         _l("Start Time"),
-        description=_l("Time when your CTF is scheduled to start. Optional."),
+        description=_l("Time when your PolyScav is scheduled to start."),
     )
     end = StringField(
         _l("End Time"),
-        description=_l("Time when your CTF is scheduled to end. Optional."),
+        description=_l("Time when your PolyScav is scheduled to end."),
     )
     submit = SubmitField(_l("Finish"))
