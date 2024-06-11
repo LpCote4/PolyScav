@@ -54,7 +54,7 @@ from CTFd.utils.email import (
 )
 from CTFd.utils.health import check_config, check_database
 from CTFd.utils.helpers import get_errors, get_infos, markup
-from CTFd.utils.modes import USERS_MODE
+from CTFd.utils.modes import TEAMS_MODE
 from CTFd.utils.security.auth import login_user
 from CTFd.utils.security.csrf import generate_nonce
 from CTFd.utils.security.signing import (
@@ -81,7 +81,7 @@ def setup():
             # General
             ctf_name = request.form.get("ctf_name")
             ctf_description = request.form.get("ctf_description")
-            user_mode = request.form.get("user_mode", USERS_MODE)
+            user_mode = request.form.get("user_mode", TEAMS_MODE)
             set_config("ctf_name", ctf_name)
             set_config("ctf_description", ctf_description)
             set_config("user_mode", user_mode)

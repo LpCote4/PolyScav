@@ -44,9 +44,6 @@
 						<a class="nav-link active" data-bs-toggle="pill" data-bs-target="#general" role="button">{% trans %}General{% endtrans %}</a>
 					</li>
 					<li class="nav-item">
-						<a class="nav-link" data-bs-toggle="pill" data-bs-target="#mode" role="button">{% trans %}Mode{% endtrans %}</a>
-					</li>
-					<li class="nav-item">
 						<a class="nav-link" data-bs-toggle="pill" data-bs-target="#settings" role="button">{% trans %}Settings{% endtrans %}</a>
 					</li>
 					<li class="nav-item">
@@ -79,7 +76,7 @@
 						</div>
 
 						<div class="text-right float-end">
-							<button type="button" class="btn btn-primary btn-outlined tab-next" data-href="#mode" @click="switchTab">
+							<button type="button" class="btn btn-primary btn-outlined tab-next" data-href="#settings" @click="switchTab">
 								{% trans %}Next{% endtrans %}
 							</button>
 						</div>
@@ -92,7 +89,7 @@
 								{{ form.user_mode.description }}
 							</small>
 
-							<div class="row pt-3">
+							<div class="row pt-3" hidden>
 							{% for radio in form.user_mode %}
 								<label class="w-50 p-1">
 									{{ radio(class="card-radio d-none") }}
@@ -260,13 +257,6 @@
 							</div>
 						</div>
 						<div class="mb-3">
-							<b>{{ form.ctf_theme.label }}</b>
-							{{ form.ctf_theme(class="form-control custom-select") }}
-							<small class="form-text text-muted">
-								{{ form.ctf_theme.description }}
-							</small>
-						</div>
-						<div class="mb-3">
 							<b>{{ form.theme_color.label }}</b>
 							<div class="row">
 								<div class="d-inline-block">
@@ -295,11 +285,11 @@
 							<div class="row">
 								<div class="col-md-4">
 									<label>{% trans %}Date{% endtrans %}</label>
-									<input class="form-control" id="start-date" type="date" placeholder="yyyy-mm-dd" data-preview="#start" @click="processDateTime('start')"/>
+									<input required class="form-control" id="start-date" type="date" placeholder="yyyy-mm-dd" data-preview="#start" @click="processDateTime('start')"/>
 								</div>
 								<div class="col-md-4">
 									<label>{% trans %}Time{% endtrans %}</label>
-									<input class="form-control" id="start-time" type="time" placeholder="hh:mm" data-preview="#start" @click="processDateTime('start')"/>
+									<input required class="form-control" id="start-time" type="time" placeholder="hh:mm" data-preview="#start" @click="processDateTime('start')"/>
 								</div>
 								<div class="col-md-4">
 									<label>UTC Preview</label>
