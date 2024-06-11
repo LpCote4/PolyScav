@@ -19,55 +19,64 @@
     </div>
     <img class="w-100 mx-auto d-block" style="max-width: 500px;padding: 50px;padding-top: 14vh;" src="{{ url_for('views.files', path=Configs.ctf_banner) }}" />
     <div id="scoreboard" class="row" x-data="ScoreboardList">
-      <template x-if="brackets.length && standings.length">
-        <div class="col-md-12 py-3">
-          <nav class="nav nav-pills nav-fill">
-            <button :class="{'nav-link': true, 'active': !activeBracket}" @click="activeBracket=null">{% trans %}All{% endtrans %}</button>
-            <template x-for="bracket in brackets">
-              <button :class="{'nav-link': true, 'active': activeBracket == bracket.id}" x-text="bracket.name" @click="activeBracket=bracket.id"></button>
-            </template>
-          </nav>
-        </div>
-      </template>
+      
+        <template x-if="brackets.length && standings.length">
+          <div class="col-md-12 py-3">
+            <nav class="nav nav-pills nav-fill">
+              <button :class="{'nav-link': true, 'active': !activeBracket}" @click="activeBracket=null">{% trans %}All{% endtrans %}</button>
+              <template x-for="bracket in brackets">
+                <button :class="{'nav-link': true, 'active': activeBracket == bracket.id}" x-text="bracket.name" @click="activeBracket=bracket.id"></button>
+              </template>
+            </nav>
+          </div>
+        </template>
 
-      <div class="col-md-12" x-show="standings.length">
-        <table class="table table-striped">
-          <thead>
-            
-          <tr>
-            <td style="width: 10px"><b>{% trans %}Temps{% endtrans %}</b></td>
-            <td><b>{{ get_mode_as_word(capitalize=True) }}</b></td>
-            <td><b>{% trans %}Utilisateur{% endtrans %}</b></td>
-            <td><b>{% trans %}Defi{% endtrans %}</b></td>
-            <td><b>{% trans %}Score{% endtrans %}</b></td>
-          </tr>
-          </thead>
-
-          <tbody>
-            <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)">
+        <div class="col-md-12" x-show="standings.length">
+          <div>
+            <table class="table table-striped">
+              <thead>
+                
               <tr>
-                <th scope="row" class="text-center" x-text="standing.time"></th>
-                <td>
-                  <a :href="standing.account_id" x-text="standing.team_name"></a>
-                  <template x-if="standing.account_id">
-                    <span class="badge bg-secondary ms-2" x-text="standing.account_id"></span>
-                  </template>
-                </td>
-                
-                <td x-text="standing.user_name"></td>
-                <td x-text="standing.challenge_name"></td>
-                <td x-text="standing.value"></td>
-                
+                <td style="width: 10px"><b>{% trans %}Temps{% endtrans %}</b></td>
+                <td><b>{{ get_mode_as_word(capitalize=True) }}</b></td>
+                <td><b>{% trans %}Utilisateur{% endtrans %}</b></td>
+                <td><b>{% trans %}Defi{% endtrans %}</b></td>
+                <td><b>{% trans %}Photo{% endtrans %}</b></td>
+                <td><b>{% trans %}Score{% endtrans %}</b></td>
               </tr>
-            </template>
-          </tbody>
+              </thead>
+  
+              <tbody id="challengeRecap">
+                <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)">
+                  <tr  :id="'c_id:'+standing.challenge_id+'t_id:'+standing.team_id" x-data="{id: 'c_id:'+standing.challenge_id+'t_id:'+standing.team_id,}" >
+                    <th scope="row" class="text-center" x-text="standing.time"></th>
+                    <td>
+                      <a :href="standing.account_id" x-text="standing.team_name"></a>
+                      <template x-if="standing.account_id">
+                        <span class="badge bg-secondary ms-2" x-text="standing.account_id"></span>
+                      </template>
+                    </td>
+                    
+                    <td x-text="standing.user_name"></td>
+                    <td x-text="standing.challenge_name"></td>
+                    <td x-data="LogImage" ><img id="img" width="100px"></td>
+                    <td x-text="standing.value"></td>
+                    
+                  </tr>
+                  
+                </template>
+              </tbody>
+              
+            </table>
+          </div>
           
-        </table>
-      </div>
-
+          <button class="btn btn-outline-secondary" style="position: relative; left: 45%;" @click="show10More">plus...</button>
+        </div>
       <div class="col-md-12" x-show="! standings.length">
         <h3 class="text-center text-muted">{% trans %}Scoreboard is empty{% endtrans %}</h3>
       </div>
+    </div>
+    <div ></div>
     </div>
   </div>
 {% endblock %}

@@ -80,7 +80,7 @@ export function getTenLast(places, standings, dictIdChallenge){
   
   const teams = Object.keys(places);
   let last10 = [];
-  let max = 10;
+  let max = 999;
   
   for (let i = 0; i < ((teams.length >= max) ? max : teams.length); i++) {
     let solves = places[teams[i]]["solves"];

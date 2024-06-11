@@ -41,12 +41,12 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.446a2843.js",
+    "file": "assets/scoreboard.26bbd450.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_index.9cbf22da.js",
+      "_index.99caea5e.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -59,25 +59,25 @@
     ]
   },
   "assets/js/teams/public.js": {
-    "file": "assets/teams_public.566f1264.js",
+    "file": "assets/teams_public.de9e8994.js",
     "src": "assets/js/teams/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.f16a7099.js",
-      "_index.9cbf22da.js",
+      "_userscore.0cd6394b.js",
+      "_index.99caea5e.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/teams/private.js": {
-    "file": "assets/teams_private.a67462a4.js",
+    "file": "assets/teams_private.92b91e8f.js",
     "src": "assets/js/teams/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
       "_clipboard.571abc0d.js",
-      "_userscore.f16a7099.js",
-      "_index.9cbf22da.js",
+      "_userscore.0cd6394b.js",
+      "_index.99caea5e.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -90,24 +90,24 @@
     ]
   },
   "assets/js/users/public.js": {
-    "file": "assets/users_public.323395b0.js",
+    "file": "assets/users_public.8882d7dd.js",
     "src": "assets/js/users/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.f16a7099.js",
-      "_index.9cbf22da.js",
+      "_userscore.0cd6394b.js",
+      "_index.99caea5e.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/users/private.js": {
-    "file": "assets/users_private.da160955.js",
+    "file": "assets/users_private.55b91961.js",
     "src": "assets/js/users/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.f16a7099.js",
-      "_index.9cbf22da.js",
+      "_userscore.0cd6394b.js",
+      "_index.99caea5e.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -150,5 +150,19 @@
     "file": "assets/main.13d83c99.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
+  },
+  "_index.99caea5e.js": {
+    "file": "assets/index.99caea5e.js",
+    "imports": [
+      "assets/js/index.js",
+      "_echarts.54e741c1.js"
+    ]
+  },
+  "_userscore.0cd6394b.js": {
+    "file": "assets/userscore.0cd6394b.js",
+    "imports": [
+      "assets/js/index.js",
+      "_index.99caea5e.js"
+    ]
   }
 }

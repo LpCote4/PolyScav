@@ -170,6 +170,8 @@ class ChallengeList(Resource):
         all_challenge_ids = {
             c.id for c in Challenges.query.with_entities(Challenges.id).all()
         }
+        
+                
         for challenge in chal_q:
             if challenge.requirements:
                 requirements = challenge.requirements.get("prerequisites", [])
@@ -201,35 +203,77 @@ class ChallengeList(Resource):
             except KeyError:
                 # Challenge type does not exist. Fall through to next challenge.
                 continue
-
+            
             team = get_current_team()
             user_submited = {}
             is_submited = False
+            provided = False
+            team_id = False
+            
+            
             if team != None:
+                team_id = team.id
                 for fail in team.fails:
                     if challenge_type.name == "manual" and fail.challenge_id == challenge.id:
+                        
+                        if (request.args.get("ids")):
+                            provided = fail.provided
+                        
+                        #print();
                         is_submited = True
                         break
                     else:
                         is_submited = False
 
+                for c in team.solves:
+                    if challenge_type.name == "manual" and c.challenge_id == challenge.id:
+                         if (request.args.get("ids")):
+                            provided = c.provided
+
+
+            #check if we have some specified ids to returned
+            if (request.args.get("ids")):
+                for str_id in request.args.get("ids")[1:-1].split(","):
+                    print("c_id:"+str(challenge.id)+"t_id:"+str(team_id))
+                    
+                    if "c_id:"+str(challenge.id)+"t_id:"+str(team_id) == str_id[1:-1]:    
+                        response.append(
+                         {
+                        "id": challenge.id,
+                        "type": challenge_type.name,
+                        "name": challenge.name,
+                        "value": challenge.value,
+                        "team_id":team_id,
+                        "provided": provided,
+                        "solves": solve_counts.get(challenge.id, solve_count_dfl),
+                        "solved_by_me": challenge.id in user_solves,
+                        "submited" : is_submited,
+                        "category": challenge.category,
+                        "tags": tag_schema.dump(challenge.tags).data,
+                        "template": challenge_type.templates["view"],
+                        "script": challenge_type.scripts["view"],
+                    }
+                )
+            else:
+                response.append(
+                    {
+                        "id": challenge.id,
+                        "type": challenge_type.name,
+                        "name": challenge.name,
+                        "value": challenge.value,
+                        "team_id":team_id,
+                        "provided": provided,
+                        "solves": solve_counts.get(challenge.id, solve_count_dfl),
+                        "solved_by_me": challenge.id in user_solves,
+                        "submited" : is_submited,
+                        "category": challenge.category,
+                        "tags": tag_schema.dump(challenge.tags).data,
+                        "template": challenge_type.templates["view"],
+                        "script": challenge_type.scripts["view"],
+                    }
+                )
             
-            # Challenge passes all checks, add it to response
-            response.append(
-                {
-                    "id": challenge.id,
-                    "type": challenge_type.name,
-                    "name": challenge.name,
-                    "value": challenge.value,
-                    "solves": solve_counts.get(challenge.id, solve_count_dfl),
-                    "solved_by_me": challenge.id in user_solves,
-                    "submited" : is_submited,
-                    "category": challenge.category,
-                    "tags": tag_schema.dump(challenge.tags).data,
-                    "template": challenge_type.templates["view"],
-                    "script": challenge_type.scripts["view"],
-                }
-            )
+            
 
         db.session.close()
         return {"success": True, "data": response}
