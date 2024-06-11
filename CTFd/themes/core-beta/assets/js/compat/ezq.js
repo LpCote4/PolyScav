@@ -6,6 +6,9 @@ import hljs from "highlight.js";
 import { Modal, Tab } from "bootstrap";
 import CommentBox from "../components/comments/CommentBox.vue";
 import Vue from "vue";
+import { el } from "lolight";
+
+
 const modalTpl =
   '<div class="modal fade" tabindex="-1" role="dialog">' +
   '  <div class="modal-dialog" role="document">' +
@@ -62,7 +65,7 @@ const noTpl =
 const yesTpl =
   '<button type="button" class="btn btn-primary" data-dismiss="modal">Yes</button>';
 
-export function ezAlert(args) {
+export function ezAlert(args, helpers, user) {
   let modalElement = document.createElement("div");
   modalElement.innerHTML = modalTpl;
   modalElement = modalElement.firstChild;
@@ -78,6 +81,14 @@ export function ezAlert(args) {
   modalBody = modalBody.firstChild;
   modalElement.getElementsByClassName("modal-body")[0].append(modalBody);
   modalElement.getElementsByClassName("modal-title")[0].textContent = args.title;
+
+  let modalLikeBtn = document.createElement("button");
+  modalLikeBtn.onclick = () => {submitLike(args.ids, helpers, user, modalLikeBtn)};
+  
+  modalLikeBtn.className = "btn";
+  modalLikeBtn.style.backgroundColor = "rgba(255, 130, 238, 0.7)";
+  modalElement.getElementsByClassName("modal-body")[0].append(modalLikeBtn);
+  loadLike(args.ids, helpers, modalLikeBtn, user);
   
 
   let visioneur = new Modal(modalElement);
@@ -94,12 +105,55 @@ function showComments(element, ids) {
   
   const commentBox = Vue.extend(CommentBox);
   let vueContainer = document.createElement("div");
-  console.log(window);
   element.appendChild(vueContainer);
   new commentBox({
     propsData: { type: "challenge", id: challenge_id, challenge_id: team_id},
   }).$mount(vueContainer);
   
+}
+function submitLike(ids, helpers, user, object) {
+  let challenge_id = ids.split("c_id:")[1].split("t_id:")[0];
+  let team_id = ids.split("c_id:")[1].split("t_id:")[1];
+  let args = {};
+  args["challenge_id"] = challenge_id;
+  let comment = "#"+team_id+"LIKE"+":"+user.id+" "+user.name;
+  if (comment.length > 0) {
+    helpers.comments.add_comment(
+      comment,
+      "challenge",
+      args,
+      () => {
+        loadLike(ids, helpers, object, user);
+      },
+    );
+  }
+  comment = "";
+}
+function loadLike(ids, helpers, element, user){
+  let challenge_id = ids.split("c_id:")[1].split("t_id:")[0];
+  let team_id = ids.split("c_id:")[1].split("t_id:")[1];
+  let args = {};
+  args["challenge_id"] = challenge_id;
+  args[`challengeid`] = team_id+"LIKE";
+  args[`page`] = 1;
+  args[`per_page`] = 1000;
+      
+  let response = helpers.comments.get_comments(args).then((response) => {
+    element.innerHTML= "&nbsp"+"<i class='fa fa-heart' aria-hidden='true'></i>"+response.data.length;
+   
+    let founded = false;
+    for (let i = 0; i < response.data.length; i++){
+      console.log(response.data[i].content.split("LIKE:")[1]);
+      console.log(user.id+" "+user.name);
+      if (response.data[i].content.split("LIKE:")[1] == user.id+" "+user.name){
+        founded = true
+      }
+    }
+    element.disabled = founded;
+    return founded;
+  });
+  
+
 }
 export function ezToast(args) {
   const container_available = $("#ezq--notifications-toast-container").length;

@@ -4,6 +4,7 @@ import { getOption, getTenLast } from "./utils/graphs/echarts/scoreboard";
 import { embed } from "./utils/graphs/echarts";
 import * as echarts from 'echarts';
 import { ezAlert } from "./compat/ezq";
+import { default as helpers } from "./compat/helpers";
 
 window.Alpine = Alpine;
 window.CTFd = CTFd;
@@ -75,14 +76,14 @@ Alpine.data("LogImage", () => ({
   
   async init() {
     window.allImages.push(this.id);
-    console.log(window.allImages);
+
     if (window.allImages.length > window.maxCount){
       document.getElementById(this.id).hidden = true
     }
     
     if (window.allImages.length == window.maxCountIncrease){
       if (!window.imageInit){
-        console.log(window.imageInit);
+
         window.imageInit = true;
         self.show10More();
       }
@@ -104,7 +105,6 @@ this.show10More = async function(){
     method: "GET",
   });
   const bodyChallengesMedia = await responseChallengesMedia.json();
-  console.log(bodyChallengesMedia);
   for (let i = 0; i < window.maxCountIncrease; i++){
     let img = document.createElement("img");
     let src ="data:text/plain;base64," + atob(bodyChallengesMedia["data"][i]["provided"]);
@@ -115,7 +115,7 @@ this.show10More = async function(){
     }
     else{
       document.getElementById(window.allImages[i+window.maxCount]).querySelector("#img").src = src;
-      document.getElementById(window.allImages[i+window.maxCount]).querySelector("#img").onclick = showLargeSubmissions;
+      document.getElementById(window.allImages[i+window.maxCount]).onclick = showLargeSubmissions;
     }
 
   }
@@ -123,15 +123,17 @@ this.show10More = async function(){
 };
 
 this.showLargeSubmissions = function(_event) {
+  let element = _event.srcElement.parentElement.tagName == "TR" ? _event.srcElement.parentElement: _event.srcElement.parentElement.parentElement;
+
   ezAlert({
     title: "Visioneurs",
     body:
       `<img src="` +
-      _event.srcElement.src +
+      element.querySelector("#img").src +
       `" style="width: 100%;" height="auto">`,
     button: "retour",
-    ids: _event.srcElement.parentElement.parentElement.id,
-  });
+    ids: element.id,
+  }, helpers, CTFd.user);
 }
 
 

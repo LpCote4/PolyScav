@@ -72,7 +72,7 @@ class CommentList(Resource):
     )
     @validate_args(
         {
-            "challengeid": (int, None),
+            "challengeid": (str, None),
             "challenge_id": (int, None),
             "user_id": (int, None),
             "team_id": (int, None),
@@ -85,10 +85,11 @@ class CommentList(Resource):
     def get(self, query_args):
         try:
             challengeid = query_args.pop("challengeid")
+            print(challengeid)
             isChallengeDefine = True
         except:
             isChallengeDefine = False
-
+        
 
         q = query_args.pop("q", None)
         field = str(query_args.pop("field", None))
@@ -98,7 +99,7 @@ class CommentList(Resource):
         
 
         if isChallengeDefine:
-            looking_for = '%{0}%'.format("#"+str(challengeid))
+            looking_for = '%{0}%'.format("#"+challengeid+":")
             comments = (
             CommentModel.query.filter_by(**query_args)
             .filter(*filters)
