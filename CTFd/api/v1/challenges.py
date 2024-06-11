@@ -215,63 +215,33 @@ class ChallengeList(Resource):
                 team_id = team.id
                 for fail in team.fails:
                     if challenge_type.name == "manual" and fail.challenge_id == challenge.id:
-                        
-                        if (request.args.get("ids")):
-                            provided = fail.provided
-                        
                         #print();
                         is_submited = True
                         break
                     else:
                         is_submited = False
 
-                for c in team.solves:
-                    if challenge_type.name == "manual" and c.challenge_id == challenge.id:
-                         if (request.args.get("ids")):
-                            provided = c.provided
 
 
             #check if we have some specified ids to returned
-            if (request.args.get("ids")):
-                for str_id in request.args.get("ids")[1:-1].split(","):
-                    print("c_id:"+str(challenge.id)+"t_id:"+str(team_id))
-                    
-                    if "c_id:"+str(challenge.id)+"t_id:"+str(team_id) == str_id[1:-1]:    
-                        response.append(
-                         {
-                        "id": challenge.id,
-                        "type": challenge_type.name,
-                        "name": challenge.name,
-                        "value": challenge.value,
-                        "team_id":team_id,
-                        "provided": provided,
-                        "solves": solve_counts.get(challenge.id, solve_count_dfl),
-                        "solved_by_me": challenge.id in user_solves,
-                        "submited" : is_submited,
-                        "category": challenge.category,
-                        "tags": tag_schema.dump(challenge.tags).data,
-                        "template": challenge_type.templates["view"],
-                        "script": challenge_type.scripts["view"],
-                    }
-                )
-            else:
-                response.append(
-                    {
-                        "id": challenge.id,
-                        "type": challenge_type.name,
-                        "name": challenge.name,
-                        "value": challenge.value,
-                        "team_id":team_id,
-                        "provided": provided,
-                        "solves": solve_counts.get(challenge.id, solve_count_dfl),
-                        "solved_by_me": challenge.id in user_solves,
-                        "submited" : is_submited,
-                        "category": challenge.category,
-                        "tags": tag_schema.dump(challenge.tags).data,
-                        "template": challenge_type.templates["view"],
-                        "script": challenge_type.scripts["view"],
-                    }
-                )
+            
+            response.append(
+                {
+                    "id": challenge.id,
+                    "type": challenge_type.name,
+                    "name": challenge.name,
+                    "value": challenge.value,
+                    "team_id":team_id,
+                    "provided": provided,
+                    "solves": solve_counts.get(challenge.id, solve_count_dfl),
+                    "solved_by_me": challenge.id in user_solves,
+                    "submited" : is_submited,
+                    "category": challenge.category,
+                    "tags": tag_schema.dump(challenge.tags).data,
+                    "template": challenge_type.templates["view"],
+                    "script": challenge_type.scripts["view"],
+                }
+            )
             
             
 

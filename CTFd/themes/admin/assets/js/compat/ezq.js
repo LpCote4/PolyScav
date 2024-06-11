@@ -62,7 +62,9 @@ const yesTpl =
 
 export function ezAlert(args) {
   const modal = modalTpl.format(args.title);
+  console.log(modal);
   const obj = $(modal);
+  console.log(obj.modal);
 
   if (typeof args.body === "string") {
     obj.find(".modal-body").append(`<p>${args.body}</p>`);
@@ -77,7 +79,7 @@ export function ezAlert(args) {
       args.success();
     });
   }
-
+  console.log(args.large);
   if (args.large) {
     obj.find(".modal-dialog").addClass("modal-lg");
   }
@@ -109,7 +111,7 @@ export function ezToast(args) {
         bottom: "0",
         right: "0",
         "min-width": "20%",
-      }),
+      })
     );
   }
 

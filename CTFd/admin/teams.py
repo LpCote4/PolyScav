@@ -47,8 +47,9 @@ def teams_new():
 @admin.route("/admin/teams/<int:team_id>")
 @admins_only
 def teams_detail(team_id):
+    
     team = Teams.query.filter_by(id=team_id).first_or_404()
-
+    
     # Get members
     members = team.members
     member_ids = [member.id for member in members]

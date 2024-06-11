@@ -104,27 +104,42 @@ class TeamList(Resource):
                 }, 400
 
         filters = build_model_filters(model=Teams, query=q, field=field)
-
+        response = []
         if is_admin() and request.args.get("view") == "admin":
             teams = (
                 Teams.query.filter_by(**query_args)
                 .filter(*filters)
                 .paginate(per_page=50, max_per_page=100)
             )
+            
         else:
             teams = (
                 Teams.query.filter_by(hidden=False, banned=False, **query_args)
                 .filter(*filters)
                 .paginate(per_page=50, max_per_page=100)
             )
-
+            
+            
+                         
+        
         user_type = get_current_user_type(fallback="user")
         view = copy.deepcopy(TeamSchema.views.get(user_type))
         view.remove("members")
+        
         response = TeamSchema(view=view, many=True).dump(teams.items)
 
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
+
+        if request.args.get("ids"):
+            response = []
+            for team in teams.items:
+                solves = team.get_solves(admin=True)
+                fails = team.get_fails(admin=True)
+                for solve in solves:
+                    for str_id in request.args.get("ids")[1:-1].split(","):
+                        if "c_id:"+str(solve.challenge_id)+"t_id:"+str(team.id) == str_id[1:-1]: 
+                            response.append({"provided":solve.provided})
 
         return {
             "meta": {
@@ -138,7 +153,7 @@ class TeamList(Resource):
                 }
             },
             "success": True,
-            "data": response.data,
+            "data": response if request.args.get("ids") else response.data,
         }
 
     @admins_only

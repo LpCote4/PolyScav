@@ -3,6 +3,7 @@ import CTFd from "./index";
 import { getOption, getTenLast } from "./utils/graphs/echarts/scoreboard";
 import { embed } from "./utils/graphs/echarts";
 import * as echarts from 'echarts';
+import { ezAlert } from "./compat/ezq";
 
 window.Alpine = Alpine;
 window.CTFd = CTFd;
@@ -99,18 +100,39 @@ this.show10More = async function(){
     document.getElementById(window.allImages[i]).hidden = false;
   }
   
-  let responseChallengesMedia= await CTFd.fetch(`/api/v1/challenges?ids=`+JSON.stringify(imageToPull), {
+  let responseChallengesMedia= await CTFd.fetch(`/api/v1/teams?ids=`+JSON.stringify(imageToPull), {
     method: "GET",
   });
   const bodyChallengesMedia = await responseChallengesMedia.json();
   console.log(bodyChallengesMedia);
-  //for (let i = 0; i < window.maxCountIncrease; i++){
-    //let img = document.createElement("img");
-    //document.getElementById(window.allImages[i]).querySelector("#img").src = "data:text/plain;base64," + atob(bodyChallengesMedia["data"][1]["provided"]);
-  //}
+  for (let i = 0; i < window.maxCountIncrease; i++){
+    let img = document.createElement("img");
+    let src ="data:text/plain;base64," + atob(bodyChallengesMedia["data"][i]["provided"]);
+
+    
+    if (src.length < 5000){
+      document.getElementById(window.allImages[i+window.maxCount]).querySelector("#img").hidden = true;
+    }
+    else{
+      document.getElementById(window.allImages[i+window.maxCount]).querySelector("#img").src = src;
+      document.getElementById(window.allImages[i+window.maxCount]).querySelector("#img").onclick = showLargeSubmissions;
+    }
+
+  }
   window.maxCount += window.maxCountIncrease;
 };
 
+this.showLargeSubmissions = function(_event) {
+  console.log(_event.srcElement);
+  ezAlert({
+    title: "Visioneurs",
+    body:
+      `<img src="` +
+      _event.srcElement.src +
+      `" style="width: 100%;" height="auto">`,
+    button: "retour",
+  });
+}
 
 
 Alpine.start();
