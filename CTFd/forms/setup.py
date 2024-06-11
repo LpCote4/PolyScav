@@ -38,7 +38,6 @@ class SetupForm(BaseForm):
         description=_l(
             "Controls whether users join together in teams to play (Team Mode) or play as themselves (User Mode)"
         ),
-        validators=[InputRequired()],
     )
 
     name = StringField(
@@ -78,7 +77,6 @@ class SetupForm(BaseForm):
         choices=list(zip(get_themes(), get_themes())),
         ## TODO: Replace back to DEFAULT_THEME (aka core) in CTFd 4.0
         default="core-beta",
-        validators=[InputRequired()],
     )
     theme_color = HiddenField(
         _l("Theme Color"),
