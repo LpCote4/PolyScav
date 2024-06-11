@@ -123,7 +123,6 @@ this.show10More = async function(){
 };
 
 this.showLargeSubmissions = function(_event) {
-  console.log(_event.srcElement);
   ezAlert({
     title: "Visioneurs",
     body:
@@ -131,6 +130,7 @@ this.showLargeSubmissions = function(_event) {
       _event.srcElement.src +
       `" style="width: 100%;" height="auto">`,
     button: "retour",
+    ids: _event.srcElement.parentElement.parentElement.id,
   });
 }
 

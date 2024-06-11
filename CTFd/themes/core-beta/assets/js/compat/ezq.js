@@ -3,8 +3,9 @@ import "bootstrap/js/dist/toast";
 import "../compat/format";
 import $ from "jquery";
 import hljs from "highlight.js";
-import { Modal } from "bootstrap";
-
+import { Modal, Tab } from "bootstrap";
+import CommentBox from "../components/comments/CommentBox.vue";
+import Vue from "vue";
 const modalTpl =
   '<div class="modal fade" tabindex="-1" role="dialog">' +
   '  <div class="modal-dialog" role="document">' +
@@ -17,7 +18,7 @@ const modalTpl =
   "      </div>" +
   '      <div class="modal-body">' +
   "      </div>" +
-  '      <div class="modal-footer">' +
+  '      <div class="modal-footer" style="display:block">' +       
   "      </div>" +
   "    </div>" +
   "  </div>" +
@@ -80,13 +81,26 @@ export function ezAlert(args) {
   
 
   let visioneur = new Modal(modalElement);
+  
   visioneur.show();
-  console.log();
+  showComments(modalElement.getElementsByClassName("modal-footer")[0], args.ids);
   
   modalElement.getElementsByClassName("btn-close")[0].onclick = (e) => {visioneur.dispose();e.target.parentElement.parentElement.parentElement.parentElement.outerHTML = ""; document.body.style = "";}
 
 }
-
+function showComments(element, ids) {
+  let challenge_id = ids.split("c_id:")[1].split("t_id:")[0];
+  let team_id = ids.split("c_id:")[1].split("t_id:")[1];
+  
+  const commentBox = Vue.extend(CommentBox);
+  let vueContainer = document.createElement("div");
+  console.log(window);
+  element.appendChild(vueContainer);
+  new commentBox({
+    propsData: { type: "challenge", id: challenge_id, challenge_id: team_id},
+  }).$mount(vueContainer);
+  
+}
 export function ezToast(args) {
   const container_available = $("#ezq--notifications-toast-container").length;
   if (!container_available) {
