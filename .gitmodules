@@ -1,0 +1,3 @@
+[submodule "CTFd/plugins/ctfd-event-countdown"]
+	path = CTFd/plugins/ctfd-event-countdown
+	url = https://github.com/alokmenghrajani/ctfd-event-countdown
