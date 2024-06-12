@@ -1,14 +1,21 @@
 {% extends "base.html" %}
 
 {% block content %}
-  <div class="jumbotron">
+  <div class="jumbotron" style="padding: 1rem 1rem;">
+    {% if Configs.ctf_banner %}
+    <img class="mx-auto d-block" style="width: auto;padding-bottom: 25px;max-height: 20vw;" src="{{ url_for('views.files', path=Configs.ctf_banner) }}" />
+    {% endif %}
     <div class="container">
       <h1>
         {% trans %}Scoreboard{% endtrans %}
       </h1>
       <p class="ctfd-event-countdown">&nbsp;</p>
     </div>
+    <div class="container" style="padding-top: 10px;">
+      {{ Configs.ctf_description }}
+    </div>
   </div>
+  
   <div class="container">
     {% include "components/errors.html" %}
 
@@ -17,9 +24,6 @@
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
       </div>
     </div>
-    {% if Configs.ctf_banner %}
-    <img class="w-100 mx-auto d-block" style="max-width: 500px;padding: 50px;padding-top: 14vh;" src="{{ url_for('views.files', path=Configs.ctf_banner) }}" />
-    {% endif %}
     <div id="scoreboard" class="row" x-data="ScoreboardList">
       
         <template x-if="brackets.length && standings.length">
