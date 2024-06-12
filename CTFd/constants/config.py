@@ -40,6 +40,11 @@ class AccountVisibilityTypes(str, RawEnum):
     PRIVATE = "private"
     ADMINS = "admins"
 
+@JinjaEnum
+class AdminVisibilityTypes(str, RawEnum):
+    VISIBLE = "visible"
+    HIDDEN = "hidden"
+
 
 @JinjaEnum
 class RegistrationVisibilityTypes(str, RawEnum):

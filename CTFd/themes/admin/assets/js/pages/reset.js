@@ -15,4 +15,8 @@ function reset(event) {
 
 $(() => {
   $("#reset-ctf-form").submit(reset);
+  $("#select-all").change(function () {
+    const isChecked = $(this).is(":checked");
+    $("input[type='checkbox']").prop("checked", isChecked);
+  });
 });

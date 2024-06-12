@@ -55,6 +55,12 @@ class SetupForm(BaseForm):
         description=_l("Your password for the administration account"),
         validators=[InputRequired()],
     )
+    admin_visibility = SelectField(
+        _l("Admin visibility"),
+        description="Control whether admin account participation in challenges and if account is visible",
+        choices=[("true", "visible"), ("false", "hidden")],
+        default="true",
+    )
 
     ctf_logo = FileField(
         _l("Logo"),

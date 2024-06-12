@@ -18,6 +18,7 @@ from werkzeug.utils import safe_join
 from CTFd.cache import cache
 from CTFd.constants.config import (
     AccountVisibilityTypes,
+    AdminVisibilityTypes,
     ChallengeVisibilityTypes,
     ConfigTypes,
     RegistrationVisibilityTypes,
@@ -153,6 +154,11 @@ def setup():
             name = request.form["name"]
             email = request.form["email"]
             password = request.form["password"]
+            admin_visibility = AdminVisibilityTypes(
+                request.form.get(
+                    "admin_visibility", default=AdminVisibilityTypes.VISIBLE
+                )
+            )
 
             name_len = len(name) == 0
             names = (
@@ -196,7 +202,7 @@ def setup():
                 )
 
             admin = Admins(
-                name=name, email=email, password=password, type="admin", hidden=True
+                name=name, email=email, password=password, type="admin", hidden=admin_visibility
             )
 
             # Create an empty index page

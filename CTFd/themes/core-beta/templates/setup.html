@@ -214,6 +214,14 @@
 								{{ form.password.description }}
 							</small>
 						</div>
+						
+						<div class="mb-3">
+							<b>{{ form.admin_visibility.label }}</b>
+							{{ form.admin_visibility(class="form-control custom-select") }}
+							<small class="form-text text-muted">
+								{{ form.admin_visibility.description }}
+							</small>
+						</div>
 
 						<div class="mb-3 form-check" style="display: none;">
 							<label class="form-check-label">
