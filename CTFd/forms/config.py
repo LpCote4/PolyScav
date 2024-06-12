@@ -80,6 +80,12 @@ class AccountSettingsForm(BaseForm):
         choices=[("true", "Enabled"), ("false", "Disabled")],
         default="true",
     )
+    admin_visible = SelectField(
+        "Admin visibility",
+        description="Control whether admin account participation in challenges and if account is visible",
+        choices=[("true", "Visible"), ("false", "Hidden")],
+        default="true",
+    )
     incorrect_submissions_per_min = IntegerField(
         "Incorrect Submissions per Minute",
         widget=NumberInput(min=1),

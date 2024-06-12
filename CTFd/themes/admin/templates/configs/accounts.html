@@ -1,9 +1,10 @@
 <div role="tabpanel" class="tab-pane config-section" id="accounts">
 
 	{% set verify_emails = "true" if verify_emails == True else "false" %}
+	{% set admin_visible = "true" if admin_visible == True else "false" %}
 	{% set name_changes = "true" if name_changes == True else "false" %}
 	{% set team_creation = "false" if team_creation == False else "true" %}
-	{% with form = Forms.config.AccountSettingsForm(verify_emails=verify_emails, name_changes=name_changes, team_disbanding=team_disbanding, team_creation=team_creation) %}
+	{% with form = Forms.config.AccountSettingsForm(verify_emails=verify_emails, name_changes=name_changes, team_disbanding=team_disbanding, team_creation=team_creation, admin_visible=admin_visible) %}
 	<form method="POST" autocomplete="off" class="w-100">
 		<ul class="nav nav-tabs mb-3">
 			<li class="nav-item">
@@ -58,6 +59,14 @@
 						{{ form.name_changes(class="form-control custom-select") }}
 						<small class="form-text text-muted">
 							{{ form.name_changes.description }}
+						</small>
+					</div>
+
+					<div class="mb-3">
+						<b>{{ form.admin_visible.label }}</b>
+						{{ form.admin_visible(class="form-control custom-select") }}
+						<small class="form-text text-muted">
+							{{ form.admin_visible.description }}
 						</small>
 					</div>
 				</div>

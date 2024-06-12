@@ -111,6 +111,7 @@ def setup():
             )
             verify_emails = request.form.get("verify_emails")
             team_size = request.form.get("team_size")
+            admin_visible = request.form.get("admin_visible")
 
             # Style
             ctf_logo = request.files.get("ctf_logo")
@@ -154,11 +155,6 @@ def setup():
             name = request.form["name"]
             email = request.form["email"]
             password = request.form["password"]
-            admin_visibility = AdminVisibilityTypes(
-                request.form.get(
-                    "admin_visibility", default=AdminVisibilityTypes.VISIBLE
-                )
-            )
 
             name_len = len(name) == 0
             names = (
@@ -202,7 +198,7 @@ def setup():
                 )
 
             admin = Admins(
-                name=name, email=email, password=password, type="admin", hidden=admin_visibility
+                name=name, email=email, password=password, type="admin", hidden=admin_visible=="false"
             )
 
             # Create an empty index page
@@ -233,6 +229,9 @@ def setup():
 
             # Verify emails
             set_config("verify_emails", verify_emails)
+
+            # Admin visibility in challenges and team by default
+            set_config("admin_visible", admin_visible)
 
             # Team Size
             set_config("team_size", team_size)

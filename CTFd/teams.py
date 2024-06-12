@@ -296,9 +296,9 @@ def new():
         if errors:
             return render_template("teams/new_team.html", errors=errors), 403
 
-        # Hide the created team if the creator is an admin
+        # Hide the created team if admin are set hidden
         hidden = False
-        if user.type == "admin":
+        if user.type == "admin" and get_config("admin_visible") is False:
             hidden = True
 
         team = Teams(

@@ -55,10 +55,10 @@ class SetupForm(BaseForm):
         description=_l("Your password for the administration account"),
         validators=[InputRequired()],
     )
-    admin_visibility = SelectField(
+    admin_visible = SelectField(
         _l("Admin visibility"),
         description="Control whether admin account participation in challenges and if account is visible",
-        choices=[("true", "visible"), ("false", "hidden")],
+        choices=[("true", "Visible"), ("false", "Hidden")],
         default="true",
     )
 
