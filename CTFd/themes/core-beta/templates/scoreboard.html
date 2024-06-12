@@ -17,7 +17,9 @@
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
       </div>
     </div>
+    {% if Configs.ctf_banner %}
     <img class="w-100 mx-auto d-block" style="max-width: 500px;padding: 50px;padding-top: 14vh;" src="{{ url_for('views.files', path=Configs.ctf_banner) }}" />
+    {% endif %}
     <div id="scoreboard" class="row" x-data="ScoreboardList">
       
         <template x-if="brackets.length && standings.length">

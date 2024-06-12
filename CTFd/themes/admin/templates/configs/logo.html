@@ -68,4 +68,40 @@
 			</div>
 		</div>
 	</form>
+
+	
+	<form id="banner-upload" class="form-upload" method="POST" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="banner">
+				Banner
+				<small class="form-text text-muted">
+					Banner to use for the main page.
+				</small>
+			</label>
+
+			{% if ctf_banner %}
+				<div class="d-block py-3">
+					<img id="ctf_banner_preview" class="img-responsive ctf_banner"
+						 src="{{ url_for('views.files', path=ctf_banner) }}"
+						 height="80">
+					<button type="button" id="remove-small-icon" class="btn-sm btn-danger">
+						Remove Icon
+					</button>
+				</div>
+			{% endif %}
+
+			<div class="row">
+				<div class="col-md-9">
+					<input class="form-control-file" id="ctf_banner_file" name='file' accept="image/*" type='file' placeholder="CTF Banner">
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<div class="d-inline-block float-right">
+							<button type="submit" class="btn-sm btn-primary float-right">Upload</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
 </div>

@@ -14,6 +14,7 @@ from CTFd.utils import config, get_config, import_in_progress, markdown
 from CTFd.utils.config import (
     can_send_mail,
     ctf_logo,
+    ctf_banner,
     ctf_name,
     ctf_theme,
     integrations,
@@ -83,6 +84,7 @@ def init_template_globals(app):
     app.jinja_env.globals.update(can_send_mail=can_send_mail)
     app.jinja_env.globals.update(get_ctf_name=ctf_name)
     app.jinja_env.globals.update(get_ctf_logo=ctf_logo)
+    app.jinja_env.globals.update(get_ctf_banner=ctf_banner)
     app.jinja_env.globals.update(get_ctf_theme=ctf_theme)
     app.jinja_env.globals.update(get_menubar_plugins=get_menubar_plugins)
     app.jinja_env.globals.update(get_configurable_plugins=get_configurable_plugins)
