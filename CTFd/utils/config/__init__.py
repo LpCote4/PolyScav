@@ -28,6 +28,9 @@ def is_teams_mode():
 def ctf_logo():
     return get_config("ctf_logo")
 
+def ctf_banner():
+    return get_config("ctf_banner")
+
 
 def ctf_theme():
     theme = get_config("ctf_theme")

@@ -190,13 +190,59 @@ function switchUserMode(event) {
 function removeLogo() {
   ezQuery({
     title: "Remove logo",
-    body: "Are you sure you'd like to remove the CTF logo?",
+    body: "Are you sure you'd like to remove the PolyScav logo?",
     success: function () {
       const params = {
         value: null,
       };
       CTFd.api
         .patch_config({ configKey: "ctf_logo" }, params)
+        .then((_response) => {
+          window.location.reload();
+        });
+    },
+  });
+}
+
+function uploadBanner(event) {
+  event.preventDefault();
+  let form = event.target;
+  helpers.files.upload(form, {}, function (response) {
+    const f = response.data[0];
+    const params = {
+      value: f.location,
+    };
+    CTFd.fetch("/api/v1/configs/ctf_banner", {
+      method: "PATCH",
+      body: JSON.stringify(params),
+    })
+      .then(function (response) {
+        return response.json();
+      })
+      .then(function (response) {
+        if (response.success) {
+          window.location.reload();
+        } else {
+          ezAlert({
+            title: "Error!",
+            body: "Banner uploading failed!",
+            button: "Okay",
+          });
+        }
+      });
+  });
+}
+
+function removeBanner() {
+  ezQuery({
+    title: "Remove Banner",
+    body: "Are you sure you'd like to remove the PolyScav Banner?",
+    success: function () {
+      const params = {
+        value: null,
+      };
+      CTFd.api
+        .patch_config({ configKey: "ctf_banner" }, params)
         .then((_response) => {
           window.location.reload();
         });
@@ -479,6 +525,8 @@ $(() => {
   $("#logo-upload").submit(uploadLogo);
   $("#user-mode-form").submit(switchUserMode);
   $("#remove-logo").click(removeLogo);
+  $("#banner-upload").submit(uploadBanner);
+  $("#remove-banner").click(removeBanner);
   $("#ctf-small-icon-upload").submit(smallIconUpload);
   $("#remove-small-icon").click(removeSmallIcon);
   $("#export-button").click(exportConfig);

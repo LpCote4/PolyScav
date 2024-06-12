@@ -122,6 +122,11 @@ def setup():
                 f = upload_file(file=ctf_small_icon)
                 set_config("ctf_small_icon", f.location)
 
+            ctf_banner = request.files.get("ctf_banner")
+            if ctf_banner:
+                f = upload_file(file=ctf_banner)
+                set_config("ctf_banner", f.location)
+
             theme = request.form.get("ctf_theme", DEFAULT_THEME)
             set_config("ctf_theme", theme)
             theme_color = request.form.get("theme_color")
