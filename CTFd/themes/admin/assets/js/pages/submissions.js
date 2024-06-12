@@ -2,9 +2,90 @@ import "./main";
 import CTFd from "../compat/CTFd";
 import $ from "jquery";
 import { htmlEntities } from "@ctfdio/ctfd-js/utils/html";
-import { ezQuery } from "../compat/ezq";
+import { ezQuery, ezAlert } from "../compat/ezq";
 import "../compat/format";
 
+function blobToImage(element) {
+  console.log(element.childNodes);
+  let element2 = element.childNodes[0];
+  if (element2.id.length < 5000) {
+    element.removeChild(element2);
+    element.innerHTML = element2.id;
+  } else {
+    element2.src =
+      "data:text/plain;base64," + atob(JSON.parse(element.childNodes[0].id)[0]);
+
+    element2.onclick = showLargeSubmissions;
+  }
+}
+function showLargeSubmissions(_event) {
+  window.carouselPosition = 0;
+  let images = JSON.parse(_event.srcElement.id);
+  console.log(images);
+  window.carouselMax = images.length;
+  let imagesHTML =
+    "<section class='slider-wrapper' ><img src onerror='reloadCarousel(this.parentElement);'><button class='slide-arrow slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:50%;'>&#8249;</button><button style='position:absolute;top:50%;left:95%' class='slide-arrow slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>&#8250;</button><ul class='slides-container' style:'list-style: none;' id='slides-container'>";
+  for (let i = 0; i < images.length; i++) {
+    imagesHTML +=
+      `<li class="slide ` +
+      i +
+      "slide" +
+      `"><img style="" src="` +
+      "data:text/plain;base64," +
+      atob(images[i]) +
+      `" style="width: 100%;" height="auto"></li>`;
+  }
+  imagesHTML += "</ul></section>";
+  ezAlert({
+    title: "Visioneurs",
+    body: imagesHTML,
+    button: "retour",
+  });
+}
+window.upCarousel = function (self) {
+  window.carouselPosition += 1;
+  if (window.carouselPosition != window.carouselMax - 1) {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+      false;
+  } else {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+      true;
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+      false;
+  }
+};
+window.downCarousel = function (self) {
+  window.carouselPosition -= 1;
+
+  if (window.carouselPosition != 0) {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+      false;
+  } else {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+      true;
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+      false;
+  }
+};
+window.reloadCarousel = function (element) {
+  if (window.carouselPosition == 0) {
+    element.getElementsByClassName("slide-arrow-prev")[0].disabled = true;
+  }
+  if (window.carouselMax == 1) {
+    element.getElementsByClassName("slide-arrow-next")[0].disabled = true;
+  }
+  for (let i = 0; i < window.carouselMax; i++) {
+    if (i == window.carouselPosition) {
+      element.getElementsByClassName(i + "slide")[0].hidden = false;
+    } else {
+      element.getElementsByClassName(i + "slide")[0].hidden = true;
+    }
+  }
+};
 function deleteCorrectSubmission(_event) {
   const key_id = $(this).data("submission-id");
   const $elem = $(this).parent().parent();
@@ -17,7 +98,7 @@ function deleteCorrectSubmission(_event) {
     title: "Delete Submission",
     body: "Are you sure you want to delete correct submission from {0} for challenge {1}".format(
       "<strong>" + htmlEntities(team_name) + "</strong>",
-      "<strong>" + htmlEntities(chal_name) + "</strong>",
+      "<strong>" + htmlEntities(chal_name) + "</strong>"
     ),
     success: function () {
       CTFd.api
@@ -135,3 +216,7 @@ $(() => {
   $(".delete-correct-submission").click(deleteCorrectSubmission);
   $("#submission-delete-button").click(deleteSelectedSubmissions);
 });
+let elements = document.getElementsByClassName("imageContainer");
+for (let i = 0; i < elements.length; i++) {
+  blobToImage(elements[i]);
+}

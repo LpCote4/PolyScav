@@ -22,6 +22,7 @@ function blobToDataURL(blob, callback) {
   a.readAsDataURL(blob);
 }
 function blobToImage(element) {
+  console.log(element.childNodes);
   let element2 = element.childNodes[0];
   if (element2.id.length < 5000) {
     element.removeChild(element2);
@@ -140,6 +141,7 @@ function updateTeam(event) {
 function showLargeSubmissions(_event) {
   window.carouselPosition = 0;
   let images = JSON.parse(_event.srcElement.id);
+  console.log(images);
   window.carouselMax = images.length;
   let imagesHTML =
     "<section class='slider-wrapper' ><img src onerror='reloadCarousel(this.parentElement);'><button class='slide-arrow slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:50%;'>&#8249;</button><button style='position:absolute;top:50%;left:95%' class='slide-arrow slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>&#8250;</button><ul class='slides-container' style:'list-style: none;' id='slides-container'>";
@@ -192,6 +194,9 @@ window.downCarousel = function (self) {
 window.reloadCarousel = function (element) {
   if (window.carouselPosition == 0) {
     element.getElementsByClassName("slide-arrow-prev")[0].disabled = true;
+  }
+  if (window.carouselMax == 1) {
+    element.getElementsByClassName("slide-arrow-next")[0].disabled = true;
   }
   for (let i = 0; i < window.carouselMax; i++) {
     if (i == window.carouselPosition) {

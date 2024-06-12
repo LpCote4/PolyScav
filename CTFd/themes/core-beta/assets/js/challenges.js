@@ -257,7 +257,7 @@ Alpine.data("Challenge", () => ({
     };
   },
   uploadFile(event){
-    
+    window.values = [];
     for (let i = 0; i < event.srcElement.files.length; i++){
       var file = event.srcElement.files[i];
       

@@ -30,23 +30,23 @@
     ]
   },
   "assets/js/challenges.js": {
-    "file": "assets/challenges.f4e9e5c0.js",
+    "file": "assets/challenges.a13d8f52.js",
     "src": "assets/js/challenges.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_CommentBox.687d086b.js"
+      "_CommentBox.aa3adedb.js"
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.4e35c644.js",
+    "file": "assets/scoreboard.a9e90c36.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
       "_index.e988da21.js",
       "_echarts.54e741c1.js",
-      "_CommentBox.687d086b.js"
+      "_CommentBox.aa3adedb.js"
     ]
   },
   "assets/js/notifications.js": {
@@ -158,5 +158,86 @@
     "file": "assets/main.13d83c99.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
+  },
+  "_CommentBox.0fea98e9.js": {
+    "file": "assets/CommentBox.0fea98e9.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.d70469f8.js": {
+    "file": "assets/CommentBox.d70469f8.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.4c3635c0.js": {
+    "file": "assets/CommentBox.4c3635c0.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.16cb7e3d.js": {
+    "file": "assets/CommentBox.16cb7e3d.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.ed0a4c42.js": {
+    "file": "assets/CommentBox.ed0a4c42.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.77c228a9.js": {
+    "file": "assets/CommentBox.77c228a9.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.fbcfdc5d.js": {
+    "file": "assets/CommentBox.fbcfdc5d.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.8581dc8d.js": {
+    "file": "assets/CommentBox.8581dc8d.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
+  },
+  "_CommentBox.aa3adedb.js": {
+    "file": "assets/CommentBox.aa3adedb.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.b575128a.css"
+    ]
   }
 }

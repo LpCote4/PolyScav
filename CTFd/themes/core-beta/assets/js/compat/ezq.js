@@ -78,7 +78,8 @@ export function ezAlert(args, helpers, user) {
   } else {
     modalBody.innerHTML = $(args.body);
   }
-  modalBody = modalBody.firstChild;
+  
+  modalBody = modalBody.children[1];
   modalElement.getElementsByClassName("modal-body")[0].append(modalBody);
   modalElement.getElementsByClassName("modal-title")[0].textContent = args.title;
 
