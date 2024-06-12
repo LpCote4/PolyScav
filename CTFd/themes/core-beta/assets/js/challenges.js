@@ -10,6 +10,7 @@ import highlight from "./theme/highlight";
 import favicon from ".";
 import { default as helpers } from "./compat/helpers";
 
+window.values = [];
 
 function addTargetBlank(html) {
   let dom = new DOMParser();
@@ -203,6 +204,7 @@ Alpine.data("Challenge", () => ({
   async submitManualChallenge() {
     
     this.submission = document.getElementById("challenge-input").value;
+    console.log(this.submission);
     this.response = await CTFd.pages.challenge.submitChallenge(
       this.id,
       this.submission,
@@ -256,21 +258,31 @@ Alpine.data("Challenge", () => ({
   },
   uploadFile(event){
     
-    var file = event.srcElement.files[0];
-    const blobURL = URL.createObjectURL(file);
-    let operation = function(blob){
+    for (let i = 0; i < event.srcElement.files.length; i++){
+      var file = event.srcElement.files[i];
+      
+      const blobURL = URL.createObjectURL(file);
+      
+      
+      let operation = function(blob){
       var reader = new FileReader();
       reader.onloadend = function() {
         
         var data=(reader.result).split(',')[1];
         var binaryBlob = btoa(data);
-        console.log(binaryBlob);
-        document.getElementById("challenge-input").value = binaryBlob;
+        
+        window.values.push(binaryBlob);
+        document.getElementById("challenge-input").value = JSON.stringify(window.values);
       }
+      
       reader.readAsDataURL(blob);
+      
+      
+      }
+      
+      this.compressAnImage(blobURL, operation);
+      
     }
-    this.compressAnImage(blobURL, operation);
-
 
   },
 }));

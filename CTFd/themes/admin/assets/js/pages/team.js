@@ -11,6 +11,9 @@ import CommentBox from "../components/comments/CommentBox.vue";
 import UserAddForm from "../components/teams/UserAddForm.vue";
 import { copyToClipboard } from "../compat/ui";
 
+window.carouselPosition = 0;
+window.carouselMax = 0;
+
 function blobToDataURL(blob, callback) {
   var a = new FileReader();
   a.onload = function (e) {
@@ -19,15 +22,14 @@ function blobToDataURL(blob, callback) {
   a.readAsDataURL(blob);
 }
 function blobToImage(element) {
-  console.log(element.childNodes);
   let element2 = element.childNodes[0];
   if (element2.id.length < 5000) {
     element.removeChild(element2);
     element.innerHTML = element2.id;
   } else {
-    element2.src = "data:text/plain;base64," + atob(element2.id);
+    element2.src =
+      "data:text/plain;base64," + atob(JSON.parse(element.childNodes[0].id)[0]);
 
-    element2.id = "";
     element2.onclick = showLargeSubmissions;
   }
 }
@@ -136,16 +138,69 @@ function updateTeam(event) {
 }
 
 function showLargeSubmissions(_event) {
-  console.log(_event.srcElement);
+  window.carouselPosition = 0;
+  let images = JSON.parse(_event.srcElement.id);
+  window.carouselMax = images.length;
+  let imagesHTML =
+    "<section class='slider-wrapper' ><img src onerror='reloadCarousel(this.parentElement);'><button class='slide-arrow slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:50%;'>&#8249;</button><button style='position:absolute;top:50%;left:95%' class='slide-arrow slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>&#8250;</button><ul class='slides-container' style:'list-style: none;' id='slides-container'>";
+  for (let i = 0; i < images.length; i++) {
+    imagesHTML +=
+      `<li class="slide ` +
+      i +
+      "slide" +
+      `"><img style="" src="` +
+      "data:text/plain;base64," +
+      atob(images[i]) +
+      `" style="width: 100%;" height="auto"></li>`;
+  }
+  imagesHTML += "</ul></section>";
   ezAlert({
     title: "Visioneurs",
-    body:
-      `<img src="` +
-      _event.srcElement.src +
-      `" style="width: 100%;" height="auto">`,
+    body: imagesHTML,
     button: "retour",
   });
 }
+window.upCarousel = function (self) {
+  window.carouselPosition += 1;
+  if (window.carouselPosition != window.carouselMax - 1) {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+      false;
+  } else {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+      true;
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+      false;
+  }
+};
+window.downCarousel = function (self) {
+  window.carouselPosition -= 1;
+
+  if (window.carouselPosition != 0) {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+      false;
+  } else {
+    window.reloadCarousel(self.parentElement);
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+      true;
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+      false;
+  }
+};
+window.reloadCarousel = function (element) {
+  if (window.carouselPosition == 0) {
+    element.getElementsByClassName("slide-arrow-prev")[0].disabled = true;
+  }
+  for (let i = 0; i < window.carouselMax; i++) {
+    if (i == window.carouselPosition) {
+      element.getElementsByClassName(i + "slide")[0].hidden = false;
+    } else {
+      element.getElementsByClassName(i + "slide")[0].hidden = true;
+    }
+  }
+};
 
 function correctSubmissions(_event) {
   let submissions = $("input[data-submission-type=incorrect]:checked");
