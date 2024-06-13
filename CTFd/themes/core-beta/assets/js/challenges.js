@@ -234,7 +234,7 @@ Alpine.data("Challenge", () => ({
       canvas.height = newHeight;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
-      canvas.toBlob((blob) => operation(blob),"image/png", 0.7);
+      canvas.toBlob((blob) => operation(blob, "image"),"image/png", 0.7);
       
     };
     function calculateSize(img, maxWidth, maxHeight) {
@@ -256,31 +256,58 @@ Alpine.data("Challenge", () => ({
       return [width, height];
     };
   },
+  operationImage(blob){
+    var reader = new FileReader();
+    reader.onloadend = function() {
+      
+      var data=(reader.result).split(',')[1];
+      var binaryBlob = btoa(data);
+      
+      window.values.push({"image":binaryBlob});
+      document.getElementById("challenge-input").value = JSON.stringify(window.values);
+    }
+    reader.readAsDataURL(blob);
+  },
+  operationVideo(blob, type){
+    var reader = new FileReader();
+    window.type = type;
+    reader.onloadend = function() {
+      
+      var data=(reader.result).split(',')[1];
+      var binaryBlob = btoa(data);
+      let object = {};
+      object[window.type] = binaryBlob;
+      window.values.push(object);
+      console.log(window.values)
+      document.getElementById("challenge-input").value = JSON.stringify(window.values);
+    }
+    reader.readAsDataURL(blob);
+  },
   uploadFile(event){
     window.values = [];
     for (let i = 0; i < event.srcElement.files.length; i++){
       var file = event.srcElement.files[i];
-      
+      console.log(file);
       const blobURL = URL.createObjectURL(file);
+      let vid = document.createElement("video");
+      vid.autoplay = true;
+      vid.src = blobURL;
+      vid.id = "penis"
+      console.log(vid);
+      document.body.appendChild(vid);
       
       
-      let operation = function(blob){
-      var reader = new FileReader();
-      reader.onloadend = function() {
+      
+      
+      if (file.type.includes("image")){
+        this.compressAnImage(blobURL, this.operationImage);
+      }
+      else if (file.type.includes("video")){
+        let blob = fetch(blobURL).then(r => r.blob());
+        blob.then(e=>this.operationVideo(e, file.type));
         
-        var data=(reader.result).split(',')[1];
-        var binaryBlob = btoa(data);
-        
-        window.values.push(binaryBlob);
-        document.getElementById("challenge-input").value = JSON.stringify(window.values);
       }
       
-      reader.readAsDataURL(blob);
-      
-      
-      }
-      
-      this.compressAnImage(blobURL, operation);
       
     }
 

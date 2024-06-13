@@ -3,7 +3,8 @@ from typing import List  # noqa: I001
 from flask import abort, render_template, request, url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
-
+import json
+from CTFd.api.v1 import decodeToMP4
 from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
 from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessResponse
@@ -267,7 +268,7 @@ class ChallengeList(Resource):
         response = schema.load(data)
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
-
+        print(data)
         challenge_type = data["type"]
         challenge_class = get_chal_class(challenge_type)
         challenge = challenge_class.create(request)
@@ -529,7 +530,19 @@ class ChallengeAttempt(Resource):
             request_data = request.form
         else:
             request_data = request.get_json()
+        
+        
+        title = ""
+        for i in json.loads(request_data.get("submission", ""))[0].keys():
+            title = i
 
+        if title.find("video") == -1:
+            request_data["submission"] = decodeToMP4.decodeToMP4(title,json.loads(request_data.get("submission", ""))[0][title])
+             
+            input()
+        
+        
+        
         challenge_id = request_data.get("challenge_id")
 
         if current_user.is_admin():

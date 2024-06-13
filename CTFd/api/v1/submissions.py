@@ -128,6 +128,7 @@ class SubmissionsList(Resource):
     @validate_args(TransientSubmissionModel, location="json")
     def post(self, json_args):
         req = json_args
+        print(json_args)
         Model = Submissions.get_child(type=req.get("type"))
         schema = SubmissionSchema(instance=Model())
         response = schema.load(req)

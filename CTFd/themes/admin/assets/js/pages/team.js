@@ -22,16 +22,41 @@ function blobToDataURL(blob, callback) {
   a.readAsDataURL(blob);
 }
 function blobToImage(element) {
-  console.log(element.childNodes);
   let element2 = element.childNodes[0];
   if (element2.id.length < 5000) {
     element.removeChild(element2);
     element.innerHTML = element2.id;
   } else {
-    element2.src =
-      "data:text/plain;base64," + atob(JSON.parse(element.childNodes[0].id)[0]);
+    let media = JSON.parse(element.childNodes[0].id)[0];
+    try {
+      console.log();
+    } catch {}
 
-    element2.onclick = showLargeSubmissions;
+    if (media["image"]) {
+      element2.src = "data:text/plain;base64," + atob(media["image"]);
+      element2.onclick = showLargeSubmissions;
+    } else {
+      let vid = document.createElement("video");
+      vid.id = element.childNodes[0].id;
+      element.removeChild(element2);
+      element.appendChild(vid);
+      vid.style.width = "50px";
+      vid.style.height = "auto";
+      vid.onclick = showLargeSubmissions;
+      vid.autoplay = true;
+      vid.controls = true;
+      let src = document.createElement("source");
+      src.src =
+        "data:" + "video/mp4" + ";base64," + atob(media[Object.keys(media)[0]]);
+      src.type = "video/mp4";
+      vid.appendChild(src);
+      var blob = new Blob([media[Object.keys(media)[0]]], {
+        type: Object.keys(media)[0],
+      });
+      var blobUrl = URL.createObjectURL(blob);
+
+      console.log(blobUrl);
+    }
   }
 }
 
@@ -146,14 +171,22 @@ function showLargeSubmissions(_event) {
   let imagesHTML =
     "<section class='slider-wrapper' ><img src onerror='reloadCarousel(this.parentElement);'><button class='slide-arrow slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:50%;'>&#8249;</button><button style='position:absolute;top:50%;left:95%' class='slide-arrow slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>&#8250;</button><ul class='slides-container' style:'list-style: none;' id='slides-container'>";
   for (let i = 0; i < images.length; i++) {
-    imagesHTML +=
-      `<li class="slide ` +
-      i +
-      "slide" +
-      `"><img style="" src="` +
-      "data:text/plain;base64," +
-      atob(images[i]) +
-      `" style="width: 100%;" height="auto"></li>`;
+    let element = "";
+    if (images[i]["image"]) {
+      element =
+        `<img style="" src="` +
+        "data:text/plain;base64," +
+        atob(images[i]["image"]) +
+        `" style="width: 100%;" height="auto">`;
+    } else if (images[i]["video"]) {
+      element =
+        `<img style="" src="` +
+        "data:text/plain;base64," +
+        atob(images[i]["image"]) +
+        `" style="width: 100%;" height="auto">`;
+    }
+    imagesHTML += element;
+    imagesHTML += `<li class="slide ` + i + "slide" + `"></li>`;
   }
   imagesHTML += "</ul></section>";
   ezAlert({
