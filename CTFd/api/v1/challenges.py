@@ -222,12 +222,9 @@ class ChallengeList(Resource):
                         is_submited = False
 
 
-
+          
             #check if we have some specified ids to returned
-            if (provided):
-                print(provided)
-            else:
-                print(provided)
+
             response.append(
                 {
                     "id": challenge.id,

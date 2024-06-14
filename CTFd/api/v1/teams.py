@@ -140,7 +140,7 @@ class TeamList(Resource):
                     for str_id in request.args.get("ids")[1:-1].split(","):
                         if "c_id:"+str(solve.challenge_id)+"t_id:"+str(team.id) == str_id[1:-1]: 
                             response.append({"provided":solve.provided})
-
+        
         return {
             "meta": {
                 "pagination": {
@@ -653,7 +653,7 @@ class TeamPublicFails(Resource):
         if (team.banned or team.hidden) and is_admin() is False:
             abort(404)
         fails = team.get_fails(admin=is_admin())
-
+        
         view = "admin" if is_admin() else "user"
 
         # We want to return the count purely for stats & graphs

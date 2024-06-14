@@ -27,7 +27,7 @@ let API = (function () {
       // eslint-disable-next-line no-prototype-builtins
       if (parameters.hasOwnProperty(p)) {
         str.push(
-          encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p]),
+          encodeURIComponent(p) + "=" + encodeURIComponent(parameters[p])
         );
       }
     }
@@ -40,7 +40,7 @@ let API = (function () {
         function (parameterName) {
           let parameter = parameters.$queryParameters[parameterName];
           queryParameters[parameterName] = parameter;
-        },
+        }
       );
     }
     return queryParameters;
@@ -67,7 +67,7 @@ let API = (function () {
     headers,
     queryParameters,
     form,
-    deferred,
+    deferred
   ) {
     const queryParams =
       queryParameters && Object.keys(queryParameters).length
@@ -126,7 +126,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -170,7 +170,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -214,7 +214,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -250,7 +250,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -286,7 +286,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -322,7 +322,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -358,7 +358,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -402,7 +402,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -446,7 +446,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -490,7 +490,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -539,7 +539,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -588,7 +588,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -637,7 +637,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -686,7 +686,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -735,7 +735,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -771,7 +771,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -807,7 +807,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -843,7 +843,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -887,7 +887,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -931,7 +931,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -975,7 +975,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1011,7 +1011,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1047,7 +1047,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1091,7 +1091,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1135,7 +1135,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1171,7 +1171,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1207,7 +1207,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1243,7 +1243,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1287,7 +1287,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1331,7 +1331,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1375,7 +1375,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1419,7 +1419,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1455,7 +1455,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1491,7 +1491,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1535,7 +1535,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1579,7 +1579,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1623,7 +1623,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1659,7 +1659,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1695,7 +1695,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1739,7 +1739,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1783,7 +1783,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1819,7 +1819,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1855,7 +1855,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1899,7 +1899,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1943,7 +1943,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -1987,7 +1987,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2023,7 +2023,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2067,7 +2067,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2103,7 +2103,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2139,7 +2139,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2183,7 +2183,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2227,7 +2227,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2263,7 +2263,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2299,7 +2299,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2343,7 +2343,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2379,7 +2379,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2415,7 +2415,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2459,7 +2459,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2503,7 +2503,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2539,7 +2539,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2575,7 +2575,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2619,7 +2619,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2663,7 +2663,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2707,7 +2707,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2743,7 +2743,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2779,7 +2779,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2820,7 +2820,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2861,7 +2861,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2905,7 +2905,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2949,7 +2949,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -2993,7 +2993,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3037,7 +3037,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3053,9 +3053,10 @@ let API = (function () {
     if (parameters === undefined) {
       parameters = {};
     }
+
     let deferred = Q.defer();
     let domain = this.domain,
-      path = "/teams/{team_id}/fails";
+      path = "/teams/{team_id}/fails?preview=true";
     let body = {},
       queryParameters = {},
       headers = {},
@@ -3081,7 +3082,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3125,7 +3126,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3161,7 +3162,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3197,7 +3198,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3233,7 +3234,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3269,7 +3270,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3305,7 +3306,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3341,7 +3342,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3385,7 +3386,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3429,7 +3430,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3473,7 +3474,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3517,7 +3518,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3561,7 +3562,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;
@@ -3605,7 +3606,7 @@ let API = (function () {
       headers,
       queryParameters,
       form,
-      deferred,
+      deferred
     );
 
     return deferred.promise;

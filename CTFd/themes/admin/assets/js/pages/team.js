@@ -21,18 +21,13 @@ function blobToDataURL(blob, callback) {
   };
   a.readAsDataURL(blob);
 }
+function loadThumbsnail() {
+  window.thumbsnail;
+}
 function blobToImage(element) {
-  let element2 = element.childNodes[0];
-  if (element2.id.length < 5000) {
-    element.removeChild(element2);
-    element.innerHTML = element2.id;
-  } else {
-    let media = JSON.parse(element.childNodes[0].id)[1];
-    if (media["thumbsnail"]) {
-      element2.src = "data:image/png;base64," + atob(media["thumbsnail"]);
-      element2.onclick = showLargeSubmissions;
-    }
-  }
+  //let responseChallengesMedia = CTFd.fetch(`1?actualMedia=true`, {
+  //method: "GET",
+  //});
 }
 
 function createTeam(event) {
