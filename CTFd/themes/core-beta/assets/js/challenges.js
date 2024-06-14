@@ -204,7 +204,7 @@ Alpine.data("Challenge", () => ({
   async submitManualChallenge() {
     
     this.submission = document.getElementById("challenge-input").value;
-    console.log(this.submission);
+    console.log(JSON.parse(this.submission));
     this.response = await CTFd.pages.challenge.submitChallenge(
       this.id,
       this.submission,
@@ -218,7 +218,7 @@ Alpine.data("Challenge", () => ({
   
  
 
-  compressAnImage(blobURL, operation){
+  compressAnImage(blobURL, operation, type){
     const img = new Image();
     img.src = blobURL;
     img.onerror = function () {
@@ -234,7 +234,7 @@ Alpine.data("Challenge", () => ({
       canvas.height = newHeight;
       const ctx = canvas.getContext("2d");
       ctx.drawImage(img, 0, 0, newWidth, newHeight);
-      canvas.toBlob((blob) => operation(blob, "image"),"image/png", 0.7);
+      canvas.toBlob((blob) => operation(blob, type),"video/webm", 0.7);
       
     };
     function calculateSize(img, maxWidth, maxHeight) {
@@ -256,59 +256,77 @@ Alpine.data("Challenge", () => ({
       return [width, height];
     };
   },
-  operationImage(blob){
+  operationImage(blob,type){
     var reader = new FileReader();
+    window.type = type;
     reader.onloadend = function() {
-      
       var data=(reader.result).split(',')[1];
       var binaryBlob = btoa(data);
-      
-      window.values.push({"image":binaryBlob});
+      let object = {};
+      console.log(type);
+      object[String(window.type)] = binaryBlob;
+      window.values.push(object);
       document.getElementById("challenge-input").value = JSON.stringify(window.values);
     }
     reader.readAsDataURL(blob);
   },
   operationVideo(blob, type){
     var reader = new FileReader();
+    
     window.type = type;
     reader.onloadend = function() {
-      
       var data=(reader.result).split(',')[1];
       var binaryBlob = btoa(data);
       let object = {};
-      object[window.type] = binaryBlob;
+      console.log(type);
+      object[String(window.type)] = binaryBlob;
       window.values.push(object);
-      console.log(window.values)
       document.getElementById("challenge-input").value = JSON.stringify(window.values);
     }
     reader.readAsDataURL(blob);
   },
+  convertToBinary(data) {
+    let binaryString = '';
+    for (let i = 0; i < data.length; i += 4) {
+        // Combine the RGBA values into a single number and convert to binary
+        const rgba = (data[i] << 24) | (data[i + 1] << 16) | (data[i + 2] << 8) | data[i + 3];
+        binaryString += rgba.toString(2).padStart(32, '0');
+    }
+    return binaryString;
+  },
+  generateAThumbsnail(blobUrl, operation){
+    const video = document.createElement("video");
+    const canvas = document.createElement("canvas");
+
+    video.src = blobUrl;
+    document.body.appendChild(canvas)
+    video.play();
+    video.addEventListener('loadeddata', () => {
+      canvas.getContext('2d').drawImage(video, 0, 0,200, 200);
+      canvas.toBlob((blob) => operation(blob, "thumbsnail"),"image/png", 0.7);
+      video.src = "";
+
+  });
+    
+  },
   uploadFile(event){
     window.values = [];
+   
     for (let i = 0; i < event.srcElement.files.length; i++){
       var file = event.srcElement.files[i];
-      console.log(file);
       const blobURL = URL.createObjectURL(file);
-      let vid = document.createElement("video");
-      vid.autoplay = true;
-      vid.src = blobURL;
-      vid.id = "penis"
-      console.log(vid);
-      document.body.appendChild(vid);
       
-      
-      
+      //au premier fichier on s'assusre que il s'agit d'une photo sinon on en creer une pour la video
       
       if (file.type.includes("image")){
-        this.compressAnImage(blobURL, this.operationImage);
+        this.compressAnImage(blobURL, this.operationImage, i == 0 ? "thumbsnail" : "image");
       }
       else if (file.type.includes("video")){
+        
         let blob = fetch(blobURL).then(r => r.blob());
         blob.then(e=>this.operationVideo(e, file.type));
-        
+        if (i == 0){this.generateAThumbsnail(blobURL, this.operationImage)};
       }
-      
-      
     }
 
   },

@@ -150,8 +150,7 @@
                         type="hidden"
                     >
                   <input class="challenge-input form-control"
-                   type="file" accept="" @input="uploadFile(event)" multiple>
-                   
+                   type="file" @input="uploadFile(event)" multiple>
                   {% endif %}
                 {% endblock %}
               </div>
@@ -179,7 +178,7 @@
                 {% endblock %}
               </div>
             </div>
-
+            <div class="uploadStatus notification-row"></div>
             <div class="row notification-row">
               <div class="col-12">
                 <template x-if="response">

@@ -27,35 +27,10 @@ function blobToImage(element) {
     element.removeChild(element2);
     element.innerHTML = element2.id;
   } else {
-    let media = JSON.parse(element.childNodes[0].id)[0];
-    try {
-      console.log();
-    } catch {}
-
-    if (media["image"]) {
-      element2.src = "data:text/plain;base64," + atob(media["image"]);
+    let media = JSON.parse(element.childNodes[0].id)[1];
+    if (media["thumbsnail"]) {
+      element2.src = "data:image/png;base64," + atob(media["thumbsnail"]);
       element2.onclick = showLargeSubmissions;
-    } else {
-      let vid = document.createElement("video");
-      vid.id = element.childNodes[0].id;
-      element.removeChild(element2);
-      element.appendChild(vid);
-      vid.style.width = "50px";
-      vid.style.height = "auto";
-      vid.onclick = showLargeSubmissions;
-      vid.autoplay = true;
-      vid.controls = true;
-      let src = document.createElement("source");
-      src.src =
-        "data:" + "video/mp4" + ";base64," + atob(media[Object.keys(media)[0]]);
-      src.type = "video/mp4";
-      vid.appendChild(src);
-      var blob = new Blob([media[Object.keys(media)[0]]], {
-        type: Object.keys(media)[0],
-      });
-      var blobUrl = URL.createObjectURL(blob);
-
-      console.log(blobUrl);
     }
   }
 }

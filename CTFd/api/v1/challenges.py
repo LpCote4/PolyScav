@@ -4,7 +4,6 @@ from flask import abort, render_template, request, url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 import json
-from CTFd.api.v1 import decodeToMP4
 from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
 from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessResponse
@@ -225,7 +224,10 @@ class ChallengeList(Resource):
 
 
             #check if we have some specified ids to returned
-            
+            if (provided):
+                print(provided)
+            else:
+                print(provided)
             response.append(
                 {
                     "id": challenge.id,
@@ -535,11 +537,6 @@ class ChallengeAttempt(Resource):
         title = ""
         for i in json.loads(request_data.get("submission", ""))[0].keys():
             title = i
-
-        if title.find("video") == -1:
-            request_data["submission"] = decodeToMP4.decodeToMP4(title,json.loads(request_data.get("submission", ""))[0][title])
-             
-            input()
         
         
         
