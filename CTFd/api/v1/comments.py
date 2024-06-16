@@ -148,11 +148,13 @@ class CommentList(Resource):
     )
     def post(self):
         req = request.get_json()
+        print(req)
         # Always force author IDs to be the actual user
         req["author_id"] = session["id"]
         CommentModel = get_comment_model(data=req)
 
         m = CommentModel(**req)
+
         db.session.add(m)
         db.session.commit()
 

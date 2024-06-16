@@ -48,6 +48,7 @@ from CTFd.models import (
     Unlocks,
     Users,
     db,
+    Medias,
 )
 from CTFd.utils import config as ctf_config
 from CTFd.utils import get_app_config, get_config, set_config
@@ -242,6 +243,8 @@ def reset():
             Awards.query.delete()
             Unlocks.query.delete()
             Tracking.query.delete()
+            Medias.query.delete()
+
 
         if data.get("user_mode") == "users":
             db.session.query(Users).update({Users.team_id: None})

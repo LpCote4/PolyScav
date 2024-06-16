@@ -9,7 +9,7 @@ from sqlalchemy.orm import column_property, validates
 
 from CTFd.cache import cache
 
-db = SQLAlchemy()
+db = SQLAlchemy(session_options={"autoflush": False})
 ma = Marshmallow()
 
 
@@ -51,6 +51,30 @@ def compile_datetime_mysql(_type, _compiler, **kw):
     """
     return "DATETIME(6)"
 
+class Medias(db.Model):
+    __tablename__ = "Medias"
+    id = db.Column(db.Integer, primary_key=True)
+    thumbsnail = db.Column(db.Text)
+    content = db.Column(db.Text)
+    date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
+    team_id = db.Column(db.Integer, db.ForeignKey("teams.id"))
+    challenge_id = db.Column(
+        db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE")
+    )
+
+    user = db.relationship("Users", foreign_keys="Medias.user_id", lazy="select")
+    team = db.relationship("Teams", foreign_keys="Medias.team_id", lazy="select")
+
+    @property
+    def html(self):
+        from CTFd.utils.config.pages import build_markdown
+        from CTFd.utils.helpers import markup
+
+        return markup(build_markdown(self.content))
+
+    def __init__(self, *args, **kwargs):
+        super(Medias, self).__init__(**kwargs)
 
 class Notifications(db.Model):
     __tablename__ = "notifications"

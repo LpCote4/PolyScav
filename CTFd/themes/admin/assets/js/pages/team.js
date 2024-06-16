@@ -10,7 +10,10 @@ import Vue from "vue";
 import CommentBox from "../components/comments/CommentBox.vue";
 import UserAddForm from "../components/teams/UserAddForm.vue";
 import { copyToClipboard } from "../compat/ui";
+import Alpine from "alpinejs";
 
+window.Alpine = Alpine;
+window.CTFd = CTFd;
 window.carouselPosition = 0;
 window.carouselMax = 0;
 
@@ -24,7 +27,31 @@ function blobToDataURL(blob, callback) {
 function loadThumbsnail() {
   window.thumbsnail;
 }
-function blobToImage(element) {
+Alpine.data("Media", () => ({
+  standings: [],
+  brackets: [],
+  activeBracket: null,
+
+  async init() {
+    let body = {
+      thumbsnail: "thumbsnail",
+      content: "content",
+      user_id: 1,
+      team_id: 1,
+      challenge_id: 1,
+    };
+    let responseChallengesMedia2 = CTFd.fetch(`/api/v1/medias`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+
+    const bodyChallenges = (await responseChallengesMedia2).json();
+    console.log(bodyChallenges);
+  },
+}));
+Alpine.start();
+async function blobToImage(element) {
+  console.log("hit");
   //let responseChallengesMedia = CTFd.fetch(`1?actualMedia=true`, {
   //method: "GET",
   //});

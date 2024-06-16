@@ -229,9 +229,9 @@ def create_app(config="CTFd.config.Config"):
         babel = Babel()
         babel.locale_selector_func = get_locale
         babel.init_app(app)
-        print("0000000000000000000000000000000000000000000000000000000000")
         # Alembic sqlite support is lacking so we should just create_all anyway
         if url.drivername.startswith("sqlite"):
+            
             # Enable foreign keys for SQLite. This must be before the
             # db.create_all call because tests use the in-memory SQLite
             # database (each connection, including db creation, is a new db).

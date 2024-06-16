@@ -40,7 +40,21 @@ Alpine.data("ScoreboardList", () => ({
   activeBracket: null,
 
   async init() {
-    
+    let body = {
+      thumbsnail: "thumbsnail",
+      content: "content",
+      user_id: 1,
+      team_id: 1,
+      challenge_id: 1,
+    };
+    let responseChallengesMedia2 = CTFd.fetch(`/api/v1/medias`, {
+      method: "POST",
+      body: JSON.stringify(body),
+    });
+
+    const bodyChallengesMedia = (await responseChallengesMedia2).json();
+    console.log(bodyChallengesMedia);
+
     let responseBrackets = await CTFd.fetch(`/api/v1/brackets?type=${CTFd.config.userMode}`, {
       method: "GET",
     });
