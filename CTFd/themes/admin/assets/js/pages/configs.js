@@ -45,10 +45,10 @@ function loadDateValues(place) {
   if (utc.unix() && month && day && year && hour && minute) {
     $("#" + place).val(utc.unix());
     $("#" + place + "-local").val(
-      utc.format("dddd, MMMM Do YYYY, h:mm:ss a z (zzz)"),
+      utc.format("dddd, MMMM Do YYYY, h:mm:ss a z (zzz)")
     );
     $("#" + place + "-zonetime").val(
-      utc.tz(timezone_string).format("dddd, MMMM Do YYYY, h:mm:ss a z (zzz)"),
+      utc.tz(timezone_string).format("dddd, MMMM Do YYYY, h:mm:ss a z (zzz)")
     );
   } else {
     $("#" + place).val("");
@@ -135,6 +135,7 @@ function updateConfigs(event) {
 }
 
 function uploadLogo(event) {
+  alert();
   event.preventDefault();
   let form = event.target;
   helpers.files.upload(form, {}, function (response) {
@@ -437,7 +438,7 @@ $(() => {
       lineWrapping: true,
       mode: "htmlmixed",
       htmlMode: true,
-    },
+    }
   );
 
   const theme_footer_editor = CodeMirror.fromTextArea(
@@ -447,7 +448,7 @@ $(() => {
       lineWrapping: true,
       mode: "htmlmixed",
       htmlMode: true,
-    },
+    }
   );
 
   const theme_settings_editor = CodeMirror.fromTextArea(
@@ -457,7 +458,7 @@ $(() => {
       lineWrapping: true,
       readOnly: true,
       mode: { name: "javascript", json: true },
-    },
+    }
   );
 
   // Handle refreshing codemirror when switching tabs.
@@ -469,7 +470,7 @@ $(() => {
   });
 
   $(
-    "a[href='#legal'], a[href='#tos-config'], a[href='#privacy-policy-config']",
+    "a[href='#legal'], a[href='#tos-config'], a[href='#privacy-policy-config']"
   ).on("shown.bs.tab", function (_e) {
     $("#tos-config .CodeMirror").each(function (i, el) {
       el.CodeMirror.refresh();
@@ -520,7 +521,7 @@ $(() => {
   insertTimezones($("#freeze-timezone"));
 
   $(".config-section > form:not(.form-upload, .custom-config-form)").submit(
-    updateConfigs,
+    updateConfigs
   );
   $("#logo-upload").submit(uploadLogo);
   $("#user-mode-form").submit(switchUserMode);

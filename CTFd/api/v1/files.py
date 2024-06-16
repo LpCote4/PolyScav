@@ -86,6 +86,7 @@ class FilesList(Resource):
         },
     )
     def post(self):
+        print(request.files)
         files = request.files.getlist("file")
         # challenge_id
         # page_id

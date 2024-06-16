@@ -11,7 +11,8 @@ import favicon from ".";
 import { default as helpers } from "./compat/helpers";
 
 window.values = [];
-
+window.TEAM_ID = CTFd.team.id;
+window.USER_ID = CTFd.user.id;
 function addTargetBlank(html) {
   let dom = new DOMParser();
   let view = dom.parseFromString(html, "text/html");
@@ -202,18 +203,52 @@ Alpine.data("Challenge", () => ({
   },
 
   async submitManualChallenge() {
+    let form = document.getElementById("form-file-input");
+    console.log(form);
+    helpers.files.upload(form, {}, function (response) {
+      const f = response.data[0];
+      console.log(response);
+    });
+    //this.submission = JSON.parse(document.getElementById("challenge-input").value);
+    //let vThumbsnail = "";
+    //let vContent = this.submission;
+    //for (let i = 0; i < this.submission.length; i++){
+    //  if (this.submission[i]["thumbsnail"]){
+    //    vThumbsnail = this.submission[i]["thumbsnail"];
+    //    vContent.splice(i, 1);
+    //  }
+    //}
+
+    //let body = {
+    //  thumbsnail: vThumbsnail,
+    //  content: JSON.stringify(vContent),
+    //  user_id: window.USER_ID,
+    //  team_id: window.TEAM_ID,
+    //  challenge_id: this.id,
+    //};
+  
     
-    this.submission = document.getElementById("challenge-input").value;
-    console.log(JSON.parse(this.submission));
-    this.response = await CTFd.pages.challenge.submitChallenge(
-      this.id,
-      this.submission,
-    );
-    if (this.response.success){
-      this.response.data.status = "correct";
-      this.response.data.message = "succesfuly send!";
-    }
-    this.$dispatch("load-challenges");
+    //this.mediaResponse = await CTFd.fetch(`/api/v1/medias`, {
+    //  method: "POST",
+    //  body: JSON.stringify(body),
+    //});
+
+    //this.response = await this.mediaResponse.json();
+
+    //if (this.response.success){
+    //  this.mediaId = "#Media id:"+ this.response.data.id;
+    //  this.response = await CTFd.pages.challenge.submitChallenge(
+    //    this.id,
+    //    this.mediaId,
+    //);
+    //  
+    //
+    //}
+    //if (this.response.success){
+    // this.response.data.status = "correct";
+    //  this.response.data.message = "succesfuly send!";
+    //}
+    //this.$dispatch("load-challenges");
   },
   
  
@@ -228,7 +263,7 @@ Alpine.data("Challenge", () => ({
     };
     img.onload = function () {
       URL.revokeObjectURL(this.src);
-      const [newWidth, newHeight] = calculateSize(img, 400, 400);
+      const [newWidth, newHeight] = calculateSize(img, type =="thumbsnail" ? 50 : 400, type =="thumbsnail" ? 50 : 400);
       const canvas = document.createElement("canvas");
       canvas.width = newWidth;
       canvas.height = newHeight;
@@ -256,30 +291,30 @@ Alpine.data("Challenge", () => ({
       return [width, height];
     };
   },
-  operationImage(blob,type){
+  operationImage(blob,typeI){
     var reader = new FileReader();
-    window.type = type;
+    
     reader.onloadend = function() {
       var data=(reader.result).split(',')[1];
       var binaryBlob = btoa(data);
       let object = {};
-      console.log(type);
-      object[String(window.type)] = binaryBlob;
+      
+      object[String(typeI)] = binaryBlob;
       window.values.push(object);
       document.getElementById("challenge-input").value = JSON.stringify(window.values);
     }
     reader.readAsDataURL(blob);
   },
-  operationVideo(blob, type){
+  operationVideo(blob, typeV){
+    console.log(typeV);
     var reader = new FileReader();
-    
-    window.type = type;
+   
     reader.onloadend = function() {
       var data=(reader.result).split(',')[1];
       var binaryBlob = btoa(data);
       let object = {};
-      console.log(type);
-      object[String(window.type)] = binaryBlob;
+      
+      object[String(typeV)] = binaryBlob;
       window.values.push(object);
       document.getElementById("challenge-input").value = JSON.stringify(window.values);
     }
@@ -302,7 +337,7 @@ Alpine.data("Challenge", () => ({
     document.body.appendChild(canvas)
     video.play();
     video.addEventListener('loadeddata', () => {
-      canvas.getContext('2d').drawImage(video, 0, 0,200, 200);
+      canvas.getContext('2d').drawImage(video, 0, 0, 50, 50);
       canvas.toBlob((blob) => operation(blob, "thumbsnail"),"image/png", 0.7);
       video.src = "";
 
@@ -311,7 +346,7 @@ Alpine.data("Challenge", () => ({
   },
   uploadFile(event){
     window.values = [];
-   
+    let hasThumbsnail = false;
     for (let i = 0; i < event.srcElement.files.length; i++){
       var file = event.srcElement.files[i];
       const blobURL = URL.createObjectURL(file);
@@ -319,13 +354,16 @@ Alpine.data("Challenge", () => ({
       //au premier fichier on s'assusre que il s'agit d'une photo sinon on en creer une pour la video
       
       if (file.type.includes("image")){
-        this.compressAnImage(blobURL, this.operationImage, i == 0 ? "thumbsnail" : "image");
+        
+        this.compressAnImage(blobURL, this.operationImage, "image");
+        if (!hasThumbsnail) {this.compressAnImage(blobURL, this.operationImage,"thumbsnail");hasThumbsnail = true;}
       }
       else if (file.type.includes("video")){
-        
         let blob = fetch(blobURL).then(r => r.blob());
-        blob.then(e=>this.operationVideo(e, file.type));
-        if (i == 0){this.generateAThumbsnail(blobURL, this.operationImage)};
+        
+        //peut pas juste utiliser la valeur file.type car la valeur change a chaque loop et que this.opvideo n'est pas executer en meme temps que le loop
+        blob.then(e=>this.operationVideo(e, event.srcElement.files[i].type));
+        if (!hasThumbsnail){this.generateAThumbsnail(blobURL, this.operationImage); hasThumbsnail = true;};
       }
     }
 
@@ -340,7 +378,7 @@ Alpine.data("ChallengeBoard", () => ({
   async init() {
    
 
-    window.TEAM_ID = CTFd.team.id;
+    
     let args = {};
     args[`team_id`] = window.TEAM_ID;
     let apiArgs = args;

@@ -33,20 +33,12 @@ Alpine.data("Media", () => ({
   activeBracket: null,
 
   async init() {
-    let body = {
-      thumbsnail: "thumbsnail",
-      content: "content",
-      user_id: 1,
-      team_id: 1,
-      challenge_id: 1,
-    };
-    let responseChallengesMedia2 = CTFd.fetch(`/api/v1/medias`, {
-      method: "POST",
-      body: JSON.stringify(body),
+    let response = CTFd.fetch(`/api/v1/medias`, {
+      method: "GET",
     });
 
-    const bodyChallenges = (await responseChallengesMedia2).json();
-    console.log(bodyChallenges);
+    const body = (await response).json();
+    console.log(body);
   },
 }));
 Alpine.start();

@@ -61,12 +61,13 @@ class MediaList(Resource):
         location="query",
     )
     def get(self, query_args):
+        
         q = query_args.pop("q", None)
         field = str(query_args.pop("field", None))
-        filters = build_model_filters(model=medias, query=q, field=field)
+        filters = build_model_filters(model=Medias, query=q, field=field)
 
         medias = (
-            medias.query.filter_by(**query_args).filter(*filters).all()
+            Medias.query.filter_by(**query_args).filter(*filters).all()
         )
         schema = MediaSchema(many=True)
         result = schema.dump(medias)
@@ -96,10 +97,10 @@ class MediaList(Resource):
     def head(self, query_args):
         q = query_args.pop("q", None)
         field = str(query_args.pop("field", None))
-        filters = build_model_filters(model=medias, query=q, field=field)
+        filters = build_model_filters(model=Medias, query=q, field=field)
 
         media_count = (
-            medias.query.filter_by(**query_args).filter(*filters).count()
+            Medias.query.filter_by(**query_args).filter(*filters).count()
         )
         response = make_response()
         response.headers["Result-Count"] = media_count
@@ -118,7 +119,7 @@ class MediaList(Resource):
     )
     def post(self):
         req = request.get_json()
-
+        
         schema = MediaSchema()
         result = schema.load(req)
 

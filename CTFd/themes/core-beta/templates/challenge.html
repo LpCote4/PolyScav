@@ -149,8 +149,11 @@
                         id="challenge-input"
                         type="hidden"
                     >
-                  <input class="challenge-input form-control"
-                   type="file" @input="uploadFile(event)" multiple>
+                    <form id="form-file-input">
+                      <input class="challenge-input form-control"
+                      type="file" name="file" multiple>
+                    </form>
+                  
                   {% endif %}
                 {% endblock %}
               </div>

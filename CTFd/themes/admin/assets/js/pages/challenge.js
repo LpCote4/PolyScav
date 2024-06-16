@@ -166,6 +166,7 @@ function handleChallengeOptions(event) {
     // Upload files
     new Promise(function (resolve, _reject) {
       let form = event.target;
+
       let data = {
         challenge: params.challenge_id,
         type: "challenge",

@@ -241,20 +241,16 @@ export function ezQuery(args) {
 
 export function ezProgressBar(args) {
   if (args.target) {
-    const obj = $(args.target);
-    const pbar = obj.find(".progress-bar");
-    pbar.css("width", args.width + "%");
-    return obj;
+    //const obj = $(args.target);
+    //obj.css("width", args.width + "%");
+    //return obj;
   }
 
-  const progress = progressTpl.format(args.width);
-  const modal = modalTpl.format(args.title);
-
-  const obj = $(modal);
-  obj.find(".modal-body").append($(progress));
-  $("main").append(obj);
-
-  return obj.modal("show");
+  let progressElement = document.createElement("div");
+  progressElement.innerHTML = progressTpl;
+  progressElement = progressElement.firstChild;
+  document.getElementById("form-file-input").appendChild(progressElement);
+  return progressElement;
 }
 
 export function ezBadge(args) {

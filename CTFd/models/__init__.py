@@ -69,7 +69,7 @@ class Medias(db.Model):
         from CTFd.utils.config.pages import build_markdown
         from CTFd.utils.helpers import markup
 
-        return markup(build_markdown(self.content))
+        return markup(build_markdown(self.challenge_id))
 
     def __init__(self, *args, **kwargs):
         super(Medias, self).__init__(**kwargs)

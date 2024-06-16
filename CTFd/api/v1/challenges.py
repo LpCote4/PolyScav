@@ -267,7 +267,6 @@ class ChallengeList(Resource):
         response = schema.load(data)
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
-        print(data)
         challenge_type = data["type"]
         challenge_class = get_chal_class(challenge_type)
         challenge = challenge_class.create(request)
@@ -532,8 +531,7 @@ class ChallengeAttempt(Resource):
         
         
         title = ""
-        for i in json.loads(request_data.get("submission", ""))[0].keys():
-            title = i
+        
         
         
         
