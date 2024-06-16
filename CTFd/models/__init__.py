@@ -59,9 +59,7 @@ class Medias(db.Model):
     date = db.Column(db.DateTime, default=datetime.datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey("users.id"))
     team_id = db.Column(db.Integer, db.ForeignKey("teams.id"))
-    challenge_id = db.Column(
-        db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE")
-    )
+    challenge_id = db.Column(db.Integer)
 
     user = db.relationship("Users", foreign_keys="Medias.user_id", lazy="select")
     team = db.relationship("Teams", foreign_keys="Medias.team_id", lazy="select")
