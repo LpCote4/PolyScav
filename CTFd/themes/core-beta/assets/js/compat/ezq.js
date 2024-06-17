@@ -39,7 +39,7 @@ const toastTpl =
   "</div>";
 
 const progressTpl =
-  '<div class="progress">' +
+  '<div class="progress" id="progress">' +
   '  <div class="progress-bar progress-bar-success progress-bar-striped progress-bar-animated" role="progressbar" style="width: {0}%">' +
   "  </div>" +
   "</div>";
@@ -240,10 +240,11 @@ export function ezQuery(args) {
 }
 
 export function ezProgressBar(args) {
+  
   if (args.target) {
-    //const obj = $(args.target);
-    //obj.css("width", args.width + "%");
-    //return obj;
+    args.target.style.width = args.width +"%";
+    args.target.style.backgroundColor = "green";
+    return args.target;
   }
 
   let progressElement = document.createElement("div");

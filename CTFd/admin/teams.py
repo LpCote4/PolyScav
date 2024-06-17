@@ -66,27 +66,8 @@ def teams_detail(team_id):
     place = team.get_place(admin=True)
 
     
-    if request.args.get("preview"):
-        for fail in fails:
-            for answer in json.loads(fail.provided):
-                if "thumbsnail" in answer.keys():
-                    fail.provided = json.dumps([answer])
-    else:
-        lightFails = []
-        for fail in fails:
-            if len(fail.provided) > 5000:               
-                fail.provided = ""
-            lightFails += fail,
-        fails = lightFails
-
-        lightSolves = []
-        for solve in solves:
-            if len(solve.provided) > 5000:               
-                solve.provided = ""
-            lightSolves += solve,
-        solves = lightSolves
     
-    print()
+    print(fails[0].provided)
     # Get missing Challenges for all members
     # TODO: How do you mark a missing challenge for a team?
     solve_ids = [s.challenge_id for s in solves]

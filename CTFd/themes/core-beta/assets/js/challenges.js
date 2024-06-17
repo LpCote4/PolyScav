@@ -204,169 +204,37 @@ Alpine.data("Challenge", () => ({
 
   async submitManualChallenge() {
     let form = document.getElementById("form-file-input");
-    console.log(form);
-    helpers.files.upload(form, {}, function (response) {
-      const f = response.data[0];
-      console.log(response);
+    document.getElementById("form-file-input").value = this;
+    await helpers.files.upload(form, {}, async function (response) {
+      let thiis = document.getElementById("form-file-input").value;
+      console.log(JSON.stringify(response.data));
+      thiis.response = await CTFd.pages.challenge.submitChallenge(
+        thiis.id,
+          JSON.stringify(response.data),
+      );
+      if (thiis.response.success){
+        thiis.response.data.status = "correct";
+        thiis.response.data.message = "succesfuly send!";
+      }
+      thiis.$dispatch("load-challenges");
     });
-    //this.submission = JSON.parse(document.getElementById("challenge-input").value);
-    //let vThumbsnail = "";
-    //let vContent = this.submission;
-    //for (let i = 0; i < this.submission.length; i++){
-    //  if (this.submission[i]["thumbsnail"]){
-    //    vThumbsnail = this.submission[i]["thumbsnail"];
-    //    vContent.splice(i, 1);
-    //  }
-    //}
+    
+    
+   
 
-    //let body = {
-    //  thumbsnail: vThumbsnail,
-    //  content: JSON.stringify(vContent),
-    //  user_id: window.USER_ID,
-    //  team_id: window.TEAM_ID,
-    //  challenge_id: this.id,
-    //};
   
     
-    //this.mediaResponse = await CTFd.fetch(`/api/v1/medias`, {
-    //  method: "POST",
-    //  body: JSON.stringify(body),
-    //});
+    
 
     //this.response = await this.mediaResponse.json();
 
     //if (this.response.success){
-    //  this.mediaId = "#Media id:"+ this.response.data.id;
-    //  this.response = await CTFd.pages.challenge.submitChallenge(
-    //    this.id,
-    //    this.mediaId,
+    //  
     //);
     //  
     //
     //}
-    //if (this.response.success){
-    // this.response.data.status = "correct";
-    //  this.response.data.message = "succesfuly send!";
-    //}
-    //this.$dispatch("load-challenges");
-  },
-  
- 
-
-  compressAnImage(blobURL, operation, type){
-    const img = new Image();
-    img.src = blobURL;
-    img.onerror = function () {
-      URL.revokeObjectURL(this.src);
-      // Handle the failure properly
-      console.log("Cannot load image");
-    };
-    img.onload = function () {
-      URL.revokeObjectURL(this.src);
-      const [newWidth, newHeight] = calculateSize(img, type =="thumbsnail" ? 50 : 400, type =="thumbsnail" ? 50 : 400);
-      const canvas = document.createElement("canvas");
-      canvas.width = newWidth;
-      canvas.height = newHeight;
-      const ctx = canvas.getContext("2d");
-      ctx.drawImage(img, 0, 0, newWidth, newHeight);
-      canvas.toBlob((blob) => operation(blob, type),"video/webm", 0.7);
-      
-    };
-    function calculateSize(img, maxWidth, maxHeight) {
-      let width = img.width;
-      let height = img.height;
     
-      // calculate the width and height, constraining the proportions
-      if (width > height) {
-        if (width > maxWidth) {
-          height = Math.round((height * maxWidth) / width);
-          width = maxWidth;
-        }
-      } else {
-        if (height > maxHeight) {
-          width = Math.round((width * maxHeight) / height);
-          height = maxHeight;
-        }
-      }
-      return [width, height];
-    };
-  },
-  operationImage(blob,typeI){
-    var reader = new FileReader();
-    
-    reader.onloadend = function() {
-      var data=(reader.result).split(',')[1];
-      var binaryBlob = btoa(data);
-      let object = {};
-      
-      object[String(typeI)] = binaryBlob;
-      window.values.push(object);
-      document.getElementById("challenge-input").value = JSON.stringify(window.values);
-    }
-    reader.readAsDataURL(blob);
-  },
-  operationVideo(blob, typeV){
-    console.log(typeV);
-    var reader = new FileReader();
-   
-    reader.onloadend = function() {
-      var data=(reader.result).split(',')[1];
-      var binaryBlob = btoa(data);
-      let object = {};
-      
-      object[String(typeV)] = binaryBlob;
-      window.values.push(object);
-      document.getElementById("challenge-input").value = JSON.stringify(window.values);
-    }
-    reader.readAsDataURL(blob);
-  },
-  convertToBinary(data) {
-    let binaryString = '';
-    for (let i = 0; i < data.length; i += 4) {
-        // Combine the RGBA values into a single number and convert to binary
-        const rgba = (data[i] << 24) | (data[i + 1] << 16) | (data[i + 2] << 8) | data[i + 3];
-        binaryString += rgba.toString(2).padStart(32, '0');
-    }
-    return binaryString;
-  },
-  generateAThumbsnail(blobUrl, operation){
-    const video = document.createElement("video");
-    const canvas = document.createElement("canvas");
-
-    video.src = blobUrl;
-    document.body.appendChild(canvas)
-    video.play();
-    video.addEventListener('loadeddata', () => {
-      canvas.getContext('2d').drawImage(video, 0, 0, 50, 50);
-      canvas.toBlob((blob) => operation(blob, "thumbsnail"),"image/png", 0.7);
-      video.src = "";
-
-  });
-    
-  },
-  uploadFile(event){
-    window.values = [];
-    let hasThumbsnail = false;
-    for (let i = 0; i < event.srcElement.files.length; i++){
-      var file = event.srcElement.files[i];
-      const blobURL = URL.createObjectURL(file);
-      
-      //au premier fichier on s'assusre que il s'agit d'une photo sinon on en creer une pour la video
-      
-      if (file.type.includes("image")){
-        
-        this.compressAnImage(blobURL, this.operationImage, "image");
-        if (!hasThumbsnail) {this.compressAnImage(blobURL, this.operationImage,"thumbsnail");hasThumbsnail = true;}
-      }
-      else if (file.type.includes("video")){
-        let blob = fetch(blobURL).then(r => r.blob());
-        
-        //peut pas juste utiliser la valeur file.type car la valeur change a chaque loop et que this.opvideo n'est pas executer en meme temps que le loop
-        blob.then(e=>this.operationVideo(e, event.srcElement.files[i].type));
-        if (!hasThumbsnail){this.generateAThumbsnail(blobURL, this.operationImage); hasThumbsnail = true;};
-      }
-    }
-
   },
 }));
 
