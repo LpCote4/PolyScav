@@ -221,7 +221,7 @@ def reset():
 
             
             Pages.query.delete()
-            rimdir(current_app.config.get("UPLOAD_FOLDER"))
+            rmdir(app.config.get("UPLOAD_FOLDER"))
                 
                 
         
