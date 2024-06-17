@@ -57,7 +57,7 @@ from CTFd.utils.decorators import admins_only
 from CTFd.utils.exports import background_import_ctf
 from CTFd.utils.exports import export_ctf as export_ctf_util
 from CTFd.utils.security.auth import logout_user
-from CTFd.utils.uploads import delete_file
+from CTFd.utils.uploads import delete_file, rmdir
 from CTFd.utils.user import is_admin
 
 
@@ -219,8 +219,12 @@ def reset():
                 for f in p.files:
                     delete_file(file_id=f.id)
 
+            
             Pages.query.delete()
-
+            rmdir(app.config.get("UPLOAD_FOLDER"))
+                
+                
+        
         if data.get("notifications"):
             Notifications.query.delete()
 

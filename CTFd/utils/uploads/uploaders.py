@@ -155,6 +155,7 @@ class S3Uploader(BaseUploader):
         return filename
 
     def upload(self, file_obj, filename, path=None):
+        
         # Sanitize directory name
         if path:
             path = secure_filename(path) or hexencode(os.urandom(16))

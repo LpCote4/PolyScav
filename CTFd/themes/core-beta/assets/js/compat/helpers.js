@@ -54,7 +54,7 @@ const files = {
           width: 100,
         });
         setTimeout(function () {
-          console.log(`pg.modal("hide")`);
+          pg.parentElement.removeChild(pg);
         }, 500);
 
         if (cb) {

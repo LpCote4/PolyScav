@@ -49,7 +49,6 @@ def upload_file(*args, **kwargs):
 
     uploader = get_uploader()
     location = uploader.upload(file_obj=file_obj, filename=filename, path=parent)
-
     model_args["location"] = location
     model_args["sha1sum"] = sha1sum
 

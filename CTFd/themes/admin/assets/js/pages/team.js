@@ -43,10 +43,7 @@ Alpine.data("Media", () => ({
 }));
 Alpine.start();
 async function blobToImage(element) {
-  console.log("hit");
-  //let responseChallengesMedia = CTFd.fetch(`1?actualMedia=true`, {
-  //method: "GET",
-  //});
+  console.log(element);
 }
 
 function createTeam(event) {

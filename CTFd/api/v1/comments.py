@@ -85,7 +85,7 @@ class CommentList(Resource):
     def get(self, query_args):
         try:
             challengeid = query_args.pop("challengeid")
-            print(challengeid)
+            
             isChallengeDefine = True
         except:
             isChallengeDefine = False
@@ -148,7 +148,7 @@ class CommentList(Resource):
     )
     def post(self):
         req = request.get_json()
-        print(req)
+        
         # Always force author IDs to be the actual user
         req["author_id"] = session["id"]
         CommentModel = get_comment_model(data=req)
