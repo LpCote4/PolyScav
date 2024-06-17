@@ -14,10 +14,12 @@ def get_uploader():
 
 
 def upload_file(*args, **kwargs):
+    
     file_obj = kwargs.get("file")
     challenge_id = kwargs.get("challenge_id") or kwargs.get("challenge")
     page_id = kwargs.get("page_id") or kwargs.get("page")
     file_type = kwargs.get("type", "standard")
+    
     location = kwargs.get("location")
 
     # Validate location and default filename to uploaded file's name
@@ -49,9 +51,46 @@ def upload_file(*args, **kwargs):
 
     uploader = get_uploader()
     location = uploader.upload(file_obj=file_obj, filename=filename, path=parent)
+    print(location)
     model_args["location"] = location
+    formats_video = [
+    "mp4",
+    "avi",
+    "mkv",
+    "mov",
+    "wmv",
+    "flv",
+    "webm",
+    "mpeg",
+    "3gp",
+    "ogv"
+    ]
+    formats_image = [
+    "jpeg",
+    "png",
+    "gif",
+    "bmp",
+    "tiff",
+    "svg",
+    "webp",
+    "raw",
+    "heic",
+    "ico",
+    "jpg"
+    ]
+    
+    if location.split('.')[1] in formats_image:
+        location = location.split('.')[0] + ".png"
+    if location.split('.')[1] in formats_video:
+        
+        if kwargs.get("first") == True:
+            
+            location = location.split('.')[0] + ".png"
+        else:
+            
+            location = location.split('.')[0] + ".mp4"
     model_args["sha1sum"] = sha1sum
-
+    model_args["location"] = location
     existing_file = Files.query.filter_by(location=location).first()
     if existing_file:
         for k, v in model_args.items():

@@ -87,6 +87,7 @@ class FilesList(Resource):
             ),
         },
     )
+    
     def post(self):
         
         # challenge_id
@@ -104,11 +105,15 @@ class FilesList(Resource):
         objs = []
         #on genere un fichier de plus qui seras remplacer par la thumbsnail
         files += files[0],
-
-
+        vraietype = []
+        first = True
         for f in files:
+            vraietype += str(f).split('.')[1].split("\'")[0],
             try:
-                obj = uploads.upload_file(file=f, **request.form.to_dict())
+                dico = request.form.to_dict()
+                dico["first"] = first
+                obj = uploads.upload_file(file=f, **dico)
+                first = False
             except ValueError as e:
                 return {
                     "success": False,
@@ -121,6 +126,7 @@ class FilesList(Resource):
         
 
         for i in range(len(files)):
+            response.data[i]["location"] = response.data[i]["location"].split('.')[0] + "." +vraietype[i]
             response.data[i]["type"] = str(files[i]).split('\'')[3]
             path = current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"]
             #opperation a effectuer seulement sur la thumbsnail:
