@@ -367,7 +367,7 @@
 										{{ solve.user.name }}
 									</a>
 								</td>
-								<td class="flag imageContainer" id="{{ solve.id }}"><img id="{{solve.provided}}" style="width: 50px;" height="auto"></td>
+								<td class="flag imageContainer" id="{{solve.provided}}"></td>
 								<td class="text-center">{{ solve.challenge.category }}</td>
 								<td class="text-center">{{ solve.challenge.value }}</td>
 								<td class="text-center solve-time">
@@ -502,7 +502,7 @@
 										{{ fail.user.name }}
 									</a>
 								</td>
-								<td class="text-center imageContainer"><img id="{{fail.provided}}" style="width: 50px;" height="auto">
+								<td class="text-center imageContainer" id="{{fail.provided}}">
 								</td>
 								<td class="text-center solve-time">
 									<span data-time="{{ fail.date | isoformat }}"></span>

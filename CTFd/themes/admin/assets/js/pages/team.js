@@ -10,40 +10,62 @@ import Vue from "vue";
 import CommentBox from "../components/comments/CommentBox.vue";
 import UserAddForm from "../components/teams/UserAddForm.vue";
 import { copyToClipboard } from "../compat/ui";
-import Alpine from "alpinejs";
 
-window.Alpine = Alpine;
 window.CTFd = CTFd;
 window.carouselPosition = 0;
 window.carouselMax = 0;
 
-function blobToDataURL(blob, callback) {
-  var a = new FileReader();
-  a.onload = function (e) {
-    callback(e.target.result);
-  };
-  a.readAsDataURL(blob);
+async function showProvided(element) {
+  let provide = element.id;
+  console.log(provide);
+  let mediaContents;
+  try {
+    mediaContents = JSON.parse(provide);
+  } catch {}
+  //si media content est defis c que le provied est des photos/video
+  //sinon c autre chose genre du texte
+  if (mediaContents) {
+    let thumbsnailAvailable = false;
+    for (let i = 0; i < mediaContents.length; i++) {
+      console.log(mediaContents[i]);
+      if (mediaContents[i]["type"] == "thumbsnail") {
+        console.log(mediaContents[i]["type"]);
+        console.log(mediaContents[i]["location"]);
+        thumbsnailAvailable = true;
+        let thumbsnail = createMediaElement(mediaContents[i]);
+        thumbsnail.style.width = "50px";
+        thumbsnail.style.height = "auto";
+        thumbsnail.src = "/files/" + mediaContents[i]["location"];
+        element.appendChild(thumbsnail);
+      }
+    }
+    if (!thumbsnailAvailable) {
+      let text = document.createElement("p");
+      text.textContent = "No thumbsnail Available for the current media";
+      element.appendChild(text);
+    }
+  } else {
+    let text = document.createElement("p");
+    text.textContent = provide;
+    element.appendChild(text);
+  }
 }
-function loadThumbsnail() {
-  window.thumbsnail;
-}
-Alpine.data("Media", () => ({
-  standings: [],
-  brackets: [],
-  activeBracket: null,
-
-  async init() {
-    let response = CTFd.fetch(`/api/v1/medias`, {
-      method: "GET",
-    });
-
-    const body = (await response).json();
-    console.log(body);
-  },
-}));
-Alpine.start();
-async function blobToImage(element) {
-  console.log(element);
+function createMediaElement(mediaContent) {
+  let htmlElement;
+  if (mediaContent["type"] == "video/mp4") {
+    htmlElement = document.createElement("video");
+    htmlElement.controls = true;
+    htmlElement.type = "video/mp4";
+  } else if (
+    mediaContent["type"] == "image/png" ||
+    mediaContent["type"] == "thumbsnail"
+  ) {
+    htmlElement = document.createElement("img");
+    htmlElement.type = "image/png";
+  }
+  htmlElement.src = "/files/" + mediaContent["location"];
+  console.log(htmlElement.src);
+  return htmlElement;
 }
 
 function createTeam(event) {
@@ -543,7 +565,7 @@ $(() => {
 
   let elements = document.getElementsByClassName("imageContainer");
   for (let i = 0; i < elements.length; i++) {
-    blobToImage(elements[i]);
+    showProvided(elements[i]);
   }
 
   $(".members-team").click(function (_e) {

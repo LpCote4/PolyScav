@@ -13,6 +13,7 @@ from CTFd.utils import uploads
 from CTFd.utils.decorators import admins_only
 from CTFd.utils.helpers.models import build_model_filters
 from moviepy.editor import *
+from PIL import Image
 
 files_namespace = Namespace("files", description="Endpoint to retrieve Files")
 
@@ -87,17 +88,11 @@ class FilesList(Resource):
         },
     )
     def post(self):
-        count = 0
-        for x in os.walk(current_app.config.get("UPLOAD_FOLDER")):
-            count +=1
-        print(count)
-        files = request.files.getlist("file")
-        print(files)
+        
         # challenge_id
         # page_id
-
+        files = request.files.getlist("file")
         # Handle situation where users attempt to upload multiple files with a single location
-        print(request.form.get("location"));
         if len(files) > 1 and request.form.get("location"):
             return {
                 "success": False,
@@ -123,51 +118,52 @@ class FilesList(Resource):
 
         schema = FileSchema(many=True)
         response = schema.dump(objs)
-        print("UPLOAD_FOLDER")
-        count = 0
-        for x in os.walk(current_app.config.get("UPLOAD_FOLDER")):
-            count +=1
-        print(count)
+        
 
         for i in range(len(files)):
             response.data[i]["type"] = str(files[i]).split('\'')[3]
-            print(response.data[i]["location"])
+            path = current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"]
             #opperation a effectuer seulement sur la thumbsnail:
             if i == 0:
                 if response.data[i]["type"].find("video") != -1:
-                    clip = VideoFileClip(current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"])
-                    count = 0
-                    for x in os.walk(current_app.config.get("UPLOAD_FOLDER")):
-                        count +=1
-                    print(count)
-                    os.remove(current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"])
-                    clip.save_frame(current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"].split('.')[0]+".jpg", t = 1)
-                    count = 0
-                    for x in os.walk(current_app.config.get("UPLOAD_FOLDER")):
-                        count +=1
-                    print(count)
+                    clip = VideoFileClip(path)
+                    
+                    os.remove(path)
+                    path = path.split('.')[0]+".png"
+                    clip.save_frame(path, t = 1)
+                    
+                    response.data[i]["type"] = "image/png"
+                #we also want to reduce the size of videos thumbsnail
+                if response.data[i]["type"].find("image") != -1:
+                    image = Image.open(path)
+                    os.remove(path)
+                    #same as image.resize but keeping the ratio ;-)
+                    image.thumbnail((50, 50))
+                    image.save(path.split('.')[0]+".png")
                     response.data[i]["type"] = "thumbsnail"
+                    response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
             else:
                 if response.data[i]["type"].find("video") != -1:
-                    clip = VideoFileClip(current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"])
-                    count = 0
-                    for x in os.walk(current_app.config.get("UPLOAD_FOLDER")):
-                        count +=1
-                    print(count)
-                    os.remove(current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"])
+                    clip = VideoFileClip(path)
+                    
+                    os.remove(path)
                     clip_resized = clip.resize((800,450))
-                    clip_resized.write_videofile(current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"].split('.')[0]+".mp4")
-                    count = 0
-                    for x in os.walk(current_app.config.get("UPLOAD_FOLDER")):
-                        count +=1
-                    print(count)
+                    clip_resized.write_videofile(path.split('.')[0]+".mp4")
+                    
                     
                     response.data[i]["type"] = "video/mp4"
+                    response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".mp4"
+                
+                elif response.data[i]["type"].find("image") != -1:
+                    image = Image.open(path)
+                    os.remove(path)
+                    #same as image.resize but keeping the ratio ;-)
+                    image.thumbnail((400, 400))
+                    image.save(path.split('.')[0]+".png")
+                    response.data[i]["type"] = "image/png"
+                    response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
             
-        count = 0
-        for x in os.walk(current_app.config.get("UPLOAD_FOLDER")):
-            count +=1
-        print(count)
+        
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
