@@ -1,5 +1,5 @@
 from flask_babel import lazy_gettext as _l
-from wtforms import BooleanField, PasswordField, SelectField, StringField
+from wtforms import BooleanField, PasswordField, SelectField, StringField, HiddenField
 from wtforms.fields.html5 import EmailField, URLField
 from wtforms.validators import InputRequired
 
@@ -108,6 +108,7 @@ def TeamRegisterForm(*args, **kwargs):
     class _TeamRegisterForm(BaseForm):
         name = StringField(_l("Team Name"), validators=[InputRequired()])
         password = PasswordField(_l("Team Password"), validators=[InputRequired()])
+        color = HiddenField(_l("Team Color"))
         submit = SubmitField(_l("Create"))
 
         @property
@@ -129,6 +130,11 @@ def TeamSettingsForm(*args, **kwargs):
         )
         password = PasswordField(
             _l("New Team Password"), description=_l("Set a new team join password")
+        )
+        color = HiddenField(
+        _l("Team Color"),
+        description=_l(
+            "Color used by theme to control team aesthetics.")
         )
         confirm = PasswordField(
             _l("Confirm Current Team Password"),

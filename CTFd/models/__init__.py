@@ -592,6 +592,7 @@ class Teams(db.Model):
     name = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
+    color = db.Column(db.String(6))
     secret = db.Column(db.String(128))
 
     members = db.relationship(

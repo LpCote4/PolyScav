@@ -224,6 +224,7 @@ def new():
     elif request.method == "POST":
         teamname = request.form.get("name", "").strip()
         passphrase = request.form.get("password", "").strip()
+        teamcolor = request.form.get("color")
 
         website = request.form.get("website")
         affiliation = request.form.get("affiliation")
@@ -304,6 +305,7 @@ def new():
         team = Teams(
             name=teamname,
             password=passphrase,
+            color=teamcolor,
             captain_id=user.id,
             hidden=hidden,
             bracket_id=bracket_id,

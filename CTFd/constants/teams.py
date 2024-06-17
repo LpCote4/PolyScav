@@ -7,6 +7,7 @@ TeamAttrs = namedtuple(
         "oauth_id",
         "name",
         "email",
+        "color",
         "secret",
         "website",
         "affiliation",

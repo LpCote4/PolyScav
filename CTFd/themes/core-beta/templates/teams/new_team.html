@@ -22,8 +22,22 @@
               <b>{{ form.password.label(class="form-label") }}</b>
               {{ form.password(class="form-control") }}
             </div>
+            <div class="mb-3">
+							<b>{{ form.color.label }}</b>
+							<div class="row">
+								<div class="d-inline-block">
+									{{ form.color(id="config-color-input") }}
+									<div class="btn-group">
+										<input type="color" id="config-color-picker" class="pr-1" style="width: 100px; height: 30px;" value="" @input="setThemeColor">
+									</div>
+								</div>
+								<small class="form-text text-muted">
+									{{ form.color.description }}
+								</small>
+							</div>
+						</div>
 
-            {{ render_extra_fields(form.extra) }}
+            <!-- {{ render_extra_fields(form.extra) }} -->
 
             <div class="row ">
               <div class="col-md-12">
