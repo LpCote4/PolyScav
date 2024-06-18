@@ -49,7 +49,7 @@ def teams_new():
 @admin.route("/admin/teams/<int:team_id>")
 @admins_only
 def teams_detail(team_id):
-    print(datetime.datetime.now())
+
     team = Teams.query.filter_by(id=team_id).first_or_404()
     
     # Get members
@@ -57,17 +57,17 @@ def teams_detail(team_id):
     member_ids = [member.id for member in members]
 
     # Get Solves for all members
-    print(datetime.datetime.now())
+  
     solves = team.get_solves(admin=True)
     fails = team.get_fails(admin=True)
-    print(datetime.datetime.now())
+  
     awards = team.get_awards(admin=True)
     score = team.get_score(admin=True)
     place = team.get_place(admin=True)
 
     
     
-    print(fails[0].provided)
+    
     # Get missing Challenges for all members
     # TODO: How do you mark a missing challenge for a team?
     solve_ids = [s.challenge_id for s in solves]
@@ -79,7 +79,7 @@ def teams_detail(team_id):
         .order_by(Tracking.date.desc())
         .all()
     )
-    print(datetime.datetime.now()) 
+
     return render_template(
         "admin/teams/team.html",
         team=team,

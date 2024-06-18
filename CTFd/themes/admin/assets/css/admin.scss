@@ -17,6 +17,17 @@
   text-align: center;
 }
 
+@media (min-width: 960px) {
+  .FullSizeCarousel {
+    max-width: 50% !important;
+    max-height: 800px !important;
+    align-self: center;
+  }
+  .FullSizeCarousel .modal-content {
+    max-height: 800px !important;
+    align-self: center;
+  }
+}
 // Custom color picker on Theme page
 input[type="color"].custom-color-picker {
   padding: 5px;

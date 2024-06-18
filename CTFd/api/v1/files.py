@@ -124,7 +124,7 @@ class FilesList(Resource):
         schema = FileSchema(many=True)
         response = schema.dump(objs)
         
-
+        width = 800
         for i in range(len(files)):
             response.data[i]["location"] = response.data[i]["location"].split('.')[0] + "." +vraietype[i]
             response.data[i]["type"] = str(files[i]).split('\'')[3]
@@ -153,7 +153,10 @@ class FilesList(Resource):
                     clip = VideoFileClip(path)
                     
                     os.remove(path)
-                    clip_resized = clip.resize((800,450))
+                    
+                    
+                    
+                    clip_resized = clip.resize((width,width*(clip.size[1]/clip.size[0])))
                     clip_resized.write_videofile(path.split('.')[0]+".mp4")
                     
                     
@@ -161,10 +164,11 @@ class FilesList(Resource):
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".mp4"
                 
                 elif response.data[i]["type"].find("image") != -1:
+                    
                     image = Image.open(path)
                     os.remove(path)
                     #same as image.resize but keeping the ratio ;-)
-                    image.thumbnail((400, 400))
+                    image.thumbnail((width,width*(image.size[1]/image.size[0])))
                     image.save(path.split('.')[0]+".png")
                     response.data[i]["type"] = "image/png"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"

@@ -17,7 +17,7 @@ window.carouselMax = 0;
 
 async function showProvided(element) {
   let provide = element.id;
-  console.log(provide);
+
   let mediaContents;
   try {
     mediaContents = JSON.parse(provide);
@@ -27,16 +27,13 @@ async function showProvided(element) {
   if (mediaContents) {
     let thumbsnailAvailable = false;
     for (let i = 0; i < mediaContents.length; i++) {
-      console.log(mediaContents[i]);
       if (mediaContents[i]["type"] == "thumbsnail") {
-        console.log(mediaContents[i]["type"]);
-        console.log(mediaContents[i]["location"]);
         thumbsnailAvailable = true;
         let thumbsnail = createMediaElement(mediaContents[i]);
         thumbsnail.style.width = "50px";
         thumbsnail.style.height = "auto";
-        thumbsnail.src = "/files/" + mediaContents[i]["location"];
         element.appendChild(thumbsnail);
+        element.onclick = showLargeSubmissions;
       }
     }
     if (!thumbsnailAvailable) {
@@ -64,7 +61,7 @@ function createMediaElement(mediaContent) {
     htmlElement.type = "image/png";
   }
   htmlElement.src = "/files/" + mediaContent["location"];
-  console.log(htmlElement.src);
+
   return htmlElement;
 }
 
@@ -173,35 +170,48 @@ function updateTeam(event) {
 
 function showLargeSubmissions(_event) {
   window.carouselPosition = 0;
-  let images = JSON.parse(_event.srcElement.id);
-  console.log(images);
-  window.carouselMax = images.length;
+  let mediaContents;
+  try {
+    mediaContents = JSON.parse(_event.srcElement.id);
+  } catch {
+    mediaContents = JSON.parse(_event.srcElement.parentElement.id);
+  }
+  let decalage = false;
+  let images = mediaContents;
+
+  window.carouselMax = mediaContents.length - 1;
   let imagesHTML =
-    "<section class='slider-wrapper' ><img src onerror='reloadCarousel(this.parentElement);'><button class='slide-arrow slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:50%;'>&#8249;</button><button style='position:absolute;top:50%;left:95%' class='slide-arrow slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>&#8250;</button><ul class='slides-container' style:'list-style: none;' id='slides-container'>";
-  for (let i = 0; i < images.length; i++) {
-    let element = "";
-    if (images[i]["image"]) {
-      element =
-        `<img style="" src="` +
-        "data:text/plain;base64," +
-        atob(images[i]["image"]) +
-        `" style="width: 100%;" height="auto">`;
-    } else if (images[i]["video"]) {
-      element =
-        `<img style="" src="` +
-        "data:text/plain;base64," +
-        atob(images[i]["image"]) +
-        `" style="width: 100%;" height="auto">`;
+    "<section class='slider-wrapper'><ul class='slides-container list-unstyled' style:'list-style: none !important;' id='slides-container'>";
+  for (let i = 0; i < mediaContents.length; i++) {
+    if (mediaContents[i]["type"] != "thumbsnail") {
+      let element = createMediaElement(mediaContents[i]);
+      element.style.width = "100%";
+      element.style.objectFit = "contain";
+      element.style.height = "500px";
+
+      let lambda = document.createElement("div");
+      lambda.append(element);
+      imagesHTML +=
+        `<li class="slide ` +
+        (decalage ? i - 1 : i) +
+        "slide" +
+        `" style="min-height:50%">`;
+      imagesHTML += lambda.innerHTML;
+      imagesHTML += `</li>`;
+    } else {
+      decalage = true;
     }
-    imagesHTML += element;
-    imagesHTML += `<li class="slide ` + i + "slide" + `"></li>`;
   }
   imagesHTML += "</ul></section>";
+  imagesHTML +=
+    "<img src onerror='reloadCarousel(this.parentElement);'><button class='slide-arrow slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:45%;left:1rem'>&#8249;</button><button style='position:absolute;top:45%;right:1rem' class='slide-arrow slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>&#8250;</button>";
   ezAlert({
     title: "Visioneurs",
     body: imagesHTML,
     button: "retour",
+    additionalClassMain: "FullSizeCarousel",
   });
+  document.getElementsByClassName("modal-dialog")[0].style.listStyle = "none";
 }
 window.upCarousel = function (self) {
   window.carouselPosition += 1;
@@ -239,11 +249,18 @@ window.reloadCarousel = function (element) {
   if (window.carouselMax == 1) {
     element.getElementsByClassName("slide-arrow-next")[0].disabled = true;
   }
+
   for (let i = 0; i < window.carouselMax; i++) {
     if (i == window.carouselPosition) {
       element.getElementsByClassName(i + "slide")[0].hidden = false;
     } else {
       element.getElementsByClassName(i + "slide")[0].hidden = true;
+
+      let child = element.getElementsByClassName(i + "slide")[0].firstChild;
+
+      if (child.nodeName == "VIDEO") {
+        child.pause();
+      }
     }
   }
 };
