@@ -204,7 +204,11 @@ function showLargeSubmissions(_event) {
   }
   imagesHTML += "</ul></section>";
   imagesHTML +=
-    "<img src onerror='reloadCarousel(this.parentElement);'><button class='slide-arrow slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:45%;left:1rem'>&#8249;</button><button style='position:absolute;top:45%;right:1rem' class='slide-arrow slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>&#8250;</button>";
+    "<img src onerror='reloadCarousel(this.parentElement);'><button class='btn btn-primary carousel__navigation-button slide-arrow-prev' id='slide-arrow-prev' onclick='downCarousel(this)' style='display:block;position:absolute;top:40%;left:1rem;'>" +
+    `<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" fill="white" transform="translate(15,0) rotate(0)"></path></svg>` +
+    "</button><button style='position:absolute;top:40%;right:1rem;' class='btn btn-primary carousel__navigation-button slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>" +
+    `<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" fill="white" transform="translate(85,100) rotate(180)"></path></svg>` +
+    "</button>";
   ezAlert({
     title: "Visioneurs",
     body: imagesHTML,
@@ -217,13 +221,13 @@ window.upCarousel = function (self) {
   window.carouselPosition += 1;
   if (window.carouselPosition != window.carouselMax - 1) {
     window.reloadCarousel(self.parentElement);
-    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].hidden =
       false;
   } else {
     window.reloadCarousel(self.parentElement);
-    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].hidden =
       true;
-    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].hidden =
       false;
   }
 };
@@ -232,22 +236,22 @@ window.downCarousel = function (self) {
 
   if (window.carouselPosition != 0) {
     window.reloadCarousel(self.parentElement);
-    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].hidden =
       false;
   } else {
     window.reloadCarousel(self.parentElement);
-    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].disabled =
+    self.parentElement.getElementsByClassName("slide-arrow-prev")[0].hiddend =
       true;
-    self.parentElement.getElementsByClassName("slide-arrow-next")[0].disabled =
+    self.parentElement.getElementsByClassName("slide-arrow-next")[0].hidden =
       false;
   }
 };
 window.reloadCarousel = function (element) {
   if (window.carouselPosition == 0) {
-    element.getElementsByClassName("slide-arrow-prev")[0].disabled = true;
+    element.getElementsByClassName("slide-arrow-prev")[0].hidden = true;
   }
   if (window.carouselMax == 1) {
-    element.getElementsByClassName("slide-arrow-next")[0].disabled = true;
+    element.getElementsByClassName("slide-arrow-next")[0].hidden = true;
   }
 
   for (let i = 0; i < window.carouselMax; i++) {

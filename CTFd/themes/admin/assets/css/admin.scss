@@ -16,6 +16,11 @@
   width: 1.25em;
   text-align: center;
 }
+.carousel__navigation-button {
+  display: inline-block;
+  width: 3.5rem;
+  height: 3.5rem;
+}
 
 @media (min-width: 960px) {
   .FullSizeCarousel {
