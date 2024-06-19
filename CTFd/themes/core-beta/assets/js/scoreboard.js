@@ -15,7 +15,7 @@ window.scoreboardListLoaded = false;
 window.allImages = [];
 //start at 0 cause we call increasing methodes on start so maxCountIncrease also = starting value
 window.maxCount = 0;
-window.maxCountIncrease = 1;
+window.maxCountIncrease = 5;
 window.imageInit = false;
 window.theninit = 0;
 
