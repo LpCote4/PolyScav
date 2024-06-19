@@ -1,4 +1,6 @@
 Flask==2.0.3
+moviepy==1.0.3
+pyOpenSSL
 Werkzeug==2.0.3
 Flask-SQLAlchemy==2.5.1
 Flask-Caching==2.0.2
