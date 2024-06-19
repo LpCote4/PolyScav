@@ -17,6 +17,17 @@
 @use "includes/icons/award-icons";
 @use "includes/icons/flag-icons";
 
+.inSubmission td{
+
+  background-color:rgba($color: #FDFD96, $alpha: 0.3) !important;
+  box-shadow: none;
+}
+.inSubmission th{
+
+  background-color:rgba($color: #FDFD96, $alpha: 0.3) !important;
+  box-shadow: none;
+}
+
 h1,
 h2 {
   font-weight: 500;

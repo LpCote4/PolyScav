@@ -30,7 +30,7 @@ from CTFd.utils.decorators.visibility import (
 )
 from CTFd.utils.helpers.models import build_model_filters
 from CTFd.utils.user import get_current_team, get_current_user_type, is_admin
-
+import json
 teams_namespace = Namespace("teams", description="Endpoint to retrieve Teams")
 
 TeamModel = sqlalchemy_to_pydantic(Teams)
@@ -134,17 +134,24 @@ class TeamList(Resource):
         dictIndex = {}
         if request.args.get("ids"):
             print(request.args.get("ids"))
+            
             response = []
             for team in teams.items:
+                print(team)
+               
                 solves = team.get_solves(admin=True)
-                
+                fails = team.get_fails(admin=True)
                 for solve in solves:
-                    for str_id in request.args.get("ids")[1:-1].split(","):
-                        
-                        if "c_id:"+str(solve.challenge_id)+"t_id:"+str(team.id) == str_id[1:-1]:
-                            dictIndex[request.args.get("ids")[1:-1].split(",").index(str_id)] = solve.provided
+                    for provide in json.loads(solve.provided):
+                        if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
+                            print("hit")
+                            dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
+                for solve in fails:
+                    for provide in json.loads(solve.provided):
+                        if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
+                            print("hit")
+                            dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
                             
-                            #
         i = 0
         for key, value in dictIndex.items():
             response.append({"provided": dictIndex[i]})
@@ -231,6 +238,7 @@ class TeamPublic(Resource):
         
         response.data["place"] = team.place
         response.data["score"] = team.score
+        
         return {"success": True, "data": response.data}
 
     @admins_only

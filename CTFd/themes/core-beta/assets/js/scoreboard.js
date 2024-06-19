@@ -26,11 +26,15 @@ Alpine.data("ScoreboardDetail", () => ({
   async init() {
     window.standings = await CTFd.pages.scoreboard.getScoreboard();
     window.ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(window.standings.length)
-    console.log("await over")
-    console.log(window.ScoreboardDetail)
+    console.log("await over");
+    console.log("details");
+    console.log(window.standings);
     let option = getOption(CTFd.config.userMode, window.standings);
     var chartDom = document.getElementById('score-graph');
+
+    console.log(option.series)
     embed(chartDom, option);
+    console.log(option);
     
     this.show = window.standings.length > 0;
 
@@ -44,35 +48,37 @@ Alpine.data("ScoreboardList", () => ({
     
     async init() {
       //We are wating for those value to be loaded so we dont have to load them twice
-      
-        let responseBrackets = await CTFd.fetch(`/api/v1/brackets?type=${CTFd.config.userMode}`, {
-          method: "GET",
-        });
-        const bodyBrackets = await responseBrackets.json();
-        this.brackets = bodyBrackets["data"];
-        
-
-        let responseChallenges= await CTFd.fetch(`/api/v1/challenges`, {
-          method: "GET",
-
-        });
-        const bodyChallenges = await responseChallenges.json();
-
-        
-        let ChallengeIdToChallengeName = {}
-        for (let i = 0; i < bodyChallenges["data"].length; i++){
-          ChallengeIdToChallengeName[bodyChallenges["data"][i]["id"]] = bodyChallenges["data"][i]["name"];
-        }
-        if (window.ScoreboardDetail == 0 || window.standings == 0){
-          this.init();
-        }
-        else {
-          let last = getTenLast(window.ScoreboardDetail, window.standings, ChallengeIdToChallengeName);
-          for (let i = 0; i < last.length; i++){
-            this.standings[i] = last[i];
+        if (window.standings.length != 0){
+          let responseBrackets = await CTFd.fetch(`/api/v1/brackets?type=${CTFd.config.userMode}`, {
+            method: "GET",
+          });
+          const bodyBrackets = await responseBrackets.json();
+          this.brackets = bodyBrackets["data"];
+          
+  
+          let responseChallenges= await CTFd.fetch(`/api/v1/challenges`, {
+            method: "GET",
+  
+          });
+          const bodyChallenges = await responseChallenges.json();
+  
+          
+          let ChallengeIdToChallengeName = {}
+          for (let i = 0; i < bodyChallenges["data"].length; i++){
+            ChallengeIdToChallengeName[bodyChallenges["data"][i]["id"]] = bodyChallenges["data"][i]["name"];
           }
+          if (window.ScoreboardDetail == 0 || window.standings == 0){
+            this.init();
+          }
+          else {
+            let last = getTenLast(window.ScoreboardDetail, window.standings, ChallengeIdToChallengeName);
+            for (let i = 0; i < last.length; i++){
+              this.standings[i] = last[i];
+            }
+          }
+          window.nbStandings = this.standings.length;
         }
-        window.nbStandings = this.standings.length;
+        
       
     
     
@@ -88,16 +94,25 @@ Alpine.data("ScoreboardList", () => ({
 Alpine.data("LogImage", () => ({
   
   async init() {
-    window.allImages.push(this.id);
+    console.log(this.standing);
+    window.allImages.push(JSON.parse(this.id)[0]["id"]);
     if (window.allImages.length > window.maxCount){
-      document.getElementById(this.id).hidden = true
+      let obj = document.getElementById(this.id);
+      if (this.type == "manual"){
+        obj.className += "inSubmission";
+      }
+      obj.text = 'c_id:'+this.challenge_id+'t_id:'+this.team_id
+      obj.id = JSON.parse(this.id)[0]["id"];
+      obj.hidden = true
     }
     
     if (window.allImages.length == window.maxCountIncrease || window.allImages.length == window.nbStandings){
       if (!window.imageInit){
-
-        window.imageInit = true;
-        self.show10More();
+        if (window.allImages.length != 0){
+          window.imageInit = true;
+          self.show10More();
+        }
+        
       }
       
       
@@ -240,12 +255,12 @@ this.showLargeSubmissions = function(_event) {
   imagesHTML += "<button style='position:absolute;top:40%;right:1rem;' class='btn btn-primary carousel__navigation-button slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>" +
   `<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" fill="white" transform="translate(85,100) rotate(180)"></path></svg>` +
   "</button>";
-
+  console.log(element.text);
   ezAlert({
       title: "Visioneurs",
       body:imagesHTML,
       button: "retour",
-      ids: element.id,
+      ids: element.text,
       additionalClassMain: "FullSizeCarousel",
   }, helpers, CTFd.user);
   document.getElementsByClassName("modal-dialog")[0].style.listStyle = "none";

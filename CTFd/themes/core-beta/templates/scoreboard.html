@@ -24,6 +24,7 @@
         <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>
       </div>
     </div>
+    
     <div id="scoreboard" class="row" x-data="ScoreboardList">
       
         <template x-if="brackets.length && standings.length">
@@ -54,7 +55,7 @@
   
               <tbody id="challengeRecap">
                 <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)">
-                  <tr  :id="'c_id:'+standing.challenge_id+'t_id:'+standing.team_id" x-data="{id: 'c_id:'+standing.challenge_id+'t_id:'+standing.team_id,}" >
+                  <tr  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type,}" >
                     <th scope="row" class="text-center" x-text="standing.time"></th>
                     <td>
                       <a :href="standing.account_id" x-text="standing.team_name"></a>

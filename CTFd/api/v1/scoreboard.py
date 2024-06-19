@@ -5,7 +5,7 @@ from flask_restx import Namespace, Resource
 from sqlalchemy import select
 
 from CTFd.cache import cache, make_cache_key, make_cache_key_with_query_string
-from CTFd.models import Awards, Brackets, Solves, Users, db, Teams, Fails
+from CTFd.models import Awards, Brackets, Solves, Users, db, Teams, Fails, Challenges
 from CTFd.utils import get_config
 from CTFd.utils.dates import isoformat, unix_time_to_utc
 from CTFd.utils.decorators.visibility import (
@@ -66,7 +66,18 @@ class ScoreboardList(Resource):
             for u in user_standings:
                 membership[u.team_id][u.user_id]["score"] = int(u.score)
 
+        
+        
+
         for i, x in enumerate(standings):
+            potentialScore = 0
+            team_ids = [x.account_id for team in standings]
+            fails = Fails.query.filter(Fails.account_id.in_(team_ids))
+            for fail in fails:
+                challenge = Challenges.query.filter_by(id=fail.challenge_id).first_or_404()
+                if challenge.type == "manual":
+                    potentialScore += challenge.value
+
             entry = {
                 "pos": i + 1,
                 "account_id": x.account_id,
@@ -77,6 +88,7 @@ class ScoreboardList(Resource):
                 "score": int(x.score),
                 "bracket_id": x.bracket_id,
                 "bracket_name": x.bracket_name,
+                "potential_score": potentialScore,
             }
 
             if mode == TEAMS_MODE:
@@ -108,21 +120,25 @@ class ScoreboardDetail(Resource):
         
         solves = Solves.query.filter(Solves.account_id.in_(team_ids))
         awards = Awards.query.filter(Awards.account_id.in_(team_ids))
+        fails = Fails.query.filter(Fails.account_id.in_(team_ids))
+        
 
         freeze = get_config("freeze")
 
         if freeze:
             solves = solves.filter(Solves.date < unix_time_to_utc(freeze))
             awards = awards.filter(Awards.date < unix_time_to_utc(freeze))
+            fails = fails.filter(fails.date < unix_time_to_utc(freeze))
             
 
         solves = solves.all()
         awards = awards.all()
+        fails = fails.all()
         
 
         # Build a mapping of accounts to their solves and awards
         solves_mapper = defaultdict(list)
-        
+        fails_mapper = defaultdict(list)
 
         for solve in solves:
             solves_mapper[solve.account_id].append(
@@ -133,8 +149,10 @@ class ScoreboardDetail(Resource):
                     "user_id": solve.user_id,
                     "value": solve.challenge.value,
                     "date": isoformat(solve.date),
+                    "provided":solve.provided,
                 }
             )
+        
 
         for award in awards:
             solves_mapper[award.account_id].append(
@@ -145,19 +163,38 @@ class ScoreboardDetail(Resource):
                     "user_id": award.user_id,
                     "value": award.value,
                     "date": isoformat(award.date),
+                    
                 }
             )
-
+        
+        for fail in fails:
+            
+            fails_mapper[fail.account_id].append(
+                {
+                    "challenge_id": fail.challenge_id,
+                    "account_id": fail.account_id,
+                    "team_id": fail.team_id,
+                    "user_id": fail.user_id,
+                    "value": Challenges.query.filter_by(id=fail.challenge_id).first_or_404().value,
+                    "type": Challenges.query.filter_by(id=fail.challenge_id).first_or_404().type,
+                    "date": isoformat(fail.date),
+                    "provided":fail.provided,
+                })
+            
         
         # Sort all solves by date
         for team_id in solves_mapper:
             solves_mapper[team_id] = sorted(
                 solves_mapper[team_id], key=lambda k: k["date"]
             )
-
+        for team_id in fails_mapper:
+            fails_mapper[team_id] = sorted(
+                fails_mapper[team_id], key=lambda k: k["date"]
+            )
         
 
         for i, x in enumerate(standings):
+
             response[i + 1] = {
                 "id": x.account_id,
                 "account_url": generate_account_url(account_id=x.account_id),
@@ -166,6 +203,7 @@ class ScoreboardDetail(Resource):
                 "bracket_id": x.bracket_id,
                 "bracket_name": x.bracket_name,
                 "solves": solves_mapper.get(x.account_id, []),
+                "fails": fails_mapper.get(x.account_id, []),
                 
             }
         return {"success": True, "data": response}

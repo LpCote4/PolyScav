@@ -41,9 +41,14 @@ export function getOption(mode, places) {
     grid: {
       containLabel: true,
     },
-    xAxis: {
+    xAxis: [{
       type: 'category',
     },
+    {
+      type: 'category',
+    },
+  ],
+    
     yAxis: {
       type: 'value'
     },
@@ -59,19 +64,35 @@ export function getOption(mode, places) {
       },
     ],
     series: [{
+      xAxisIndex: 0,
       type: 'bar',
+      showBackground: false,
+      itemStyle: {
+        color: "#FDFD96", // red color
+      },
+    },
+    {
+      xAxisIndex: 1,
+      type: 'bar',
+      showBackground: false,
     }],
   };
 
   const teams = Object.keys(places);
+  console.log("teams")
+  console.log(places)
   let lsData = [];
   let lsScore = [];
+  let lsPotentialScore = [];
   for (let i = 0; i < teams.length; i++) {
     lsData.push(places[teams[i]]["name"]);
     lsScore.push(places[teams[i]]["score"])
+    lsPotentialScore.push(places[teams[i]]["score"]+places[teams[i]]["potential_score"])
   }
-  option.xAxis.data = lsData;
-  option.series[0].data = lsScore;
+  option.xAxis[0].data = lsData;
+  option.xAxis[1].data = lsData;
+  option.series[0].data = lsPotentialScore;
+  option.series[1].data = lsScore;
   return option;
 }
 
@@ -84,6 +105,7 @@ export function getTenLast(places, standings, dictIdChallenge){
   
   for (let i = 0; i < ((teams.length >= max) ? max : teams.length); i++) {
     let solves = places[teams[i]]["solves"];
+    let fails = places[teams[i]]["fails"];
     let dictIdNom = dictUserIdToUserName(standings[i]["members"]);
     
     for (let solved = 0; solved < solves.length; solved++) {
@@ -117,6 +139,41 @@ export function getTenLast(places, standings, dictIdChallenge){
       if (last10.length == 0){
         
         last10.push(solves[solved]);
+      }
+    }
+    for (let solved = 0; solved < fails.length; solved++) {
+      if (fails[solved]["type"] == "manual"){
+        let challengeDate = fails[solved].date;
+        fails[solved]["team_name"] = places[teams[i]].name;
+        fails[solved]["user_name"] = dictIdNom[fails[solved]["user_id"]];
+        fails[solved]["challenge_name"] = dictIdChallenge[fails[solved]["challenge_id"]];
+        fails[solved]["time"] = getTimeStamp(challengeDate);
+
+
+        for (let x = last10.length; x > 0; x--){
+          if (dayjs(challengeDate) > dayjs(last10[x-1].date)){
+            let temp = last10[x-1]
+            last10[x-1] = fails[solved];
+            if (x < max){
+              last10[x] = temp;
+            }
+            
+          }
+          else{
+            if (last10.length < max && last10.length == x){
+              last10.push(fails[solved]);
+              break
+            }
+            else{
+              break;
+            }
+            
+          }
+        }
+        if (last10.length == 0){
+          
+          last10.push(fails[solved]);
+        }
       }
     }
 
