@@ -65,7 +65,7 @@
                     
                     <td x-text="standing.user_name"></td>
                     <td x-text="standing.challenge_name"></td>
-                    <td x-data="LogImage" ><img id="img" width="100px"></td>
+                    <td x-data="LogImage" class="imageContainer"></td>
                     <td x-text="standing.value"></td>
                     
                   </tr>
@@ -76,7 +76,7 @@
             </table>
           </div>
           
-          <button class="btn btn-outline-secondary" style="position: relative; left: 45%;" @click="show10More">plus...</button>
+          <button class="btn btn-primary" id="plus-btn" style="position: relative; left: 45%;" @click="show10More">plus...</button>
         </div>
       <div class="col-md-12" x-show="! standings.length">
         <h3 class="text-center text-muted">{% trans %}Scoreboard is empty{% endtrans %}</h3>

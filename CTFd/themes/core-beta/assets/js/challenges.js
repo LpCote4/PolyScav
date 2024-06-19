@@ -205,19 +205,47 @@ Alpine.data("Challenge", () => ({
   async submitManualChallenge() {
     let form = document.getElementById("form-file-input");
     document.getElementById("form-file-input").value = this;
-    await helpers.files.upload(form, {}, async function (response) {
-      let thiis = document.getElementById("form-file-input").value;
-      console.log(JSON.stringify(response.data));
-      thiis.response = await CTFd.pages.challenge.submitChallenge(
-        thiis.id,
-          JSON.stringify(response.data),
-      );
-      if (thiis.response.success){
-        thiis.response.data.status = "correct";
-        thiis.response.data.message = "succesfuly send!";
+    
+    try {
+      await helpers.files.upload(form, {}, async function (response) {
+        let thiis = document.getElementById("form-file-input").value;
+  
+        thiis.$dispatch("load-challenges");
+        try {
+          thiis.response = await CTFd.pages.challenge.submitChallenge(
+            thiis.id,
+              JSON.stringify(response.data),
+          );
+          if (thiis.response.success){
+            thiis.response.data.status = "correct";
+            thiis.response.data.message = "succesfuly send!";
+          }
+          else {
+            thiis.response.data.status = "incorrect";
+            thiis.response.data.message = "en error happen pls contact the admin";
+          }
+    
+          thiis.$dispatch("load-challenges");
+          console.log(JSON.stringify(response.data));
+        }
+        catch (error){
+          thiis.response = {};
+          thiis.response.data = {};
+          thiis.response.data.status = "incorrect";
+          thiis.response.data.message = "en error happen pls contact the admin for "+error;
+          thiis.$dispatch("load-challenges");
+        }
+        
+        
+      });
+    }
+    catch (error){
+        this.response = {};
+        this.response.data = {};
+        this.response.data.status = "incorrect";
+        this.response.data.message = "en error happen pls contact the admin for "+error;
+        this.$dispatch("load-challenges");
       }
-      thiis.$dispatch("load-challenges");
-    });
     
     
    

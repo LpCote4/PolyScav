@@ -11,7 +11,7 @@
             v-model.lazy="comment"
           ></textarea>
           <button
-            class="btn btn-sm btn-success btn-outlined float-right"
+            class="btn btn-sm btn-primary btn-outlined float-right"
             type="submit"
             @click="submitComment()"
           >
@@ -182,7 +182,7 @@ export default {
           this.getArgs(),
           () => {
             this.loadComments();
-          },
+          }
         );
       }
       this.comment = "";

@@ -85,3 +85,20 @@ blockquote {
     background-color 0.3s,
     border-color 0.3s;
 }
+.carousel__navigation-button {
+  display: inline-block;
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+@media (min-width: 960px) {
+  .FullSizeCarousel {
+    max-width: 50% !important;
+    max-height: 800px !important;
+    align-self: center;
+  }
+  .FullSizeCarousel .modal-content {
+    max-height: 800px !important;
+    align-self: center;
+  }
+}

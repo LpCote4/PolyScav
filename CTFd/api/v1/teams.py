@@ -131,15 +131,24 @@ class TeamList(Resource):
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
+        dictIndex = {}
         if request.args.get("ids"):
+            print(request.args.get("ids"))
             response = []
             for team in teams.items:
                 solves = team.get_solves(admin=True)
-                fails = team.get_fails(admin=True)
+                
                 for solve in solves:
                     for str_id in request.args.get("ids")[1:-1].split(","):
-                        if "c_id:"+str(solve.challenge_id)+"t_id:"+str(team.id) == str_id[1:-1]: 
-                            response.append({"provided":solve.provided})
+                        
+                        if "c_id:"+str(solve.challenge_id)+"t_id:"+str(team.id) == str_id[1:-1]:
+                            dictIndex[request.args.get("ids")[1:-1].split(",").index(str_id)] = solve.provided
+                            
+                            #
+        i = 0
+        for key, value in dictIndex.items():
+            response.append({"provided": dictIndex[i]})
+            i +=1
         
         return {
             "meta": {

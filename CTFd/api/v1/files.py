@@ -39,7 +39,6 @@ files_namespace.schema_model(
 
 @files_namespace.route("")
 class FilesList(Resource):
-    @admins_only
     @files_namespace.doc(
         description="Endpoint to get file objects in bulk",
         responses={
@@ -62,6 +61,7 @@ class FilesList(Resource):
         },
         location="query",
     )
+    @admins_only
     def get(self, query_args):
         q = query_args.pop("q", None)
         field = str(query_args.pop("field", None))
@@ -76,7 +76,7 @@ class FilesList(Resource):
 
         return {"success": True, "data": response.data}
 
-    @admins_only
+
     @files_namespace.doc(
         description="Endpoint to get file objects in bulk",
         responses={
@@ -182,7 +182,7 @@ class FilesList(Resource):
 
 @files_namespace.route("/<file_id>")
 class FilesDetail(Resource):
-    @admins_only
+
     @files_namespace.doc(
         description="Endpoint to get a specific file object",
         responses={
@@ -203,7 +203,6 @@ class FilesDetail(Resource):
 
         return {"success": True, "data": response.data}
 
-    @admins_only
     @files_namespace.doc(
         description="Endpoint to delete a file object",
         responses={200: ("Success", "APISimpleSuccessResponse")},

@@ -1,6 +1,6 @@
 {
   "_CommentBox-!~{00n}~.js": {
-    "file": "assets/CommentBox-CLpRv8KL.css",
+    "file": "assets/CommentBox-CDKeutU3.css",
     "src": "_CommentBox-!~{00n}~.js"
   },
   "_CommentBox-4JStNkbp.js": {
@@ -31,6 +31,16 @@
     ],
     "css": [
       "assets/CommentBox-CLpRv8KL.css"
+    ]
+  },
+  "_CommentBox-BDzLOPzP.js": {
+    "file": "assets/CommentBox-BDzLOPzP.js",
+    "name": "CommentBox",
+    "imports": [
+      "assets/js/pages/main.js"
+    ],
+    "css": [
+      "assets/CommentBox-CDKeutU3.css"
     ]
   },
   "_CommentBox-BI6icATE.js": {
@@ -1437,14 +1447,14 @@
     "isEntry": true
   },
   "assets/js/pages/challenge.js": {
-    "file": "assets/pages/challenge-CRuQsmpG.js",
+    "file": "assets/pages/challenge-CWMX2VoW.js",
     "name": "pages/challenge",
     "src": "assets/js/pages/challenge.js",
     "isEntry": true,
     "imports": [
       "assets/js/pages/main.js",
       "_tab-BQ89H4S0.js",
-      "_CommentBox-DMh1dqZP.js"
+      "_CommentBox-BDzLOPzP.js"
     ],
     "css": [
       "assets/challenge-CCBTyrLt.css"
@@ -1471,14 +1481,14 @@
     ]
   },
   "assets/js/pages/editor.js": {
-    "file": "assets/pages/editor-Bcv_33Y6.js",
+    "file": "assets/pages/editor-DCrt7WLL.js",
     "name": "pages/editor",
     "src": "assets/js/pages/editor.js",
     "isEntry": true,
     "imports": [
       "assets/js/pages/main.js",
       "_htmlmixed-DT4sR3rU.js",
-      "_CommentBox-DMh1dqZP.js"
+      "_CommentBox-BDzLOPzP.js"
     ]
   },
   "assets/js/pages/main.js": {
@@ -1543,14 +1553,14 @@
     ]
   },
   "assets/js/pages/team.js": {
-    "file": "assets/pages/team-BgH4LZMq.js",
+    "file": "assets/pages/team-Bo0CjMh5.js",
     "name": "pages/team",
     "src": "assets/js/pages/team.js",
     "isEntry": true,
     "imports": [
       "assets/js/pages/main.js",
       "_graphs-C8GhxMv2.js",
-      "_CommentBox-DMh1dqZP.js",
+      "_CommentBox-BDzLOPzP.js",
       "_echarts.common-C3a4Jv12.js"
     ]
   },
@@ -1564,14 +1574,14 @@
     ]
   },
   "assets/js/pages/user.js": {
-    "file": "assets/pages/user-CxZ6MPhH.js",
+    "file": "assets/pages/user-DLRHn5iD.js",
     "name": "pages/user",
     "src": "assets/js/pages/user.js",
     "isEntry": true,
     "imports": [
       "assets/js/pages/main.js",
       "_graphs-C8GhxMv2.js",
-      "_CommentBox-DMh1dqZP.js",
+      "_CommentBox-BDzLOPzP.js",
       "_echarts.common-C3a4Jv12.js"
     ]
   },

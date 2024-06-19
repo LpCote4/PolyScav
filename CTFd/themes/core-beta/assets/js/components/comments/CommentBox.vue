@@ -11,7 +11,7 @@
             v-model.lazy="comment"
           ></textarea>
           <button
-            class="btn btn-sm btn-success btn-outlined float-end"
+            class="btn btn-sm btn-primary btn-outlined float-end"
             type="submit"
             @click="submitComment()"
           >

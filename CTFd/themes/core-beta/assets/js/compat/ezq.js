@@ -73,14 +73,28 @@ export function ezAlert(args, helpers, user) {
   let modalBody = document.createElement("div");
   
   if (typeof args.body === "string") {
-    modalBody.innerHTML = `<p>${args.body}</p>`;
+    
+    modalBody.innerHTML = args.body;
+    
+    for (let i = 0; i < modalBody.children.length; i++){
+
+      let child = modalBody.children[i]
+      modalElement.getElementsByClassName("modal-body")[0].appendChild(child.cloneNode(true));
+
+    }
+
     
   } else {
     modalBody.innerHTML = $(args.body);
   }
+ 
+  if (args.additionalClassMain) {
+    modalElement.getElementsByClassName("modal-dialog")[0].className = modalElement.getElementsByClassName("modal-dialog")[0].className + " " + args.additionalClassMain;
+  }
   
-  modalBody = modalBody.children[1];
-  modalElement.getElementsByClassName("modal-body")[0].append(modalBody);
+  
+  
+
   modalElement.getElementsByClassName("modal-title")[0].textContent = args.title;
 
   let modalLikeBtn = document.createElement("button");
@@ -88,6 +102,7 @@ export function ezAlert(args, helpers, user) {
   
   modalLikeBtn.className = "btn";
   modalLikeBtn.style.backgroundColor = "rgba(255, 130, 238, 0.7)";
+
   modalElement.getElementsByClassName("modal-body")[0].append(modalLikeBtn);
   loadLike(args.ids, helpers, modalLikeBtn, user);
   
