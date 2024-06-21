@@ -59,14 +59,7 @@
           :key="comment.id"
         >
           <div class="card-body pl-0 pb-0 pt-2 pr-2">
-            <button
-              type="button"
-              class="btn-close float-end"
-              aria-label="Close"
-              @click="deleteComment(comment.id)"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
+            
           </div>
           <div class="card-body">
             <div class="card-text" v-html="comment.html"></div>

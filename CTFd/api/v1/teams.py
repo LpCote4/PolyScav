@@ -142,15 +142,21 @@ class TeamList(Resource):
                 solves = team.get_solves(admin=True)
                 fails = team.get_fails(admin=True)
                 for solve in solves:
-                    for provide in json.loads(solve.provided):
-                        if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
-                            print("hit")
-                            dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
+                    try:
+                        for provide in json.loads(solve.provided):
+                            if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
+                                print("hit")
+                                dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
+                    except:
+                        continue
                 for solve in fails:
-                    for provide in json.loads(solve.provided):
-                        if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
-                            print("hit")
-                            dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
+                    try:
+                        for provide in json.loads(solve.provided):
+                            if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
+                                print("hit")
+                                dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
+                    except:
+                        continue
                             
         i = 0
         for key, value in dictIndex.items():

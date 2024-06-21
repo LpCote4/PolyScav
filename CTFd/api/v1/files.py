@@ -87,11 +87,12 @@ class FilesList(Resource):
             ),
         },
     )
-    
+   
     def post(self):
         
         # challenge_id
         # page_id
+        print()
         files = request.files.getlist("file")
         # Handle situation where users attempt to upload multiple files with a single location
         if len(files) > 1 and request.form.get("location"):
@@ -144,7 +145,8 @@ class FilesList(Resource):
                     image = Image.open(path)
                     os.remove(path)
                     #same as image.resize but keeping the ratio ;-)
-                    image.thumbnail((50, 50))
+                    if not request.args.get("admin", False):
+                        image.thumbnail((50, 50))
                     image.save(path.split('.')[0]+".png")
                     response.data[i]["type"] = "thumbsnail"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
@@ -168,7 +170,8 @@ class FilesList(Resource):
                     image = Image.open(path)
                     os.remove(path)
                     #same as image.resize but keeping the ratio ;-)
-                    image.thumbnail((width,width*(image.size[1]/image.size[0])))
+                    if not request.args.get("admin", False):
+                        image.thumbnail((width,width*(image.size[1]/image.size[0])))
                     image.save(path.split('.')[0]+".png")
                     response.data[i]["type"] = "image/png"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
@@ -178,6 +181,7 @@ class FilesList(Resource):
             return {"success": False, "errors": response.errors}, 400
 
         return {"success": True, "data": response.data}
+    
 
 
 @files_namespace.route("/<file_id>")

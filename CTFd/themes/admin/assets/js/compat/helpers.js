@@ -28,7 +28,7 @@ const files = {
       title: "Upload Progress",
     });
     $.ajax({
-      url: CTFd.config.urlRoot + "/api/v1/files",
+      url: CTFd.config.urlRoot + "/api/v1/files?admin=true",
       data: formData,
       type: "POST",
       cache: false,

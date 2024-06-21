@@ -9,6 +9,7 @@ import { Modal, Tab, Tooltip } from "bootstrap";
 import highlight from "./theme/highlight";
 import favicon from ".";
 import { default as helpers } from "./compat/helpers";
+import { el } from "lolight";
 
 window.values = [];
 window.TEAM_ID = CTFd.team.id;
@@ -107,12 +108,12 @@ Alpine.data("Challenge", () => ({
   },
 
   async showChallenge() {
+    
     new Tab(this.$el).show();
   },
 
   async showSolves() {
     this.solves = await CTFd.pages.challenge.loadSolves(this.id);
-    console.log(this.solves)
     this.solves.forEach(solve => {
       solve.date = dayjs(solve.date).format("MMMM Do, h:mm:ss A");
       return solve;
@@ -123,7 +124,7 @@ Alpine.data("Challenge", () => ({
   async showComments() {
     const commentBox = Vue.extend(CommentBox);
     let vueContainer = document.createElement("div");
-    console.log(window);
+    document.querySelector("#comment-box").removeChild(document.querySelector("#comment-box").firstChild)
     document.querySelector("#comment-box").appendChild(vueContainer);
     new commentBox({
       propsData: { type: "team", id: window.TEAM_ID, challenge_id: this.id },
@@ -203,49 +204,102 @@ Alpine.data("Challenge", () => ({
   },
 
   async submitManualChallenge() {
-    let form = document.getElementById("form-file-input");
-    document.getElementById("form-file-input").value = this;
-    
-    try {
-      await helpers.files.upload(form, {}, async function (response) {
-        let thiis = document.getElementById("form-file-input").value;
-  
-        thiis.$dispatch("load-challenges");
+    //dans le cas ou le user envoit des fichier
+   
+    if (!document.getElementById("file-input").hidden){
+      let form = document.getElementById("form-file-input");
+      document.getElementById("form-file-input").value = this;
+      var formData = new FormData(form);
+      // output as an object
+      
+      if (Object.fromEntries(formData)["file"].name != ""){
+        
         try {
-          thiis.response = await CTFd.pages.challenge.submitChallenge(
-            thiis.id,
-              JSON.stringify(response.data),
-          );
-          if (thiis.response.success){
-            thiis.response.data.status = "correct";
-            thiis.response.data.message = "succesfuly send!";
-          }
-          else {
-            thiis.response.data.status = "incorrect";
-            thiis.response.data.message = "en error happen pls contact the admin";
-          }
-    
-          thiis.$dispatch("load-challenges");
-          console.log(JSON.stringify(response.data));
+          await helpers.files.upload(form, {}, async function (response) {
+            let thiis = document.getElementById("form-file-input").value;
+            
+            thiis.$dispatch("load-challenges");
+            try {
+              thiis.response = await CTFd.pages.challenge.submitChallenge(
+                thiis.id,
+                  JSON.stringify(response.data),
+              );
+              
+              if (thiis.response.success){
+                if (thiis.response.data.status == "already_solved"){
+                  thiis.response.data.status = "already_solved";
+                  thiis.response.data.message = "already sent!";
+                }
+                else{
+                  thiis.response.data.status = "correct";
+                  thiis.response.data.message = "succesfuly send!";
+                }
+                
+              }
+              else {
+                thiis.response.data.status = "incorrect";
+                thiis.response.data.message = "en error happen pls contact the admin";
+              }
+        
+              thiis.$dispatch("load-challenges");
+              console.log(JSON.stringify(response.data));
+            }
+            catch (error){
+              thiis.response = {};
+              thiis.response.data = {};
+              thiis.response.data.status = "incorrect";
+              thiis.response.data.message = "en error happen pls contact the admin for "+error;
+              thiis.$dispatch("load-challenges");
+            }
+            document.getElementById("challenge-submit").disabled = false;
+            document.getElementById('spinner').hidden = true;
+            
+            
+          });
         }
         catch (error){
-          thiis.response = {};
-          thiis.response.data = {};
-          thiis.response.data.status = "incorrect";
-          thiis.response.data.message = "en error happen pls contact the admin for "+error;
-          thiis.$dispatch("load-challenges");
-        }
-        
-        
-      });
-    }
-    catch (error){
-        this.response = {};
-        this.response.data = {};
-        this.response.data.status = "incorrect";
-        this.response.data.message = "en error happen pls contact the admin for "+error;
-        this.$dispatch("load-challenges");
+            this.response = {};
+            this.response.data = {};
+            this.response.data.status = "incorrect";
+            this.response.data.message = "en error happen pls contact the admin for "+error;
+            this.$dispatch("load-challenges");
+            document.getElementById("challenge-submit").disabled = false;
+            document.getElementById('spinner').hidden = true;
+          }
       }
+      else{
+        alert("You're currently trying to send nothing.");
+      }
+     
+    }
+    //dans le cas ou le user envoit du text
+    else{
+      if (document.getElementById("text-input").value != ""){
+        this.response = await CTFd.pages.challenge.submitChallenge(
+          this.id,
+          document.getElementById("text-input").value,
+        );
+        if (this.response.success){
+          
+          this.response.data.status = "correct";
+          this.response.data.message = "succesfuly send!";
+        }
+        else {
+          this.response.data.status = "incorrect";
+          this.response.data.message = "en error happen pls contact the admin";
+        }
+  
+        this.$dispatch("load-challenges");
+        
+      }
+      else {
+        alert("You're currently trying to send nothing.");
+      }
+      document.getElementById('spinner').hidden = true;
+    
+    }
+    document.getElementById("file-input").textContent = "Selectioner un fichier";
+    document.getElementById("text-input").value = "";
     
     
    
@@ -344,6 +398,9 @@ Alpine.data("ChallengeBoard", () => ({
   getCategories() {
     
     
+  
+    
+  
     
       
     
@@ -373,6 +430,7 @@ Alpine.data("ChallengeBoard", () => ({
     return categories;
   },
   getChallenges(category) {
+    
     let challenges = this.challenges;
     
     
@@ -396,8 +454,9 @@ Alpine.data("ChallengeBoard", () => ({
   },
 
   async loadChallenges() {
+   
     this.challenges = await CTFd.pages.challenges.getChallenges();
-    console.log(this.comments);
+    
     
     
   },
@@ -406,6 +465,7 @@ Alpine.data("ChallengeBoard", () => ({
     
     await CTFd.pages.challenge.displayChallenge(challengeId, challenge => {
       challenge.data.view = addTargetBlank(challenge.data.view);
+      
       Alpine.store("challenge").data = challenge.data;
 
       // nextTick is required here because we're working in a callback
@@ -430,4 +490,71 @@ Alpine.data("ChallengeBoard", () => ({
 
 Alpine.start();
 
+this.hit = function(){
+  let fileInput = document.getElementById("file-input");
+  let textInput = document.getElementById("text-input");
+  let fileInputFa = document.getElementById("file-input-fa");
+  let textInputFa = document.getElementById("text-input-fa");
 
+  if (textInput.hidden){
+    fileInput.hidden = true;
+    textInput.hidden = false;
+    fileInputFa.hidden = false;
+    textInputFa.hidden = true;
+  }
+  else{
+    fileInput.hidden = false;
+    textInput.hidden = true;
+    fileInputFa.hidden = true;
+    textInputFa.hidden = false;
+  }
+}
+
+this.changeLabel = function(event){
+  let output = event.target.files.length + " folder(s) uploded";
+  let totalSize = 0;
+  let formats_video = [
+    "mp4",
+    "avi",
+    "mkv",
+    "mov",
+    "wmv",
+    "flv",
+    "webm",
+    "mpeg",
+    "3gp",
+    "ogv"
+    ]
+    let formats_image = [
+    "jpeg",
+    "png",
+    "gif",
+    "bmp",
+    "tiff",
+    "svg",
+    "webp",
+    "raw",
+    "heic",
+    "ico",
+    "jpg"
+    ]
+  
+  for (let i = 0; i < event.target.files.length; i++){
+    let extension = event.target.files[i].name.split(".")[1];
+    totalSize += event.target.files[i].size;
+    if (!formats_video.includes(extension) && !formats_image.includes(extension)){
+      alert("We can not garented ." + extension + " will be supported")
+    }
+
+  }
+  if (totalSize > 200000000){
+    alert("The folders you're trying to upload are bigger than 200MB and will be further compressed to reduce their size even more. This may impact the quality. FolderSize: "+totalSize/1000000 + "MB" );
+  }
+  if (event.target.files.length > 20){
+    alert("We know you have a lot to flex, but you cannot upload more than 20 files at a time.");
+    output = "";
+    event.target.value = '' ;
+    document.getElementById("file-input").textContent = output;
+  }
+  document.getElementById("file-input").textContent = output;
+}

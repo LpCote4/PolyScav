@@ -13,6 +13,7 @@ window.standings = 0;
 window.nbStandings = 0;
 window.scoreboardListLoaded = false;
 window.allImages = [];
+window.allSubmited = [];
 //start at 0 cause we call increasing methodes on start so maxCountIncrease also = starting value
 window.maxCount = 0;
 window.maxCountIncrease = 5;
@@ -26,15 +27,14 @@ Alpine.data("ScoreboardDetail", () => ({
   async init() {
     window.standings = await CTFd.pages.scoreboard.getScoreboard();
     window.ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(window.standings.length)
-    console.log("await over");
-    console.log("details");
-    console.log(window.standings);
+  
+
     let option = getOption(CTFd.config.userMode, window.standings);
     var chartDom = document.getElementById('score-graph');
 
-    console.log(option.series)
+
     embed(chartDom, option);
-    console.log(option);
+
     
     this.show = window.standings.length > 0;
 
@@ -94,23 +94,39 @@ Alpine.data("ScoreboardList", () => ({
 Alpine.data("LogImage", () => ({
   
   async init() {
-    console.log(this.standing);
-    window.allImages.push(JSON.parse(this.id)[0]["id"]);
-    if (window.allImages.length > window.maxCount){
+    let notAMedia = false;
+    let id = 0;
+    try{
+      id = JSON.parse(this.id)[0]["id"];
+      window.allImages.push(id);
+      window.allSubmited.push(id);
+    }
+    catch (error){
+      notAMedia = true;
+      id = "t" + String(Math.random()*100000000000000000);
+      window.allSubmited.push(id);
+      
+    }
+      
+    if (window.allSubmited.length > window.maxCount){
       let obj = document.getElementById(this.id);
       if (this.type == "manual"){
         obj.className += "inSubmission";
       }
-      obj.text = 'c_id:'+this.challenge_id+'t_id:'+this.team_id
-      obj.id = JSON.parse(this.id)[0]["id"];
+      if (!notAMedia){
+        obj.text = 'c_id:'+this.challenge_id+'t_id:'+this.team_id;
+      }
+      
+      obj.id = id;
       obj.hidden = true
     }
+
     
-    if (window.allImages.length == window.maxCountIncrease || window.allImages.length == window.nbStandings){
+    if (window.allSubmited.length == window.maxCountIncrease || window.allSubmited.length == window.nbStandings){
       if (!window.imageInit){
-        if (window.allImages.length != 0){
+        if (window.allSubmited.length != 0){
           window.imageInit = true;
-          self.show10More();
+          self.showXMore();
         }
         
       }
@@ -118,20 +134,28 @@ Alpine.data("LogImage", () => ({
       
       
     }
+    
+    
+    
   },
 }));
 
 
-this.show10More = async function(e){
+this.showXMore = async function(e){
   let imageToPull = [];
+  let decalage = 0;
   for (let i = window.maxCount; i < window.maxCount+window.maxCountIncrease; i++){
-    if (window.allImages[i]){
-      imageToPull.push(window.allImages[i]);
-      document.getElementById(window.allImages[i]).hidden = false;
+    if (maxCount + i < window.allSubmited.length){
+      if (!(window.allSubmited[i]).toString().includes("t")){
+        imageToPull.push(window.allImages[i - decalage]);
+      }
+      else {
+        decalage++;
+      }
+      document.getElementById(window.allSubmited[i]).hidden = false;
     }
-    
   }
-  
+
   let responseChallengesMedia= await CTFd.fetch(`/api/v1/teams?ids=`+JSON.stringify(imageToPull), {
     method: "GET",
   });
@@ -139,10 +163,10 @@ this.show10More = async function(e){
   const bodyChallengesMedia = await responseChallengesMedia.json();
 
   
-  for (let i = 0; i < window.maxCountIncrease; i++){
-    if (maxCount + i < window.allImages.length){
+  for (let i = 0; i < window.maxCountIncrease-decalage; i++){
+    if (maxCount + i < imageToPull.length){
       let provide = bodyChallengesMedia["data"][i]["provided"];
-      let element = document.getElementById(window.allImages[i+window.maxCount]);
+      let element = document.getElementById(imageToPull[i]);
   
       let mediaContents;
       try {
@@ -255,7 +279,7 @@ this.showLargeSubmissions = function(_event) {
   imagesHTML += "<button style='position:absolute;top:40%;right:1rem;' class='btn btn-primary carousel__navigation-button slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>" +
   `<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" fill="white" transform="translate(85,100) rotate(180)"></path></svg>` +
   "</button>";
-  console.log(element.text);
+
   ezAlert({
       title: "Visioneurs",
       body:imagesHTML,
