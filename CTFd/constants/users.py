@@ -6,6 +6,7 @@ UserAttrs = namedtuple(
         "id",
         "oauth_id",
         "name",
+        "color",
         "email",
         "type",
         "secret",
