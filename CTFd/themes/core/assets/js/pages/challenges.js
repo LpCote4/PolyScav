@@ -64,6 +64,7 @@ const displayChal = chal => {
     );
 
     let modal = $("#challenge-window").find(".modal-dialog");
+    
     if (
       window.init.theme_settings &&
       window.init.theme_settings.challenge_window_size

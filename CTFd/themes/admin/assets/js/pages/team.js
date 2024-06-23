@@ -326,7 +326,7 @@ function deleteSelectedSubmissions(event, target) {
 
   ezQuery({
     title: `Delete ${title}`,
-    body: `Are you sure you want to delete ${submissionIDs.length} ${target_string}?`,
+    body: `Are you sure you want to delete ${submissionIDs.length} ${target_string}? (If the challenge has already been approved, please also delete it in the submissions tabs.)`,
     success: function () {
       const reqs = [];
       for (var subId of submissionIDs) {

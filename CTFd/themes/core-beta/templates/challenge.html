@@ -1,6 +1,6 @@
 <div :class="getStyles()" role="document" x-data="Challenge" x-init="id = {{ challenge.id }}">
   <div class="modal-content">
-    <div class="modal-body py-4 px-4 px-sm-5">
+    <div class="modal-body style py-4 px-4 px-sm-5">
 
       <div>
         <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -116,7 +116,7 @@
                 {% endfor %}
               </div>
             {% endif %}
-
+            
             {% if max_attempts > 0 %}
               <div class="row text-center">
                 <div class="col-12">
@@ -126,81 +126,87 @@
                 </div>
               </div>
             {% endif %}
-           
-            {% if solves == 0 and challenge.type == "manual" %}
-            <div class="row submit-row">
-              <div class="col-12 col-sm-8 w-100">
-                {% block input %}
-                  {% if challenge.type != "manual" %}
-                    <input
-                        id="challenge-id" class="challenge-id" type="hidden"
-                        value="{{ challenge.id }}"
-                    >
-                    <input
-                        id="challenge-input" class="challenge-input form-control"
-                        type="text" name="submission"
-                        @keyup.enter="submitChallenge()"
-                        placeholder="{% trans %}Flag{% endtrans %}" x-model="submission"
-                    >
-                  {% else %}
-                  <input
-                  id="challenge-id" class="challenge-id" type="hidden"
-                  value="{{ challenge.id }}">
-                  <input
-                        id="challenge-input"
-                        type="hidden"
-                    >
-                    <label for="form-file-input-btn" id="file-input" style="display: flex;" class="btn btn-outline-secondary">
-                      Selectioner un fichier
-                    </label>
-                   
-                    
-                    <textarea id="text-input" style="display: flex; width: 100%;--bs-btn-hover-color:black;--bs-btn-hover-bg:white;--bs-btn-active-bg:white;" class="btn btn-outline-secondary" hidden></textarea>
-                    <form id="form-file-input" style="display: none;">
-                      <input id="form-file-input-btn" onchange="changeLabel(event)" class="challenge-input form-control"
-                      type="file" name="file" multiple >
-                    </form>
-                    <div style="align-items: end; text-align: end; width: 100%;">
-                      <button id="replaceBytext" class="btn" style="border-style: outset;" onclick="hit()">
-                        <i class="fa fa-file-text" id="text-input-fa" style="text-align: end;" aria-hidden="true"  ></i>
-                        <i class="fa fa-upload" id="file-input-fa" aria-hidden="true" hidden></i>
-                      </button>
-                    </div>
-                    
-                  {% endif %}
-                {% endblock %}
-              </div>
-
-              <div style="padding-top: 5%;" class="mt-3 mt-sm-0 key-submit">
-                {% block submit %}
-                {% if challenge.type != "manual" %}
-                      <button
-                            id="challenge-submit"
-                            class="challenge-submit btn btn-primary w-10 h-100 float-end" type="submit" 
-                            @click.debounce.500ms="submitChallenge()"
+            
+            {% if not solved_by_me and challenge.type == "manual" and attempts == 0 %}
+              <div class="row submit-row">
+                <div class="col-12 col-sm-8 w-100">
+                  {% block input %}
+                    {% if challenge.type != "manual" %}
+                      <input
+                          id="challenge-id" class="challenge-id" type="hidden"
+                          value="{{ challenge.id }}"
                       >
-                        {% trans %}Submit{% endtrans %}
-                      </button>
-                  {% else %}
+                      <input
+                          id="challenge-input" class="challenge-input form-control"
+                          type="text" name="submission"
+                          @keyup.enter="submitChallenge()"
+                          placeholder="{% trans %}Flag{% endtrans %}" x-model="submission"
+                      >
+                    {% else %}
+                    <input
+                    id="challenge-id" class="challenge-id" type="hidden"
+                    value="{{ challenge.id }}">
+                    <input
+                          id="challenge-input"
+                          type="hidden"
+                      >
+                      <label for="form-file-input-btn" id="file-input" style="display: flex;" class="btn btn-outline-secondary">
+                        Selectioner un fichier
+                      </label>
                     
-                      <button
-                            id="challenge-submit"
-                            class="challenge-submit btn btn-primary w-10 h-100 float-end" type="submit" onclick="document.getElementById('challenge-submit').disabled = true;document.getElementById('spinner').hidden = false;"
-                            @click.debounce.500ms="submitManualChallenge()"
+                      
+                      <textarea id="text-input" style="display: flex; width: 100%;--bs-btn-hover-color:black;--bs-btn-hover-bg:white;--bs-btn-active-bg:white;" class="btn btn-outline-secondary" hidden></textarea>
+                      <form id="form-file-input" style="display: none;">
+                        <input id="form-file-input-btn" onchange="changeLabel(event)" class="challenge-input form-control"
+                        type="file" name="file" multiple >
+                      </form>
+                      <div style="align-items: end; text-align: end; width: 100%;">
+                        <button id="replaceBytext" class="btn" style="border-style: outset;" onclick="hit()">
+                          <i class="fa fa-file-text" id="text-input-fa" style="text-align: end;" aria-hidden="true"  ></i>
+                          <i class="fa fa-upload" id="file-input-fa" aria-hidden="true" hidden></i>
+                        </button>
+                      </div>
+                      
+                    {% endif %}
+                  {% endblock %}
+                </div>
+
+                <div style="padding-top: 5%;" class="mt-3 mt-sm-0 key-submit">
+                  {% block submit %}
+                  {% if challenge.type != "manual" %}
+                        <button
+                              id="challenge-submit"
+                              class="challenge-submit btn btn-primary w-10 h-100 float-end" type="submit" 
+                              @click.debounce.500ms="submitChallenge()"
                         >
                           {% trans %}Submit{% endtrans %}
                         </button>
-                        <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner" id="spinner" hidden></i>
+                    {% else %}
+                      
+                        <button
+                              id="challenge-submit"
+                              class="challenge-submit btn btn-primary w-10 h-100 float-end" type="submit" onclick="document.getElementById('challenge-submit').disabled = true;document.getElementById('spinner').hidden = false;"
+                              @click.debounce.500ms="submitManualChallenge()"
+                          >
+                            {% trans %}Submit{% endtrans %}
+                          </button>
+                          <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner" id="spinner" hidden></i>
+                      
+                    {% endif %}
                     
-                  {% endif %}
-                  
-                {% endblock %}
+                  {% endblock %}
+                </div>
               </div>
-            </div>
-            {% else %}
+            {% elif solved_by_me %}
             <h3 class="challenge-value text-center">
-              Challenge already solved!
+              Challenge alread2y solved!
             </h3>
+            {% elif attempts > 0 %}
+            <h3 class="challenge-value text-center">
+              Challenge already submitted. Please contact the admin if you think this is an error!
+            </h3>
+           
+            
             {% endif %}
             <div class="uploadStatus notification-row"></div>
             <div class="row notification-row">
