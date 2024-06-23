@@ -17,6 +17,10 @@
 @use "includes/icons/award-icons";
 @use "includes/icons/flag-icons";
 
+.table>tbody>tr>td {
+  padding: 0rem 0rem !important;
+}
+
 .inSubmission td{
 
   background-color:rgba($color: #FDFD96, $alpha: 0.3) !important;

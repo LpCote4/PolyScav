@@ -127,13 +127,13 @@
       "assets/js/index.js"
     ]
   },
-  "_CommentBox.963ce03d.js": {
-    "file": "assets/CommentBox.963ce03d.js",
+  "_CommentBox.d2b1ed1e.js": {
+    "file": "assets/CommentBox.d2b1ed1e.js",
     "imports": [
       "assets/js/index.js"
     ],
     "css": [
-      "assets/CommentBox.e98f14be.css"
+      "assets/CommentBox.10bc69fd.css"
     ]
   },
   "_index.f8fe3a43.js": {
@@ -155,17 +155,8 @@
     "src": "CommentBox.css"
   },
   "assets/scss/main.scss": {
-    "file": "assets/main.56b56058.css",
+    "file": "assets/main.6197f4c0.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
-  },
-  "_CommentBox.d2b1ed1e.js": {
-    "file": "assets/CommentBox.d2b1ed1e.js",
-    "imports": [
-      "assets/js/index.js"
-    ],
-    "css": [
-      "assets/CommentBox.10bc69fd.css"
-    ]
   }
 }
