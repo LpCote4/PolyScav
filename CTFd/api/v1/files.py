@@ -90,10 +90,23 @@ class FilesList(Resource):
    
     def post(self):
         
+        heavyData = False
         # challenge_id
         # page_id
-        print()
+        #max 200000000 + 1 Mb pour le reste des info de la request
+        if int(request.headers.get('Content-Length')) > 201000000 and int(request.headers.get('Content-Length')) < 2001000000:
+            heavyData = True
+        elif int(request.headers.get('Content-Length')) > 2001000000:
+            return {
+                "success": False,
+                "errors": {
+                    "location": ["File can't be bigger than 2GB, even with compression. Please use external tools and share it with a link"]
+                },
+            }, 400
+
+
         files = request.files.getlist("file")
+        
         # Handle situation where users attempt to upload multiple files with a single location
         if len(files) > 1 and request.form.get("location"):
             return {
@@ -115,21 +128,40 @@ class FilesList(Resource):
                 dico["first"] = first
                 obj = uploads.upload_file(file=f, **dico)
                 first = False
+                
             except ValueError as e:
                 return {
                     "success": False,
                     "errors": {"location": [str(e)]},
                 }, 400
             objs.append(obj)
-
+        
         schema = FileSchema(many=True)
         response = schema.dump(objs)
         
         width = 800
+        fps = 24
+        if (heavyData):
+            width = 500
+            fps = 15
+        size = 0
         for i in range(len(files)):
-            response.data[i]["location"] = response.data[i]["location"].split('.')[0] + "." +vraietype[i]
+            response.data[i]["location"] = response.data[i]["location"].split('.')[0] + "." +vraietype[i].lower()
+            path = current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"]
+            try:
+                size += os.path.getsize(path)
+            except:
+                #il tente de parcourire les fichier temporaire
+                size += 0
+        
+        for i in range(len(files)):
+            response.data[i]["location"] = response.data[i]["location"].split('.')[0] + "." +vraietype[i].lower()
             response.data[i]["type"] = str(files[i]).split('\'')[3]
             path = current_app.config.get("UPLOAD_FOLDER")+"/"+response.data[i]["location"]
+            directory = ""
+            for x in path.split('/')[0:-1]:
+                directory += "/"+x
+           
             #opperation a effectuer seulement sur la thumbsnail:
             if i == 0:
                 if response.data[i]["type"].find("video") != -1:
@@ -159,6 +191,8 @@ class FilesList(Resource):
                     
                     
                     clip_resized = clip.resize((width,width*(clip.size[1]/clip.size[0])))
+                    
+                    clip_resized = clip_resized.set_fps(fps) 
                     clip_resized.write_videofile(path.split('.')[0]+".mp4")
                     
                     

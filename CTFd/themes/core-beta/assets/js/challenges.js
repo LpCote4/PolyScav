@@ -514,10 +514,12 @@ this.changeLabel = function(event){
   let output = event.target.files.length + " folder(s) uploded";
   let totalSize = 0;
   let formats_video = [
+    "hevc",
     "mp4",
     "avi",
     "mkv",
     "mov",
+    "MOV",
     "wmv",
     "flv",
     "webm",
@@ -542,13 +544,16 @@ this.changeLabel = function(event){
   for (let i = 0; i < event.target.files.length; i++){
     let extension = event.target.files[i].name.split(".")[1];
     totalSize += event.target.files[i].size;
-    if (!formats_video.includes(extension) && !formats_image.includes(extension)){
+    if (!formats_video.includes(extension.toLowerCase()) && !formats_image.includes(extension.toLowerCase())){
       alert("We can not garented ." + extension + " will be supported")
     }
 
   }
-  if (totalSize > 200000000){
-    alert("The folders you're trying to upload are bigger than 200MB and will be further compressed to reduce their size even more. This may impact the quality. FolderSize: "+totalSize/1000000 + "MB" );
+  if (totalSize > 200000000 && totalSize < 2000000000){
+    alert("The folders you're trying to upload are bigger than 200MB and will be further compressed to reduce their size even more. This may impact the quality and the upload time by a lot!. FolderSize: "+totalSize/1000000 + "MB" );
+  }
+  else if (totalSize > 2000000000){
+    alert("File can't be bigger than 2GB, even with compression. Please use external tools and share it with a link");
   }
   if (event.target.files.length > 20){
     alert("We know you have a lot to flex, but you cannot upload more than 20 files at a time.");

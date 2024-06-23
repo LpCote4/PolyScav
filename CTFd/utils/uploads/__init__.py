@@ -50,14 +50,16 @@ def upload_file(*args, **kwargs):
     sha1sum = hash_file(fp=file_obj)
 
     uploader = get_uploader()
-    location = uploader.upload(file_obj=file_obj, filename=filename, path=parent)
+    location = uploader.upload(file_obj=file_obj, filename=filename.lower(), path=parent)
     print(location)
     model_args["location"] = location
     formats_video = [
+    "hevc",
     "mp4",
     "avi",
     "mkv",
     "mov",
+    "MOV",
     "wmv",
     "flv",
     "webm",
@@ -79,9 +81,9 @@ def upload_file(*args, **kwargs):
     "jpg"
     ]
     
-    if location.split('.')[1] in formats_image:
+    if location.split('.')[1].lower() in formats_image:
         location = location.split('.')[0] + ".png"
-    if location.split('.')[1] in formats_video:
+    if location.split('.')[1].lower() in formats_video:
         
         if kwargs.get("first") == True:
             
