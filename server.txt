@@ -1,0 +1,49 @@
+Setting Up serve.py as a Background Service
+1. Change ip to 0.0.0.0 and port to 80 in serve.py
+
+To ensure that your serve.py script continues to run even after you close your OpenOcean droplet console, follow these steps:
+
+2. Create the Service File
+--------------------------
+Create a systemd service file to manage your script.
+
+sudo nano /etc/systemd/system/serve.service
+
+
+Add the following content to the file:
+```
+[Unit]
+Description=My Serve Script
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/python3 /root/PolyScav/serve.py
+Restart=always
+User=root
+WorkingDirectory=/root/PolyScav
+
+[Install]
+WantedBy=multi-user.target
+```
+
+3. Setup systemctl
+Reload systemd to recognize the new service:
+	sudo systemctl daemon-reload
+
+Start the Service:
+	sudo systemctl start serve.service
+
+Enable the Service at Boot:
+	sudo systemctl enable serve.service
+
+Check the status of the service to ensure it's running correctly:
+	sudo systemctl status serve.service
+
+If the service fails to start, check the logs for error messages:
+	sudo journalctl -u serve.service
+
+
+4. Reload and Restart After Changes
+After making any necessary changes, reload the systemd daemon and restart the service:
+	sudo systemctl daemon-reload
+	sudo systemctl restart serve.service
