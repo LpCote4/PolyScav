@@ -90,7 +90,7 @@ def upload_file(*args, **kwargs):
             location = location.split('.')[0] + ".png"
         else:
             
-            location = location.split('.')[0] + ".mp4"
+            location = location.split('.')[0] + ".webm"
     model_args["sha1sum"] = sha1sum
     model_args["location"] = location
     existing_file = Files.query.filter_by(location=location).first()

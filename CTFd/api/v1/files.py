@@ -189,15 +189,16 @@ class FilesList(Resource):
                     os.remove(path)
                     
                     
-                    
-                    clip_resized = clip.resize((width,width*(clip.size[1]/clip.size[0])))
+                    print(clip.w)
+                    print(clip.h)
+                    clip_resized = clip.resize((width*(clip.size[1]/clip.size[0]), width))
                     
                     clip_resized = clip_resized.set_fps(fps) 
-                    clip_resized.write_videofile(path.split('.')[0]+".mp4")
+                    clip_resized.write_videofile(path.split('.')[0]+".webm", codec="libvpx")
                     
                     
-                    response.data[i]["type"] = "video/mp4"
-                    response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".mp4"
+                    response.data[i]["type"] = "video/webm"
+                    response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".webm"
                 
                 elif response.data[i]["type"].find("image") != -1:
                     

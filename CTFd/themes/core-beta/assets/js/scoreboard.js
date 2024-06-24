@@ -216,10 +216,12 @@ this.showXMore = async function(e){
 this.createMediaElement = function(mediaContent) {
 
   let htmlElement;
-  if (mediaContent["type"] == "video/mp4") {
+  if (mediaContent["type"] == "video/webm") {
     htmlElement = document.createElement("video");
     htmlElement.controls = true;
-    htmlElement.type = "video/mp4";
+    htmlElement.type = "video/webm";
+    
+    htmlElement.poster = ""
   } else if (
     mediaContent["type"] == "image/png" ||
     mediaContent["type"] == "thumbsnail"
