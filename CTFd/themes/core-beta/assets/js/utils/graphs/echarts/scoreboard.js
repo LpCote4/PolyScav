@@ -57,7 +57,7 @@ export function getOption(mode, places) {
       type: 'bar',
       showBackground: false,
       itemStyle: {
-        color: "#FDFD96", // red color
+        color: places[teams[index]]["color"] || "#FDFD96", // red color
       },
     },
     {
@@ -77,7 +77,7 @@ export function getOption(mode, places) {
     lsData.push(places[teams[i]]["name"]);
     lsScore.push(places[teams[i]]["score"])
     lsPotentialScore.push(places[teams[i]]["score"]+places[teams[i]]["potential_score"])
-  }
+}
   option.xAxis[0].data = lsData;
   option.xAxis[1].data = lsData;
   option.series[0].data = lsPotentialScore;
