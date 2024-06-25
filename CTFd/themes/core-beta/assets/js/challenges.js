@@ -215,7 +215,7 @@ Alpine.data("Challenge", () => ({
       if (Object.fromEntries(formData)["file"].name != ""){
         
         try {
-          await helpers.files.upload(form, {}, async function (response) {
+          await helpers.files.upload(form, {"id":this.id}, async function (response) {
             let thiis = document.getElementById("form-file-input").value;
             
             thiis.$dispatch("load-challenges");

@@ -14,6 +14,10 @@ from CTFd.utils.decorators import admins_only
 from CTFd.utils.helpers.models import build_model_filters
 from moviepy.editor import *
 from PIL import Image
+import subprocess
+import shlex
+import json
+import ffprobe
 
 files_namespace = Namespace("files", description="Endpoint to retrieve Files")
 
@@ -87,7 +91,9 @@ class FilesList(Resource):
             ),
         },
     )
-   
+
+    
+
     def post(self):
         
         heavyData = False
@@ -104,7 +110,7 @@ class FilesList(Resource):
                 },
             }, 400
 
-
+        print(request.form.get("id"))
         files = request.files.getlist("file")
         
         # Handle situation where users attempt to upload multiple files with a single location
@@ -188,10 +194,12 @@ class FilesList(Resource):
                     
                     os.remove(path)
                     
+                    if clip.rotation == 90:
+                        clip = clip.resize(clip.size[::-1])
+                        clip.rotation = 0
                     
-                    print(clip.w)
-                    print(clip.h)
-                    clip_resized = clip.resize((width*(clip.size[1]/clip.size[0]), width))
+                    clip_resized = clip.resize((width*(clip.size[0]/clip.size[1]), 
+                    width))
                     
                     clip_resized = clip_resized.set_fps(fps) 
                     clip_resized.write_videofile(path.split('.')[0]+".webm", codec="libvpx")
@@ -217,7 +225,27 @@ class FilesList(Resource):
 
         return {"success": True, "data": response.data}
     
+    def get_rotation(self, file_path_with_file_name):
+        """
+        Function to get the rotation of the input video file.
+        Adapted from gist.github.com/oldo/dc7ee7f28851922cca09/revisions using the ffprobe comamand by Lord Neckbeard from
+        stackoverflow.com/questions/5287603/how-to-extract-orientation-information-from-videos?noredirect=1&lq=1
 
+        Returns a rotation None, 90, 180 or 270
+        """
+        cmd = "ffmpeg -loglevel error -select_streams v:0 -show_entries stream_tags=rotate -of default=nw=1:nk=1"
+        args = shlex.split(cmd)
+        args.append(file_path_with_file_name)
+        # run the ffprobe process, decode stdout into utf-8 & convert to JSON
+        ffprobe_output = subprocess.check_output(args).decode('utf-8')
+        if len(ffprobe_output) > 0:  # Output of cmdis None if it should be 0
+            ffprobe_output = json.loads(ffprobe_output)
+            rotation = ffprobe_output
+
+        else:
+            rotation = 0
+
+        return rotation
 
 @files_namespace.route("/<file_id>")
 class FilesDetail(Resource):

@@ -257,8 +257,18 @@ export function ezQuery(args) {
 export function ezProgressBar(args) {
   
   if (args.target) {
+    
     args.target.style.width = args.width +"%";
     args.target.style.backgroundColor = "green";
+    if (args.width >= 100) {
+      let thiis = document.getElementById("form-file-input").value
+
+      thiis.response = {};
+      thiis.response.data = {};
+      thiis.response.data.status = "already_solved";
+      thiis.response.data.message = "Vidéo en cours de compression, elle devrait apparaître sous peu (tout dépend de la taille !), ne fermer pas la page!!!";
+      thiis.$dispatch("load-challenges");
+    }
     return args.target;
   }
 
