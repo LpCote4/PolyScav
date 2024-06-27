@@ -17,7 +17,6 @@ from PIL import Image
 import subprocess
 import shlex
 import json
-import ffprobe
 from CTFd.api.v1 import challenges
 
 
