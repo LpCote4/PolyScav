@@ -168,89 +168,119 @@ def outgoingPost(request):
     solves = Solves.query.filter_by(
         account_id=user.account_id, challenge_id=challenge_id
     ).first()
-
+    
+    failsPerTeam = Fails.query.filter_by(
+        account_id=user.account_id, challenge_id=challenge_id
+    ).first()
+    failsPerId = Fails.query.filter_by(challenge_id=challenge_id).first()
     # Challenge not solved yet
-    if not solves:
-        # Hit max attempts
-        max_tries = challenge.max_attempts
-        if max_tries and fails >= max_tries > 0:
-            return (
-                {
-                    "success": True,
-                    "data": {
-                        "status": "incorrect",
-                        "message": "You have 0 tries remaining",
+    print(failsPerId)
+    alreadyBlockForSubmition = False
+    if not failsPerTeam:
+        alreadyBlockForSubmition = False
+    else:
+        if failsPerTeam.type != "manual":
+            alreadyBlockForSubmition = True
+
+    if not solves or solves.type != "manual":
+        if not alreadyBlockForSubmition:
+            # Hit max attempts
+            max_tries = challenge.max_attempts
+            if max_tries and fails >= max_tries > 0:
+                return (
+                    {
+                        "success": True,
+                        "data": {
+                            "status": "incorrect",
+                            "message": "You have 0 tries remaining",
+                        },
                     },
-                },
-                403,
-            )
-        print("hit7")
-        status, message = chal_class.attempt(challenge, request)
-        if status:  # The challenge plugin says the input is right
-            print("hit11")
-
-            if ctftime() or current_user.is_admin():
-                chal_class.solve(
-                    user=user, team=team, challenge=challenge, request=request
+                    403,
                 )
-                clear_standings()
-                clear_challenges()
-            print("hit12")
+            print("hit7")
+            status, message = chal_class.attempt(challenge, request)
+            if status:  # The challenge plugin says the input is right
+                print("hit11")
 
-            log(
-                "submissions",
-                "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [CORRECT]",
-                name=user.name,
-                submission=(submission if isJson else  json.dumps(submission)).encode("utf-8"),
-                challenge_id=challenge_id,
-                kpm=kpm,
-            )
-            print("hit13")
-            return {
-                "success": True,
-                "data": {"status": "correct", "message": message},
-            }
-        else:  # The challenge plugin says the input is wrong
-            print("hit114")
-            if ctftime() or current_user.is_admin():
-                chal_class.fail(
-                    user=user, team=team, challenge=challenge, request=request
+                if ctftime() or current_user.is_admin():
+                    chal_class.solve(
+                        user=user, team=team, challenge=challenge, request=request
+                    )
+                    clear_standings()
+                    clear_challenges()
+                print("hit12")
+
+                log(
+                    "submissions",
+                    "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [CORRECT]",
+                    name=user.name,
+                    submission=(submission if isJson else  json.dumps(submission)).encode("utf-8"),
+                    challenge_id=challenge_id,
+                    kpm=kpm,
                 )
-                clear_standings()
-                clear_challenges()
-            print("hit115")
-
-            log(
-                "submissions",
-                "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [WRONG]",
-                name=user.name,
-                submission=(submission if isJson else  json.dumps(submission)).encode("utf-8"),
-                challenge_id=challenge_id,
-                kpm=kpm,
-            )
-            print("hit8")
-            if max_tries:
-                # Off by one since fails has changed since it was gotten
-                attempts_left = max_tries - fails - 1
-                tries_str = pluralize(attempts_left, singular="try", plural="tries")
-                # Add a punctuation mark if there isn't one
-                if message[-1] not in "!().;?[]{}":
-                    message = message + "."
+                print("hit13")
                 return {
                     "success": True,
-                    "data": {
-                        "status": "incorrect",
-                        "message": "{} You have {} {} remaining.".format(
-                            message, attempts_left, tries_str
-                        ),
-                    },
+                    "data": {"status": "correct", "message": message},
                 }
-            else:
-                return {
-                    "success": True,
-                    "data": {"status": "incorrect", "message": message},
-                }
-        print("hit9")
+            else:  # The challenge plugin says the input is wrong
+                print("hit114")
+                if ctftime() or current_user.is_admin():
+                    chal_class.fail(
+                        user=user, team=team, challenge=challenge, request=request
+                    )
+                    clear_standings()
+                    clear_challenges()
+                print("hit115")
+
+                log(
+                    "submissions",
+                    "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [WRONG]",
+                    name=user.name,
+                    submission=(submission if isJson else  json.dumps(submission)).encode("utf-8"),
+                    challenge_id=challenge_id,
+                    kpm=kpm,
+                )
+                print("hit8")
+                if max_tries:
+                    # Off by one since fails has changed since it was gotten
+                    attempts_left = max_tries - fails - 1
+                    tries_str = pluralize(attempts_left, singular="try", plural="tries")
+                    # Add a punctuation mark if there isn't one
+                    if message[-1] not in "!().;?[]{}":
+                        message = message + "."
+                    return {
+                        "success": True,
+                        "data": {
+                            "status": "incorrect",
+                            "message": "{} You have {} {} remaining.".format(
+                                message, attempts_left, tries_str
+                            ),
+                        },
+                    }
+                else:
+                    return {
+                        "success": True,
+                        "data": {"status": "incorrect", "message": message},
+                    }
+            print("hit9")
+        else:
+            log(
+            "submissions",
+            "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [ALREADY SUBMITED]",
+            name=user.name,
+            submission=(submission if isJson else  json.dumps(submission)).encode("utf-8"),
+            challenge_id=challenge_id,
+            kpm=kpm,
+        )
+        
+        return {
+            "success": True,
+            "data": {
+                "status": "already_submited",
+                "message": "You already submited this",
+            },
+        }
     # Challenge already solved
     else:
         log(

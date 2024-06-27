@@ -886,11 +886,7 @@ class Submissions(db.Model):
 
 class Solves(Submissions):
     __tablename__ = "solves"
-    __table_args__ = (
-        db.UniqueConstraint("challenge_id", "user_id"),
-        db.UniqueConstraint("challenge_id", "team_id"),
-        {},
-    )
+    
     id = db.Column(
         None, db.ForeignKey("submissions.id", ondelete="CASCADE"), primary_key=True
     )

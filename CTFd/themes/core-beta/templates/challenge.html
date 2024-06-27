@@ -127,7 +127,7 @@
               </div>
             {% endif %}
             
-            {% if not solved_by_me and challenge.type == "manual" and attempts == 0 %}
+            {% if not solved_by_me or challenge.type == "manual"%}
               <div class="row submit-row">
                 <div class="col-12 col-sm-8 w-100">
                   {% block input %}

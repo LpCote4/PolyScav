@@ -189,7 +189,8 @@ class Submission(Resource):
 
         req = request.get_json()
         submission_type = req.get("type")
-
+        print(submission_type)
+        input()
         if submission_type == "correct":
             solve = Solves(
                 user_id=submission.user_id,
