@@ -266,7 +266,7 @@ export function ezProgressBar(args) {
       thiis.response = {};
       thiis.response.data = {};
       thiis.response.data.status = "already_solved";
-      thiis.response.data.message = "Vidéo en cours de compression, elle devrait apparaître sous peu (tout dépend de la taille !), ne fermer pas la page!!!";
+      thiis.response.data.message = "Vidéo en cours de compression, elle devrait apparaître sous peu (tout dépend de la taille !), vous pouvez fermer la page!!!";
       thiis.$dispatch("load-challenges");
     }
     return args.target;

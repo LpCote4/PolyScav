@@ -215,44 +215,44 @@ Alpine.data("Challenge", () => ({
       if (Object.fromEntries(formData)["file"].name != ""){
         
         try {
-          await helpers.files.upload(form, {"id":this.id}, async function (response) {
+          await helpers.files.upload(form, {"id":this.id, "type":"manual"}, async function (response) {
             let thiis = document.getElementById("form-file-input").value;
             
             thiis.$dispatch("load-challenges");
-            try {
-              thiis.response = await CTFd.pages.challenge.submitChallenge(
-                thiis.id,
-                  JSON.stringify(response.data),
-              );
+            // try {
+            //   thiis.response = await CTFd.pages.challenge.submitChallenge(
+            //     thiis.id,
+            //       JSON.stringify(response.data),
+            //   );
               
-              if (thiis.response.success){
-                if (thiis.response.data.status == "already_solved"){
-                  thiis.response.data.status = "already_solved";
-                  thiis.response.data.message = "already sent!";
-                }
-                else{
-                  thiis.response.data.status = "correct";
-                  thiis.response.data.message = "succesfuly send!";
-                }
+            //   if (thiis.response.success){
+            //     if (thiis.response.data.status == "already_solved"){
+            //       thiis.response.data.status = "already_solved";
+            //       thiis.response.data.message = "already sent!";
+            //     }
+            //     else{
+            //       thiis.response.data.status = "correct";
+            //       thiis.response.data.message = "succesfuly send!";
+            //     }
                 
-              }
-              else {
-                thiis.response.data.status = "incorrect";
-                thiis.response.data.message = "en error happen pls contact the admin";
-              }
+            //   }
+            //   else {
+            //     thiis.response.data.status = "incorrect";
+            //     thiis.response.data.message = "en error happen pls contact the admin";
+            //   }
         
-              thiis.$dispatch("load-challenges");
-              console.log(JSON.stringify(response.data));
-            }
-            catch (error){
-              thiis.response = {};
-              thiis.response.data = {};
-              thiis.response.data.status = "incorrect";
-              thiis.response.data.message = "en error happen pls contact the admin for "+error;
-              thiis.$dispatch("load-challenges");
-            }
-            document.getElementById("challenge-submit").disabled = false;
-            document.getElementById('spinner').hidden = true;
+            //   thiis.$dispatch("load-challenges");
+            //   console.log(JSON.stringify(response.data));
+            // }
+            // catch (error){
+            //   thiis.response = {};
+            //   thiis.response.data = {};
+            //   thiis.response.data.status = "incorrect";
+            //   thiis.response.data.message = "en error happen pls contact the admin for "+error;
+            //   thiis.$dispatch("load-challenges");
+            // }
+            // document.getElementById("challenge-submit").disabled = false;
+            // document.getElementById('spinner').hidden = true;
             
             
           });

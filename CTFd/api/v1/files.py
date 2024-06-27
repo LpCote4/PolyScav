@@ -18,6 +18,8 @@ import subprocess
 import shlex
 import json
 import ffprobe
+from CTFd.api.v1 import challenges
+
 
 files_namespace = Namespace("files", description="Endpoint to retrieve Files")
 
@@ -40,6 +42,28 @@ files_namespace.schema_model(
     "FileListSuccessResponse", FileListSuccessResponse.apidoc()
 )
 
+class FakeRequest(object):
+    content = {"none":0}
+    args = {}
+    access_route = ""
+    remote_addr = ""
+    def get_json(self):
+        return self.content
+    def get(self, name):
+        try:
+            return self.content[name]
+        except:
+            return None
+    def setJson(self, dictJ):
+        self.content = dictJ
+
+    def setArgs(self, dictA):
+        self.args = dictA
+
+    def __getitem__(self, item):
+         return self.content[item]
+
+        
 
 @files_namespace.route("")
 class FilesList(Resource):
@@ -110,7 +134,7 @@ class FilesList(Resource):
                 },
             }, 400
 
-        print(request.form.get("id"))
+        #print()
         files = request.files.getlist("file")
         
         # Handle situation where users attempt to upload multiple files with a single location
@@ -131,6 +155,12 @@ class FilesList(Resource):
             vraietype += str(f).split('.')[1].split("\'")[0],
             try:
                 dico = request.form.to_dict()
+                try:
+                    del dico["type"]
+                    del dico["id"]
+                except:
+                    pass
+                
                 dico["first"] = first
                 obj = uploads.upload_file(file=f, **dico)
                 first = False
@@ -222,7 +252,14 @@ class FilesList(Resource):
         
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
-
+        
+        item = FakeRequest()
+        if not request.args.get("admin", False):
+            item.setJson({"challenge_id": request.form.get("id"), "submission":response.data, "type":"None"})
+            item.access_route = request.access_route
+            item.remote_addr = request.remote_addr
+        
+            challenges.outgoingPost(item)
         return {"success": True, "data": response.data}
     
     def get_rotation(self, file_path_with_file_name):
@@ -261,6 +298,7 @@ class FilesDetail(Resource):
         },
     )
     def get(self, file_id):
+        
         f = Files.query.filter_by(id=file_id).first_or_404()
         schema = FileSchema()
         response = schema.dump(f)

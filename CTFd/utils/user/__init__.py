@@ -166,7 +166,13 @@ def get_ip(req=None):
         req = request
     trusted_proxies = app.config["TRUSTED_PROXIES"]
     combined = "(" + ")|(".join(trusted_proxies) + ")"
+    print(req.access_route)
+    print(type(req.access_route))
+    print(req.remote_addr)
+    print(type(req.remote_addr))
+
     route = req.access_route + [req.remote_addr]
+    print
     for addr in reversed(route):
         if not re.match(combined, addr):  # IP is not trusted but we trust the proxies
             remote_addr = addr

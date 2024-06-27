@@ -14,7 +14,7 @@ from CTFd.plugins import register_plugin_assets_directory
 from CTFd.plugins.flags import FlagException, get_flag_class
 from CTFd.utils.uploads import delete_file
 from CTFd.utils.user import get_ip
-
+import json
 
 class BaseChallenge(object):
     id = None
@@ -117,15 +117,23 @@ class BaseChallenge(object):
         :param request: The request the user submitted
         :return: (boolean, string)
         """
-        data = request.form or request.get_json()
-        submission = data["submission"].strip()
+        data = request.get_json() or request.form
+        isJson = False
+        try:
+            submission = data["submission"].strip()
+            isJson = True
+        except (AttributeError):
+            submission = data["submission"]
+        print("hot3")
         flags = Flags.query.filter_by(challenge_id=challenge.id).all()
+        print("hot4")
         for flag in flags:
             try:
-                if get_flag_class(flag.type).compare(flag, submission):
+                if get_flag_class(flag.type).compare(flag, submission if isJson else  json.dumps(submission, indent = 4)):
                     return True, "Correct"
             except FlagException as e:
                 return False, str(e)
+        print("hot")
         return False, "Incorrect"
 
     @classmethod
@@ -138,14 +146,20 @@ class BaseChallenge(object):
         :param request: The request the user submitted
         :return:
         """
-        data = request.form or request.get_json()
-        submission = data["submission"].strip()
+        data = request.get_json()
+        isJson = False
+        try:
+            submission = data["submission"].strip()
+            isJson = True
+        except (AttributeError):
+            submission = data["submission"]
+        
         solve = Solves(
             user_id=user.id,
             team_id=team.id if team else None,
             challenge_id=challenge.id,
             ip=get_ip(req=request),
-            provided=submission,
+            provided=submission if isJson else  json.dumps(submission),
         )
         db.session.add(solve)
         db.session.commit()
@@ -160,14 +174,19 @@ class BaseChallenge(object):
         :param request: The request the user submitted
         :return:
         """
-        data = request.form or request.get_json()
-        submission = data["submission"].strip()
+        data = request.get_json()
+        isJson = False
+        try:
+            submission = data["submission"].strip()
+            isJson = True
+        except (AttributeError):
+            submission = data["submission"]
         wrong = Fails(
             user_id=user.id,
             team_id=team.id if team else None,
             challenge_id=challenge.id,
             ip=get_ip(request),
-            provided=submission,
+            provided= submission if isJson else  json.dumps(submission, indent = 4),
         )
         db.session.add(wrong)
         db.session.commit()
