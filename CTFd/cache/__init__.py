@@ -114,8 +114,10 @@ def clear_standings():
     # Clear out the individual helpers for accessing score via the model
     cache.delete_memoized(Users.get_score)
     cache.delete_memoized(Users.get_place)
+    cache.delete_memoized(Users.get_color)
     cache.delete_memoized(Teams.get_score)
     cache.delete_memoized(Teams.get_place)
+    cache.delete_memoized(Teams.get_color)
 
     # Clear the Jinja Attrs constants
     cache.delete_memoized(get_user_score)

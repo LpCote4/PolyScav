@@ -84,6 +84,7 @@ def get_standings(count=None, bracket_id=None, admin=False, fields=None):
             db.session.query(
                 Model.id.label("account_id"),
                 Model.oauth_id.label("oauth_id"),
+                Model.color.label("color"),
                 Model.name.label("name"),
                 Model.bracket_id.label("bracket_id"),
                 Brackets.name.label("bracket_name"),
@@ -105,6 +106,7 @@ def get_standings(count=None, bracket_id=None, admin=False, fields=None):
             db.session.query(
                 Model.id.label("account_id"),
                 Model.oauth_id.label("oauth_id"),
+                Model.color.label("color"),
                 Model.name.label("name"),
                 Model.bracket_id.label("bracket_id"),
                 Brackets.name.label("bracket_name"),
@@ -184,6 +186,7 @@ def get_team_standings(count=None, bracket_id=None, admin=False, fields=None):
             db.session.query(
                 Teams.id.label("team_id"),
                 Teams.oauth_id.label("oauth_id"),
+                Teams.color.label("color"),
                 Teams.name.label("name"),
                 Teams.hidden,
                 Teams.banned,
@@ -202,6 +205,7 @@ def get_team_standings(count=None, bracket_id=None, admin=False, fields=None):
             db.session.query(
                 Teams.id.label("team_id"),
                 Teams.oauth_id.label("oauth_id"),
+                Teams.color.label("color"),
                 Teams.name.label("name"),
                 sumscores.columns.score,
                 *fields,
@@ -277,6 +281,7 @@ def get_user_standings(count=None, bracket_id=None, admin=False, fields=None):
             db.session.query(
                 Users.id.label("user_id"),
                 Users.oauth_id.label("oauth_id"),
+                Users.color.label("color"),
                 Users.name.label("name"),
                 Users.team_id.label("team_id"),
                 Users.hidden,
@@ -296,6 +301,7 @@ def get_user_standings(count=None, bracket_id=None, admin=False, fields=None):
             db.session.query(
                 Users.id.label("user_id"),
                 Users.oauth_id.label("oauth_id"),
+                Users.color.label("color"),
                 Users.name.label("name"),
                 Users.team_id.label("team_id"),
                 sumscores.columns.score,

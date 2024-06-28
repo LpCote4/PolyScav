@@ -28,7 +28,7 @@
 								<div class="d-inline-block">
 									{{ form.color(id="config-color-input") }}
 									<div class="btn-group">
-										<input type="color" id="config-color-picker" class="pr-1" style="width: 100px; height: 30px;" value="" @input="setThemeColor">
+										<input type="color" id="config-color-picker" class="pr-1" style="width: 100px; height: 30px;" value="{{ form.color.data }}" @input="setThemeColor">
 									</div>
 								</div>
 								<small class="form-text text-muted">
@@ -52,4 +52,17 @@
       </div>
     </div>
   </div>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var colorPicker = document.getElementById('config-color-picker');
+      var colorInput = document.getElementById('config-color-input');
+      
+      colorPicker.addEventListener('input', function () {
+        colorInput.value = colorPicker.value;
+      });
+
+      // Initialize the color input with the value from the color picker
+      colorInput.value = colorPicker.value;
+    });
+  </script>
 {% endblock %}

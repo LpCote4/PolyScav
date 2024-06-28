@@ -64,6 +64,7 @@ def teams_detail(team_id):
     awards = team.get_awards(admin=True)
     score = team.get_score(admin=True)
     place = team.get_place(admin=True)
+    color = team.get_color(admin=True)
 
     
     
@@ -91,4 +92,5 @@ def teams_detail(team_id):
         missing=missing,
         awards=awards,
         addrs=addrs,
+        color=color
     )

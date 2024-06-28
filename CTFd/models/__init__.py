@@ -370,7 +370,7 @@ class Users(db.Model):
     name = db.Column(db.String(128))
     password = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
-    color = db.Column(db.String(6))
+    color = db.Column(db.String(7))
     type = db.Column(db.String(80))
     secret = db.Column(db.String(128))
 
@@ -577,6 +577,10 @@ class Users(db.Model):
         else:
             return None
 
+    @cache.memoize()
+    def get_color(self, admin=False):
+        return self.color
+
 
 class Admins(Users):
     __tablename__ = "admins"
@@ -593,7 +597,7 @@ class Teams(db.Model):
     name = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
-    color = db.Column(db.String(6))
+    color = db.Column(db.String(7))
     secret = db.Column(db.String(128))
 
     members = db.relationship(
@@ -828,6 +832,10 @@ class Teams(db.Model):
                 return ordinalize(n)
         else:
             return None
+
+    @cache.memoize()
+    def get_color(self, admin=False):
+        return self.color
 
 
 class Submissions(db.Model):

@@ -106,4 +106,5 @@ def users_detail(user_id):
         place=place,
         fails=fails,
         awards=awards,
+        color=color,
     )

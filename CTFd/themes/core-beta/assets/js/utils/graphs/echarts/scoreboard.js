@@ -41,30 +41,15 @@ export function getOption(mode, places) {
     grid: {
       containLabel: true,
     },
-    xAxis: [{
+    xAxis: {
       type: 'category',
+      data: [],
     },
-    {
-      type: 'category',
-    },
-  ],
     
     yAxis: {
       type: 'value'
     },
-    series: [{
-      xAxisIndex: 0,
-      type: 'bar',
-      showBackground: false,
-      itemStyle: {
-        color: places[teams[index]]["color"] || "#FDFD96", // red color
-      },
-    },
-    {
-      xAxisIndex: 1,
-      type: 'bar',
-      showBackground: false,
-    }],
+    series: [],
   };
 
   const teams = Object.keys(places);
@@ -73,15 +58,38 @@ export function getOption(mode, places) {
   let lsData = [];
   let lsScore = [];
   let lsPotentialScore = [];
+
   for (let i = 0; i < teams.length; i++) {
-    lsData.push(places[teams[i]]["name"]);
-    lsScore.push(places[teams[i]]["score"])
-    lsPotentialScore.push(places[teams[i]]["score"]+places[teams[i]]["potential_score"])
-}
-  option.xAxis[0].data = lsData;
-  option.xAxis[1].data = lsData;
-  option.series[0].data = lsPotentialScore;
-  option.series[1].data = lsScore;
+    const teamName = places[teams[i]]["name"];
+    const teamScore = places[teams[i]]["score"];
+    const teamPotentialScore = places[teams[i]]["score"] + places[teams[i]]["potential_score"];
+    const teamColor = places[teams[i]]["color"];
+
+    lsData.push(teamName);
+
+    option.series.push({
+      name: `${teamName} Score`,
+      type: 'bar',
+      data: [teamScore],
+      itemStyle: {
+        color: teamColor,
+      },
+      xAxisIndex: 0,
+    });
+
+    option.series.push({
+      name: `${teamName} Potential Score`,
+      type: 'bar',
+      data: [teamPotentialScore],
+      itemStyle: {
+        color: teamColor,
+        opacity: 0.5,
+      },
+      xAxisIndex: 1,
+    });
+  }
+
+  option.xAxis.data = lsData;
   return option;
 }
 

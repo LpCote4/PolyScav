@@ -235,6 +235,7 @@ class TeamBaseForm(BaseForm):
     name = StringField(_l("Team Name"), validators=[InputRequired()])
     email = EmailField(_l("Email"))
     password = PasswordField(_l("Password"))
+    color = HiddenField(_l("color"))
     website = URLField(_l("Website"))
     affiliation = StringField(_l("Affiliation"))
     country = SelectField(_l("Country"), choices=SELECT_COUNTRIES_LIST)
