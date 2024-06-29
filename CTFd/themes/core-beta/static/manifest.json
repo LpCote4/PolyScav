@@ -39,12 +39,12 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.4901cefe.js",
+    "file": "assets/scoreboard.6bc09eb7.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_index.8aa1f407.js",
+      "_index.a7b07088.js",
       "_echarts.54e741c1.js",
       "_CommentBox.6d8c9990.js"
     ]
@@ -58,25 +58,25 @@
     ]
   },
   "assets/js/teams/public.js": {
-    "file": "assets/teams_public.72ac4aca.js",
+    "file": "assets/teams_public.ae81865f.js",
     "src": "assets/js/teams/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.f93f0aa8.js",
-      "_index.8aa1f407.js",
+      "_userscore.6e3dd62c.js",
+      "_index.a7b07088.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/teams/private.js": {
-    "file": "assets/teams_private.5215e6fa.js",
+    "file": "assets/teams_private.364ce002.js",
     "src": "assets/js/teams/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
       "_clipboard.46111c0a.js",
-      "_userscore.f93f0aa8.js",
-      "_index.8aa1f407.js",
+      "_userscore.6e3dd62c.js",
+      "_index.a7b07088.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -89,24 +89,24 @@
     ]
   },
   "assets/js/users/public.js": {
-    "file": "assets/users_public.3a541760.js",
+    "file": "assets/users_public.4ee8510e.js",
     "src": "assets/js/users/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.f93f0aa8.js",
-      "_index.8aa1f407.js",
+      "_userscore.6e3dd62c.js",
+      "_index.a7b07088.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/users/private.js": {
-    "file": "assets/users_private.f8847dff.js",
+    "file": "assets/users_private.749496e7.js",
     "src": "assets/js/users/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.f93f0aa8.js",
-      "_index.8aa1f407.js",
+      "_userscore.6e3dd62c.js",
+      "_index.a7b07088.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -136,18 +136,18 @@
       "assets/CommentBox.10bc69fd.css"
     ]
   },
-  "_index.8aa1f407.js": {
-    "file": "assets/index.8aa1f407.js",
+  "_index.a7b07088.js": {
+    "file": "assets/index.a7b07088.js",
     "imports": [
       "assets/js/index.js",
       "_echarts.54e741c1.js"
     ]
   },
-  "_userscore.f93f0aa8.js": {
-    "file": "assets/userscore.f93f0aa8.js",
+  "_userscore.6e3dd62c.js": {
+    "file": "assets/userscore.6e3dd62c.js",
     "imports": [
       "assets/js/index.js",
-      "_index.8aa1f407.js"
+      "_index.a7b07088.js"
     ]
   },
   "CommentBox.css": {

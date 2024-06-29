@@ -20,7 +20,7 @@ export function getOption(mode, places) {
     tooltip: {
       trigger: "axis",
       axisPointer: {
-        type: "cross",
+        type: "shadow",
       },
     },
     legend: {
@@ -45,7 +45,6 @@ export function getOption(mode, places) {
       type: 'category',
       data: [],
     },
-    
     yAxis: {
       type: 'value'
     },
@@ -53,46 +52,65 @@ export function getOption(mode, places) {
   };
 
   const teams = Object.keys(places);
-  console.log("teams")
-  console.log(places)
+  console.log("teams");
+  console.log(places);
   let lsData = [];
-  let lsScore = [];
-  let lsPotentialScore = [];
+
+  let scoreSeries = {
+    name: 'Score',
+    type: 'bar',
+    stack: 'total',
+    data: [],
+    itemStyle: {
+      color: 'rgba(0, 0, 0, 0.85)', // Default color for the score bars
+    }
+  };
+
+  let potentialScoreSeries = {
+    name: 'Potential Score',
+    type: 'bar',
+    stack: 'total',
+    data: [],
+    itemStyle: {
+      color: 'rgba(0, 0, 0, 0.45)', // Default color for the potential score bars
+      opacity: 0.5, // Reduce opacity to distinguish potential score bars
+    }
+  };
 
   for (let i = 0; i < teams.length; i++) {
     const teamName = places[teams[i]]["name"];
     const teamScore = places[teams[i]]["score"];
-    const teamPotentialScore = places[teams[i]]["score"] + places[teams[i]]["potential_score"];
+    const teamPotentialScore = places[teams[i]]["potential_score"];
     const teamColor = places[teams[i]]["color"];
 
     lsData.push(teamName);
 
-    option.series.push({
-      name: `${teamName} Score`,
-      type: 'bar',
-      data: [teamScore],
+    scoreSeries.data.push({
+      value: teamScore,
       itemStyle: {
         color: teamColor,
-      },
-      xAxisIndex: 0,
+      }
     });
 
-    option.series.push({
-      name: `${teamName} Potential Score`,
-      type: 'bar',
-      data: [teamPotentialScore],
+    potentialScoreSeries.data.push({
+      value: teamPotentialScore,
       itemStyle: {
         color: teamColor,
         opacity: 0.5,
-      },
-      xAxisIndex: 1,
+      }
     });
   }
 
   option.xAxis.data = lsData;
+  option.series.push(scoreSeries);
+  option.series.push(potentialScoreSeries);
+  option.series.forEach(series => {
+    series.barGap = '0%'; // Overlap bars for the same team
+    series.barCategoryGap = '50%'; // Adjust the gap between categories (teams)
+  });
+
   return option;
 }
-
 
 export function getTenLast(places, standings, dictIdChallenge){
   
