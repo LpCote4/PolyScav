@@ -127,7 +127,7 @@
               </div>
             {% endif %}
             
-            {% if (not solved_by_me and challenge.type != "manual") or challenge.type == "manualRecursive" %}
+            {% if (not solved_by_me and attempts == 0) or challenge.type == "manualRecursive" %}
               <div class="row submit-row">
                 <div class="col-12 col-sm-8 w-100">
                   {% block input %}
