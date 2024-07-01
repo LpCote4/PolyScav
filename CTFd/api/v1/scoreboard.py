@@ -77,7 +77,7 @@ class ScoreboardList(Resource):
             fails = Fails.query.filter(Fails.account_id.in_(team_ids))
             for fail in fails:
                 challenge = Challenges.query.filter_by(id=fail.challenge_id).first_or_404()
-                if challenge.type == "manual":
+                if challenge.type == "manual" or challenge.type == "manualRecursive":
                     potentialScore += challenge.value
 
             entry = {

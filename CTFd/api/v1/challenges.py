@@ -172,17 +172,14 @@ def outgoingPost(request):
     failsPerTeam = Fails.query.filter_by(
         account_id=user.account_id, challenge_id=challenge_id
     ).first()
-    failsPerId = Fails.query.filter_by(challenge_id=challenge_id).first()
-    # Challenge not solved yet
-    print(failsPerId)
     alreadyBlockForSubmition = False
     if not failsPerTeam:
         alreadyBlockForSubmition = False
     else:
-        if failsPerTeam.type != "manual":
+        if chal_class.name != "manualRecursive":
             alreadyBlockForSubmition = True
 
-    if not solves or solves.type != "manual":
+    if not solves or chal_class.name == "manualRecursive":
         if not alreadyBlockForSubmition:
             # Hit max attempts
             max_tries = challenge.max_attempts
@@ -462,7 +459,7 @@ class ChallengeList(Resource):
             if team != None:
                 team_id = team.id
                 for fail in team.fails:
-                    if challenge_type.name == "manual" and fail.challenge_id == challenge.id:
+                    if (challenge_type.name == "manual" or challenge_type.name == "manualRecursive") and fail.challenge_id == challenge.id:
                         #print();
                         is_submited = True
                         break

@@ -157,7 +157,7 @@ export function getTenLast(places, standings, dictIdChallenge){
       }
     }
     for (let solved = 0; solved < fails.length; solved++) {
-      if (fails[solved]["type"] == "manual"){
+      if (fails[solved]["type"] == "manual" || fails[solved]["type"] == "manualRecursive"){
         let challengeDate = fails[solved].date;
         fails[solved]["team_name"] = places[teams[i]].name;
         fails[solved]["user_name"] = dictIdNom[fails[solved]["user_id"]];

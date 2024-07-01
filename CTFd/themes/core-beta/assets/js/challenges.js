@@ -203,9 +203,9 @@ Alpine.data("Challenge", () => ({
     this.$dispatch("load-challenges");
   },
 
-  async submitManualChallenge() {
+  async submitManualChallenge(type) {
     //dans le cas ou le user envoit des fichier
-   
+    alert(type);
     if (!document.getElementById("file-input").hidden){
       let form = document.getElementById("form-file-input");
       document.getElementById("form-file-input").value = this;
@@ -215,7 +215,7 @@ Alpine.data("Challenge", () => ({
       if (Object.fromEntries(formData)["file"].name != ""){
         
         try {
-          await helpers.files.upload(form, {"id":this.id, "type":"manual"}, async function (response) {
+          await helpers.files.upload(form, {"id":this.id, "type":type}, async function (response) {
             let thiis = document.getElementById("form-file-input").value;
             
             thiis.$dispatch("load-challenges");

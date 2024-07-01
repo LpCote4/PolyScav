@@ -416,7 +416,7 @@
 						</thead>
 						<tbody>
 						{% for fail in fails %}
-							{% if fail.challenge.type != "manual" %}
+							{% if fail.challenge.type != "manual" and fail.challenge.type != "manualRecursive" %}
 							<tr class="chal-wrong" data-href="{{ url_for('admin.challenges_detail', challenge_id=fail.challenge_id) }}">
 								<td class="border-right" data-checkbox>
 									<div class="form-check text-center">
@@ -483,7 +483,7 @@
 						</thead>
 						<tbody>
 						{% for fail in fails %}
-							{% if fail.challenge.type == "manual" %}
+							{% if fail.challenge.type == "manual" or fail.challenge.type == "manualRecursive" %}
 							<tr class="chal-wrong">
 								<td class="border-right" data-checkbox>
 									<div class="form-check text-center">
