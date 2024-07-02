@@ -81,7 +81,7 @@
 						<th class="sort-col text-center"><b>Value</b></th>
 						<th class="sort-col text-center"><b>Type</b></th>
 						<th class="sort-col text-center"><b>State</b></th>
-						<th class="sort-col text-center"><b>Flag</b></th>
+						<!-- <th class="sort-col text-center"><b>Flag</b></th> -->
 					</tr>
 					</thead>
 					<script>
@@ -110,7 +110,7 @@
 								{% set badge_state = 'badge-danger' if challenge.state == 'hidden' else 'badge-success' %}
 								<span class="badge {{ badge_state }}">{{ challenge.state }}</span>
 							</td>
-							<td class="text-center">{{ challenge.flag }}</td>
+							<!-- <td class="text-center">{{ challenge.flag }}</td> -->
 						</tr>
 					{% endfor %}
 						<style>
@@ -175,9 +175,9 @@
 										<option value="hidden">hidden</option>
 									</select>	
 								</td>
-								<td class="editable text-center" data-editable="flag" >
+								<!-- <td class="editable text-center" data-editable="flag" >
 									<input class="form-text-input" name="flag" id="challenge-flag" readonly></input>
-								</td>
+								</td> -->
 								<input type="hidden" name="flag_type" value="static">
 								<input id="challenge_id" type="hidden" name="challenge_id">
 								
@@ -243,33 +243,33 @@
 		document.getElementById('challenge_id').value = newId;
 
 
-		// Show/hide the flag input based on the selected type
-        const challengeTypeSelect = document.getElementById('challenge-type');
-        const challengeFlagInput = document.getElementById('challenge-flag');
+		// // Show/hide the flag input based on the selected type
+        // const challengeTypeSelect = document.getElementById('challenge-type');
+        // const challengeFlagInput = document.getElementById('challenge-flag');
 
-		function toggleFlagInput() {
-            if (challengeTypeSelect.value === 'standard') {
-                challengeFlagInput.removeAttribute('readonly');
-                challengeFlagInput.style.backgroundColor = '';
-            } else {
-                challengeFlagInput.setAttribute('readonly', true);
-                challengeFlagInput.style.backgroundColor = '#d3d3d3'; // Darken the area when readonly
-            }
-        }
+		// function toggleFlagInput() {
+        //     if (challengeTypeSelect.value === 'standard') {
+        //         challengeFlagInput.removeAttribute('readonly');
+        //         challengeFlagInput.style.backgroundColor = '';
+        //     } else {
+        //         challengeFlagInput.setAttribute('readonly', true);
+        //         challengeFlagInput.style.backgroundColor = '#d3d3d3'; // Darken the area when readonly
+        //     }
+        // }
 
-        // Initial check
-        toggleFlagInput();
+        // // Initial check
+        // toggleFlagInput();
 
-        // Add event listener to the select element
-        challengeTypeSelect.addEventListener('change', toggleFlagInput);
+        // // Add event listener to the select element
+        // challengeTypeSelect.addEventListener('change', toggleFlagInput);
 
         // Prevent flag submission if challenge type is not standard
         document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
-            if (challengeTypeSelect.value !== 'standard') {
-                challengeFlagInput.setAttribute('disabled', 'true');
-            } else {
-                challengeFlagInput.removeAttribute('disabled');
-            }
+            // if (challengeTypeSelect.value !== 'standard') {
+            //     challengeFlagInput.setAttribute('disabled', 'true');
+            // } else {
+            //     challengeFlagInput.removeAttribute('disabled');
+            // }
         });
 	});
 </script>
