@@ -205,7 +205,7 @@ Alpine.data("Challenge", () => ({
 
   async submitManualChallenge(type) {
     //dans le cas ou le user envoit des fichier
-    alert(type);
+   
     if (!document.getElementById("file-input").hidden){
       let form = document.getElementById("form-file-input");
       document.getElementById("form-file-input").value = this;

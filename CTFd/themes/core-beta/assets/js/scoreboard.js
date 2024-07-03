@@ -19,6 +19,7 @@ window.maxCount = 0;
 window.maxCountIncrease = 5;
 window.imageInit = false;
 window.theninit = 0;
+window.decalage = 0
 
 Alpine.data("ScoreboardDetail", () => ({
   data: {},
@@ -143,19 +144,23 @@ Alpine.data("LogImage", () => ({
 
 this.showXMore = async function(e){
   let imageToPull = [];
-  let decalage = 0;
+
+  console.log(window.maxCount)
   for (let i = window.maxCount; i < window.maxCount+window.maxCountIncrease; i++){
-    if (maxCount + i < window.allSubmited.length){
+
+    
+    if (i < window.allSubmited.length){
+      
       if (!(window.allSubmited[i]).toString().includes("t")){
-        imageToPull.push(window.allImages[i - decalage]);
+        imageToPull.push(window.allImages[i - window.decalage]);
       }
       else {
-        decalage++;
+        window.decalage++;
       }
       document.getElementById(window.allSubmited[i]).hidden = false;
     }
   }
-
+  console.log(imageToPull);
   let responseChallengesMedia= await CTFd.fetch(`/api/v1/teams?ids=`+JSON.stringify(imageToPull), {
     method: "GET",
   });
@@ -163,8 +168,9 @@ this.showXMore = async function(e){
   const bodyChallengesMedia = await responseChallengesMedia.json();
 
   
-  for (let i = 0; i < window.maxCountIncrease-decalage; i++){
-    if (maxCount + i < imageToPull.length){
+  for (let i = 0; i < window.maxCountIncrease; i++){
+    
+    if (i < imageToPull.length){
       let provide = bodyChallengesMedia["data"][i]["provided"];
       let element = document.getElementById(imageToPull[i]);
   
@@ -174,6 +180,7 @@ this.showXMore = async function(e){
       } catch {}
       //si media content est defis c que le provied est des photos/video
       //sinon c autre chose genre du texte
+      console.log(mediaContents)
       if (mediaContents) {
         let thumbsnailAvailable = false;
         for (let i = 0; i < mediaContents.length; i++) {
@@ -207,7 +214,9 @@ this.showXMore = async function(e){
     
     //document.getElementById(window.allImages[i+window.maxCount]).onclick = showLargeSubmissions;
   }
+  
   window.maxCount += window.maxCountIncrease;
+  
   if (window.allImages.length <= window.maxCount){
     document.getElementById("plus-btn").disabled = true;
     
