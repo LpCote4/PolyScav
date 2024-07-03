@@ -550,11 +550,11 @@ this.changeLabel = function(event){
     }
 
   }
-  if (totalSize > 200000000 && totalSize < 2000000000){
-    alert("The folders you're trying to upload are bigger than 200MB and will be further compressed to reduce their size even more. This may impact the quality and the upload time by a lot!. FolderSize: "+totalSize/1000000 + "MB" );
+  if (totalSize > 100000000 && totalSize < 200000000){
+    alert("The folders you're trying to upload are bigger than 100MB and will be further compressed to reduce their size even more. This may impact the quality and the upload time by a lot!. FolderSize: "+totalSize/1000000 + "MB" );
   }
-  else if (totalSize > 2000000000){
-    alert("File can't be bigger than 2GB, even with compression. Please use external tools and share it with a link");
+  else if (totalSize > 200000000){
+    alert("File can't be bigger than 200MB, even with compression. Please use external tools and share it with a link");
   }
   if (event.target.files.length > 20){
     alert("We know you have a lot to flex, but you cannot upload more than 20 files at a time.");

@@ -120,16 +120,17 @@ class FilesList(Resource):
     def post(self):
         
         heavyData = False
+        maxContentLength = 201000000
         # challenge_id
         # page_id
         #max 200000000 + 1 Mb pour le reste des info de la request
-        if int(request.headers.get('Content-Length')) > 201000000 and int(request.headers.get('Content-Length')) < 2001000000:
+        if int(request.headers.get('Content-Length')) > maxContentLength and int(request.headers.get('Content-Length')) < maxContentLength:
             heavyData = True
-        elif int(request.headers.get('Content-Length')) > 2001000000:
+        elif int(request.headers.get('Content-Length')) > maxContentLength:
             return {
                 "success": False,
                 "errors": {
-                    "location": ["File can't be bigger than 2GB, even with compression. Please use external tools and share it with a link"]
+                    "location": ["File can't be bigger than 200 MB, even with compression. Please use external tools and share it with a link"]
                 },
             }, 400
 
