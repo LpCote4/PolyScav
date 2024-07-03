@@ -342,7 +342,7 @@ def test_api_team_self_fields_permissions():
                     ]
                 },
             )
-            print(r.get_json())
+          
             assert r.status_code == 200
             assert (
                 TeamFieldEntries.query.filter_by(id=1).first().value

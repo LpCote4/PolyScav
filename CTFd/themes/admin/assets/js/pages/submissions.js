@@ -45,10 +45,10 @@ async function showProvided(element) {
 }
 function createMediaElement(mediaContent) {
   let htmlElement;
-  if (mediaContent["type"] == "video/mp4") {
+  if (mediaContent["type"] == "video/webm") {
     htmlElement = document.createElement("video");
     htmlElement.controls = true;
-    htmlElement.type = "video/mp4";
+    htmlElement.type = "video/webm";
   } else if (
     mediaContent["type"] == "image/png" ||
     mediaContent["type"] == "thumbsnail"
@@ -175,6 +175,7 @@ function deleteCorrectSubmission(_event) {
       "<strong>" + htmlEntities(chal_name) + "</strong>"
     ),
     success: function () {
+      alert({ submissionId: key_id });
       CTFd.api
         .delete_submission({ submissionId: key_id })
         .then(function (response) {
@@ -197,6 +198,7 @@ function deleteSelectedSubmissions(_event) {
     body: `Are you sure you want to delete ${submissionIDs.length} ${target}?`,
     success: function () {
       const reqs = [];
+
       for (var subId of submissionIDs) {
         reqs.push(CTFd.api.delete_submission({ submissionId: subId }));
       }

@@ -133,11 +133,11 @@ class TeamList(Resource):
 
         dictIndex = {}
         if request.args.get("ids"):
-            print(request.args.get("ids"))
+       
             
             response = []
             for team in teams.items:
-                print(team)
+              
                
                 solves = team.get_solves(admin=True)
                 fails = team.get_fails(admin=True)
@@ -145,7 +145,7 @@ class TeamList(Resource):
                     try:
                         for provide in json.loads(solve.provided):
                             if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
-                                print("hit")
+                                
                                 dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
                     except:
                         continue
@@ -153,7 +153,7 @@ class TeamList(Resource):
                     try:
                         for provide in json.loads(solve.provided):
                             if str(provide["id"]) in request.args.get("ids")[1:-1].split(","):
-                                print("hit")
+                             
                                 dictIndex[request.args.get("ids")[1:-1].split(",").index(str(provide["id"]))] = solve.provided
                     except:
                         continue

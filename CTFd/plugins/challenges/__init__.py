@@ -126,14 +126,14 @@ class BaseChallenge(object):
             submission = data["submission"]
        
         flags = Flags.query.filter_by(challenge_id=challenge.id).all()
-        print("hot4")
+       
         for flag in flags:
             try:
                 if get_flag_class(flag.type).compare(flag, submission if isJson else  json.dumps(submission, indent = 4)):
                     return True, "Correct"
             except FlagException as e:
                 return False, str(e)
-        print("hot")
+       
         return False, "Incorrect"
 
     @classmethod
@@ -191,7 +191,7 @@ class BaseChallenge(object):
         
         db.session.add(wrong)
         db.session.commit()
-        print("le wrong")
+       
         return wrong.id
 
 

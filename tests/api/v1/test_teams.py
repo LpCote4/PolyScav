@@ -783,14 +783,14 @@ def test_api_team_captain_disbanding_only_inactive_teams():
 
         user = gen_user(app.db, name="user3", email="user3@examplectf.com")
         team = gen_team(app.db, name="team2", email="team2@examplectf.com")
-        print(user.id)
+       
         team.members.append(user)
         user.team_id = team.id
         team.captain_id = user.id
         app.db.session.commit()
         with login_as_user(app, name="user3") as client:
             r = client.delete("/api/v1/teams/me", json="")
-            print(r.get_json())
+         
             assert r.status_code == 200
             assert r.get_json() == {"success": True}
     destroy_ctfd(app)

@@ -186,11 +186,11 @@ class Submission(Resource):
     )
     def patch(self, submission_id):
         submission = Submissions.query.filter_by(id=submission_id).first_or_404()
-
+ 
         req = request.get_json()
         submission_type = req.get("type")
-        print(submission_type)
-        #input()
+    
+        
         if submission_type == "correct":
             solve = Solves(
                 user_id=submission.user_id,
@@ -201,7 +201,8 @@ class Submission(Resource):
                 date=submission.date,
             )
             db.session.add(solve)
-            submission.type = "discard"
+            db.session.delete(submission)
+            
             db.session.commit()
 
             # Delete standings cache
@@ -230,9 +231,19 @@ class Submission(Resource):
         },
     )
     def delete(self, submission_id):
+        
         submission = Submissions.query.filter_by(id=submission_id).first_or_404()
         db.session.delete(submission)
         db.session.commit()
+        clear_standings()
+        clear_challenges()
+        db.session.close()
+        try:
+            submission = Submissions.query.filter_by(id=submission_id).first_or_404()
+            db.session.delete(submission)
+            db.session.commit()
+        except:
+            pass
         db.session.close()
 
         # Delete standings cache

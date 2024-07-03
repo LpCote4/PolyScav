@@ -57,9 +57,9 @@
                   <tr  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type,}" >
                     <th scope="row" class="text-center" x-text="standing.time"></th>
                     <td style="padding-left: 2% !important;">
-                      <div><b x-text="'Par: ' + standing.user_name"></b>
+                      <div><b><p style="width: 15ch;overflow: hidden;text-overflow: ellipsis;" x-text="'Par: ' + standing.user_name"></p></b>
                         <p></p>
-                        <b :href="standing.account_id"  x-text="'Dans l\'équipe: '+standing.team_name" ></b></div>
+                       <b> <p :href="standing.account_id" style="width: 15ch;overflow: hidden;text-overflow: ellipsis;" x-text="'Dans l\'équipe: '+standing.team_name" ></p></b></div>
                       
                       
                     </td>

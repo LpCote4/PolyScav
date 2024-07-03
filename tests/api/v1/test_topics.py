@@ -88,7 +88,7 @@ def test_api_topics_post_admin():
                 json={"value": "topic", "type": "challenge", "challenge_id": 1},
             )
             assert r.status_code == 200
-            print(r.get_json())
+        
             assert r.get_json() == {
                 "success": True,
                 "data": {

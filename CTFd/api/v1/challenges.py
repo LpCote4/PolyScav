@@ -53,8 +53,7 @@ from CTFd.utils.user import (
     is_admin,
 )
 
-def hi(data):
-    print(data)
+
 def outgoingPost(request):
     submission_id = -1
     request_data = request.get_json() or request.form 
@@ -101,7 +100,7 @@ def outgoingPost(request):
     # TODO: Convert this into a re-useable decorator
     if config.is_teams_mode() and team is None:
         abort(403)
-    print("hit32222")
+
     fails = Fails.query.filter_by(
         account_id=user.account_id, challenge_id=challenge_id
     ).count()
@@ -460,7 +459,7 @@ class ChallengeList(Resource):
                 team_id = team.id
                 for fail in team.fails:
                     if (challenge_type.name == "manual" or challenge_type.name == "manualRecursive") and fail.challenge_id == challenge.id:
-                        #print();
+                    
                         is_submited = True
                         break
                     else:
@@ -760,13 +759,6 @@ class Challenge(Resource):
 
         return {"success": True}
 
-@challenges_namespace.route("/attempt2")
-class ChallengeAttempt2(Resource):
-    @check_challenge_visibility
-    @during_ctf_time_only
-    @require_verified_emails
-    def post2(self):
-        print("hi")
 
 @challenges_namespace.route("/attempt")
 class ChallengeAttempt(Resource):

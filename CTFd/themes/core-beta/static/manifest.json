@@ -30,23 +30,23 @@
     ]
   },
   "assets/js/challenges.js": {
-    "file": "assets/challenges.c6e1e709.js",
+    "file": "assets/challenges.3eb6a466.js",
     "src": "assets/js/challenges.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_CommentBox.6d8c9990.js"
+      "_CommentBox.a6c3c962.js"
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.d4e03141.js",
+    "file": "assets/scoreboard.3b68667f.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
       "_index.a63f56ff.js",
       "_echarts.54e741c1.js",
-      "_CommentBox.6d8c9990.js"
+      "_CommentBox.a6c3c962.js"
     ]
   },
   "assets/js/notifications.js": {
@@ -136,29 +136,6 @@
       "assets/CommentBox.10bc69fd.css"
     ]
   },
-  "_index.5d14d67f.js": {
-    "file": "assets/index.5d14d67f.js",
-    "imports": [
-      "assets/js/index.js",
-      "_echarts.54e741c1.js"
-    ]
-  },
-  "_userscore.b75b331b.js": {
-    "file": "assets/userscore.b75b331b.js",
-    "imports": [
-      "assets/js/index.js",
-      "_index.5d14d67f.js"
-    ]
-  },
-  "CommentBox.css": {
-    "file": "assets/CommentBox.10bc69fd.css",
-    "src": "CommentBox.css"
-  },
-  "assets/scss/main.scss": {
-    "file": "assets/main.6197f4c0.css",
-    "src": "assets/scss/main.scss",
-    "isEntry": true
-  },
   "_index.a63f56ff.js": {
     "file": "assets/index.a63f56ff.js",
     "imports": [
@@ -171,6 +148,63 @@
     "imports": [
       "assets/js/index.js",
       "_index.a63f56ff.js"
+    ]
+  },
+  "CommentBox.css": {
+    "file": "assets/CommentBox.10bc69fd.css",
+    "src": "CommentBox.css"
+  },
+  "assets/scss/main.scss": {
+    "file": "assets/main.6197f4c0.css",
+    "src": "assets/scss/main.scss",
+    "isEntry": true
+  },
+  "_clipboard.bdecea7d.js": {
+    "file": "assets/clipboard.bdecea7d.js",
+    "imports": [
+      "assets/js/index.js"
+    ]
+  },
+  "_clipboard.177cb397.js": {
+    "file": "assets/clipboard.177cb397.js",
+    "imports": [
+      "assets/js/index.js"
+    ]
+  },
+  "_clipboard.0e848329.js": {
+    "file": "assets/clipboard.0e848329.js",
+    "imports": [
+      "assets/js/index.js"
+    ]
+  },
+  "_clipboard.8e1d71d1.js": {
+    "file": "assets/clipboard.8e1d71d1.js",
+    "imports": [
+      "assets/js/index.js"
+    ]
+  },
+  "_clipboard.f834e43c.js": {
+    "file": "assets/clipboard.f834e43c.js",
+    "imports": [
+      "assets/js/index.js"
+    ]
+  },
+  "_CommentBox.813d61bb.js": {
+    "file": "assets/CommentBox.813d61bb.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.10bc69fd.css"
+    ]
+  },
+  "_CommentBox.a6c3c962.js": {
+    "file": "assets/CommentBox.a6c3c962.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.10bc69fd.css"
     ]
   }
 }

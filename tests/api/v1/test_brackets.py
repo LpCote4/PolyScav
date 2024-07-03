@@ -27,7 +27,7 @@ def test_brackets_get_api():
             client = login_as_user(app, raise_for_error=True)
             r = client.get("/api/v1/brackets?type=users")
             resp = r.get_json()
-            print(resp)
+           
             assert r.status_code == 200
             assert resp["data"][0]["name"] == "players1"
             assert resp["data"][0]["description"] == "players who are part of the test"
@@ -91,7 +91,7 @@ def test_brackets_delete_api():
 
         with login_as_user(app, name="admin") as client:
             r = client.delete("/api/v1/brackets/1", json="")
-            print(r.get_json())
+         
             assert r.status_code == 200
             assert Brackets.query.count() == 0
     destroy_ctfd(app)

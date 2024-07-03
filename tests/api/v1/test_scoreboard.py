@@ -147,7 +147,7 @@ def test_scoreboard_tie_break_ordering_with_awards_under_teams():
         with login_as_user(app, user.name) as client:
             r = client.get("/api/v1/scoreboard")
             resp = r.get_json()
-            print(resp)
+            
             assert len(resp["data"]) == 2
             assert resp["data"][0]["name"] == "team2"
             assert resp["data"][0]["score"] == 200
@@ -161,7 +161,7 @@ def test_scoreboard_tie_break_ordering_with_awards_under_teams():
         with login_as_user(app, user.name) as client:
             r = client.get("/api/v1/scoreboard")
             resp = r.get_json()
-            print(resp)
+         
             assert len(resp["data"]) == 2
             assert resp["data"][0]["name"] == "team2"
             assert resp["data"][0]["score"] == 200

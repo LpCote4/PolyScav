@@ -135,7 +135,7 @@ class FilesList(Resource):
                 },
             }, 400
 
-        #print()
+    
         files = request.files.getlist("file")
         
         # Handle situation where users attempt to upload multiple files with a single location
@@ -150,7 +150,7 @@ class FilesList(Resource):
         #we are creating the submissions to make sure nobody can take it if sending a smaller file
         item = FakeRequest()
         if not request.args.get("admin", False):
-            item.setJson({"challenge_id": request.form.get("id"), "submission":"none", "type":"None"})
+            item.setJson({"challenge_id": request.form.get("id"), "submission":"Media en train d'être traité", "type":"None"})
             item.access_route = request.access_route
             item.remote_addr = request.remote_addr
             submission_id = challenges.outgoingPost(item)["data"]["submission_id"]

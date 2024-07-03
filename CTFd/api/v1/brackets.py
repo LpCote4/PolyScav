@@ -37,7 +37,7 @@ class BracketList(Resource):
         brackets = Brackets.query.filter_by(**query_args).filter(*filters).all()
         schema = BracketSchema(many=True)
         response = schema.dump(brackets)
-        print(brackets)
+      
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
         return {"success": True, "data": response.data}

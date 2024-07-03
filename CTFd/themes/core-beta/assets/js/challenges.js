@@ -170,6 +170,22 @@ Alpine.data("Challenge", () => ({
   },
 
   copyShareUrl() {
+    alert()
+    // si pas sous http faut work around
+    if (!window.isSecureContext){
+      const textArea = document.createElement("textarea");
+      textArea.value = text;
+      document.body.appendChild(textArea);
+      textArea.focus();
+      textArea.select();
+      try {
+        document.execCommand('copy');
+      } catch (err) {
+        console.error('Unable to copy to clipboard', err);
+      }
+      document.body.removeChild(textArea);
+    }
+    else {
     navigator.clipboard.writeText(this.share_url);
     let t = Tooltip.getOrCreateInstance(this.$el);
     t.enable();
@@ -178,6 +194,7 @@ Alpine.data("Challenge", () => ({
       t.hide();
       t.disable();
     }, 2000);
+    }
   },
 
 
@@ -355,7 +372,14 @@ Alpine.data("ChallengeBoard", () => ({
 
     document.getElementById("scoreProgressTitle").textContent = (this.solveScore + this.submitScore) + " points";
     document.getElementById("scoreProgressBar").value = 100*((this.solveScore + this.submitScore)/this.maxScore)
-    document.getElementById("scoreProgressText").textContent = ""+ parseInt(100*(this.submitScore/(this.solveScore + this.submitScore))) + "% des points en approbations"
+    let text;
+    if (this.solveScore != 0){
+     text = ""+ parseInt(100*(this.submitScore/(this.solveScore + this.submitScore))) + "% des points en approbations";
+    }
+    else{
+      text = "!!! Vous devez préalablement relever au moins un défi avant de pouvoir être visible par les autres équipes.";
+    }
+    document.getElementById("scoreProgressText").textContent = text;
     
     this.commentsChallengeDict = {};
 

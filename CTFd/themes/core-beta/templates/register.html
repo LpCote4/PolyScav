@@ -30,7 +30,7 @@
 
             <div class="mb-3">
               <b>{{ form.name.label(class="form-label") }}</b>
-              {{ form.name(class="form-control", value=name) }}
+              {{ form.name(class="form-control", value=name, autocapitalize="none") }}
               <small class="form-text text-muted">
                 {% trans %}Your username on the site{% endtrans %}
               </small>

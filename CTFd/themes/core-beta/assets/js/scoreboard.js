@@ -104,7 +104,11 @@ Alpine.data("LogImage", () => ({
     }
     catch (error){
       notAMedia = true;
-      id = "t" + String(Math.random()*100000000000000000);
+      let toshow = ""
+      if (this.id == "Media en train d'être traité"){
+        toshow = "Media en train d'être traité"
+      }
+      id = toshow + "%" + String(Math.random()*100000000000000000);
       window.allSubmited.push(id);
       
     }
@@ -151,10 +155,17 @@ this.showXMore = async function(e){
     
     if (i < window.allSubmited.length){
       
-      if (!(window.allSubmited[i]).toString().includes("t")){
+      if (!(window.allSubmited[i]).toString().includes("%")){
+       
         imageToPull.push(window.allImages[i - window.decalage]);
       }
       else {
+        let text = document.createElement("p");
+        text.textContent = "reponse cachée";
+        if (window.allSubmited[i].split('%').length > 1){
+          text.textContent = window.allSubmited[i].split('%')[0];
+        } 
+        document.getElementById(window.allSubmited[i]).getElementsByClassName("imageContainer")[0].append(text);
         window.decalage++;
       }
       document.getElementById(window.allSubmited[i]).hidden = false;
@@ -174,14 +185,15 @@ this.showXMore = async function(e){
       let provide = bodyChallengesMedia["data"][i]["provided"];
       let element = document.getElementById(imageToPull[i]);
   
-      let mediaContents;
+      let mediaContents = false;
       try {
         mediaContents = JSON.parse(provide);
       } catch {}
       //si media content est defis c que le provied est des photos/video
       //sinon c autre chose genre du texte
-      
+    
       if (mediaContents) {
+        
         let thumbsnailAvailable = false;
         for (let i = 0; i < mediaContents.length; i++) {
           if (mediaContents[i]["type"] == "thumbsnail") {
@@ -199,12 +211,6 @@ this.showXMore = async function(e){
           text.textContent = "No thumbsnail Available for the current media";
           element.getElementsByClassName("imageContainer")[0].appendChild(text);
         }
-      } else {
-        //veut pas forcement afficher les reponse ecrit
-        
-        //let text = document.createElement("p");
-        //text.textContent = provide;
-        //element.appendChild(text);
       }
     }
     
