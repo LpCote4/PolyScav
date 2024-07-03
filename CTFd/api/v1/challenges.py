@@ -56,11 +56,10 @@ from CTFd.utils.user import (
 def hi(data):
     print(data)
 def outgoingPost(request):
-    print("hit")
-    print()
+    submission_id = -1
     request_data = request.get_json() or request.form 
     challenge_id = request_data.get("challenge_id")
-    print(request_data)
+
     isJson = False
     if request_data.get("submission"):
         try:
@@ -83,7 +82,7 @@ def outgoingPost(request):
                     "message": message,
                 },
             }
-    print("hit2")
+
     if ctf_paused():
         return (
             {
@@ -95,10 +94,10 @@ def outgoingPost(request):
             },
             403,
         )
-    print("hit3")
+   
     user = get_current_user()
     team = get_current_team()
-    print("hit31111")
+   
     # TODO: Convert this into a re-useable decorator
     if config.is_teams_mode() and team is None:
         abort(403)
@@ -106,16 +105,16 @@ def outgoingPost(request):
     fails = Fails.query.filter_by(
         account_id=user.account_id, challenge_id=challenge_id
     ).count()
-    print("hit333")
-    print(challenge_id)
+    
+  
     challenge = Challenges.query.filter_by(id=challenge_id).first_or_404()
-    print("hit33333")
+   
     if challenge.state == "hidden":
         abort(404)
 
     if challenge.state == "locked":
         abort(403)
-    print("hit3")
+    
     if challenge.requirements:
         requirements = challenge.requirements.get("prerequisites", [])
         solve_ids = (
@@ -136,15 +135,16 @@ def outgoingPost(request):
             abort(403)
 
     chal_class = get_chal_class(challenge.type)
-    print("hit4")
+
     # Anti-bruteforce / submitting Flags too quickly
     kpm = current_user.get_wrong_submissions_per_minute(user.account_id)
     kpm_limit = int(get_config("incorrect_submissions_per_min", default=10))
     if kpm > kpm_limit:
         if ctftime():
-            chal_class.fail(
+            submission_id = chal_class.fail(
                 user=user, team=team, challenge=challenge, request=request
             )
+            
         log(
             "submissions",
             "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [TOO FAST]",
@@ -164,7 +164,7 @@ def outgoingPost(request):
             },
             429,
         )
-    print("hit5")
+ 
     solves = Solves.query.filter_by(
         account_id=user.account_id, challenge_id=challenge_id
     ).first()
@@ -194,10 +194,11 @@ def outgoingPost(request):
                     },
                     403,
                 )
-            print("hit7")
+           
             status, message = chal_class.attempt(challenge, request)
+            
             if status:  # The challenge plugin says the input is right
-                print("hit11")
+               
 
                 if ctftime() or current_user.is_admin():
                     chal_class.solve(
@@ -205,8 +206,7 @@ def outgoingPost(request):
                     )
                     clear_standings()
                     clear_challenges()
-                print("hit12")
-
+              
                 log(
                     "submissions",
                     "[{date}] {name} submitted {submission} on {challenge_id} with kpm {kpm} [CORRECT]",
@@ -215,20 +215,20 @@ def outgoingPost(request):
                     challenge_id=challenge_id,
                     kpm=kpm,
                 )
-                print("hit13")
+                
                 return {
                     "success": True,
                     "data": {"status": "correct", "message": message},
                 }
             else:  # The challenge plugin says the input is wrong
-                print("hit114")
+             
                 if ctftime() or current_user.is_admin():
-                    chal_class.fail(
+                    submission_id = chal_class.fail(
                         user=user, team=team, challenge=challenge, request=request
                     )
                     clear_standings()
                     clear_challenges()
-                print("hit115")
+              
 
                 log(
                     "submissions",
@@ -238,7 +238,7 @@ def outgoingPost(request):
                     challenge_id=challenge_id,
                     kpm=kpm,
                 )
-                print("hit8")
+             
                 if max_tries:
                     # Off by one since fails has changed since it was gotten
                     attempts_left = max_tries - fails - 1
@@ -258,9 +258,9 @@ def outgoingPost(request):
                 else:
                     return {
                         "success": True,
-                        "data": {"status": "incorrect", "message": message},
+                        "data": {"status": "incorrect", "message": message, "submission_id":submission_id},
                     }
-            print("hit9")
+       
         else:
             log(
             "submissions",
@@ -288,7 +288,7 @@ def outgoingPost(request):
             challenge_id=challenge_id,
             kpm=kpm,
         )
-        print("hit10")
+     
         return {
             "success": True,
             "data": {

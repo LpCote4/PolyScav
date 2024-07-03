@@ -7,7 +7,7 @@ from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
 from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessResponse
 from CTFd.constants import RawEnum
-from CTFd.models import Files, db
+from CTFd.models import Files, db, Submissions
 from CTFd.schemas.files import FileSchema
 from CTFd.utils import uploads
 from CTFd.utils.decorators import admins_only
@@ -18,6 +18,7 @@ import subprocess
 import shlex
 import json
 from CTFd.api.v1 import challenges
+from CTFd.api.v1 import submissions
 
 
 files_namespace = Namespace("files", description="Endpoint to retrieve Files")
@@ -118,7 +119,7 @@ class FilesList(Resource):
     
 
     def post(self):
-        
+        submission_id = -1
         heavyData = False
         maxContentLength = 201000000
         # challenge_id
@@ -145,6 +146,15 @@ class FilesList(Resource):
                     "location": ["Location cannot be specified with multiple files"]
                 },
             }, 400
+
+        #we are creating the submissions to make sure nobody can take it if sending a smaller file
+        item = FakeRequest()
+        if not request.args.get("admin", False):
+            item.setJson({"challenge_id": request.form.get("id"), "submission":"none", "type":"None"})
+            item.access_route = request.access_route
+            item.remote_addr = request.remote_addr
+            submission_id = challenges.outgoingPost(item)["data"]["submission_id"]
+            
 
         objs = []
         #on genere un fichier de plus qui seras remplacer par la thumbsnail
@@ -251,15 +261,18 @@ class FilesList(Resource):
             
         
         if response.errors:
+            
             return {"success": False, "errors": response.errors}, 400
-        
-        item = FakeRequest()
+
         if not request.args.get("admin", False):
-            item.setJson({"challenge_id": request.form.get("id"), "submission":response.data, "type":"None"})
-            item.access_route = request.access_route
-            item.remote_addr = request.remote_addr
-        
-            challenges.outgoingPost(item)
+
+            submission = Submissions.query.filter_by(id=submission_id).first_or_404()
+            
+            submission.provided = json.dumps(response.data)
+            
+            db.session.commit()
+            
+            
         return {"success": True, "data": response.data}
     
     def get_rotation(self, file_path_with_file_name):

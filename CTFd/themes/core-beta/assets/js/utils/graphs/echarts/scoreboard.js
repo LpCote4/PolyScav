@@ -52,8 +52,7 @@ export function getOption(mode, places) {
   };
 
   const teams = Object.keys(places);
-  console.log("teams");
-  console.log(places);
+
   let lsData = [];
 
   let scoreSeries = {

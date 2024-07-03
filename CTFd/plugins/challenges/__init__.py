@@ -124,7 +124,7 @@ class BaseChallenge(object):
             isJson = True
         except (AttributeError):
             submission = data["submission"]
-        print("hot3")
+       
         flags = Flags.query.filter_by(challenge_id=challenge.id).all()
         print("hot4")
         for flag in flags:
@@ -188,8 +188,11 @@ class BaseChallenge(object):
             ip=get_ip(request),
             provided= submission if isJson else  json.dumps(submission, indent = 4),
         )
+        
         db.session.add(wrong)
         db.session.commit()
+        print("le wrong")
+        return wrong.id
 
 
 class CTFdStandardChallenge(BaseChallenge):

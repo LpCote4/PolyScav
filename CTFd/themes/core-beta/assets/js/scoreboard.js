@@ -145,7 +145,7 @@ Alpine.data("LogImage", () => ({
 this.showXMore = async function(e){
   let imageToPull = [];
 
-  console.log(window.maxCount)
+
   for (let i = window.maxCount; i < window.maxCount+window.maxCountIncrease; i++){
 
     
@@ -160,7 +160,7 @@ this.showXMore = async function(e){
       document.getElementById(window.allSubmited[i]).hidden = false;
     }
   }
-  console.log(imageToPull);
+
   let responseChallengesMedia= await CTFd.fetch(`/api/v1/teams?ids=`+JSON.stringify(imageToPull), {
     method: "GET",
   });
@@ -180,7 +180,7 @@ this.showXMore = async function(e){
       } catch {}
       //si media content est defis c que le provied est des photos/video
       //sinon c autre chose genre du texte
-      console.log(mediaContents)
+      
       if (mediaContents) {
         let thumbsnailAvailable = false;
         for (let i = 0; i < mediaContents.length; i++) {

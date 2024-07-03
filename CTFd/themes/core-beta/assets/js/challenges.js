@@ -543,7 +543,7 @@ this.changeLabel = function(event){
   
   for (let i = 0; i < event.target.files.length; i++){
     let extension = event.target.files[i].name.split(".")[1];
-    console.log(event.target.files[i]);
+  
     totalSize += event.target.files[i].size;
     if (!formats_video.includes(extension.toLowerCase()) && !formats_image.includes(extension.toLowerCase())){
       alert("We can not garented ." + extension + " will be supported")
