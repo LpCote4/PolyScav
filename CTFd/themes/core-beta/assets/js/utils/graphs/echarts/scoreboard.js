@@ -100,6 +100,27 @@ export function getOption(mode, places) {
     });
   }
 
+  // Determine if labels need rotation based on available space
+  const xAxisWidth = lsData.length * 100;
+  const containerWidth = document.getElementById('score-graph').offsetWidth;
+  if(xAxisWidth > containerWidth*2){
+    option.xAxis.axisLabel = {
+      interval: 0,
+      rotate: 90,
+    };
+  }
+  else if (xAxisWidth > containerWidth) {
+    option.xAxis.axisLabel = {
+      interval: 0,
+      rotate: 45,
+    };
+  } else {
+    option.xAxis.axisLabel = {
+      interval: 0,
+      rotate: 0,
+    };
+  }
+
   option.xAxis.data = lsData;
   option.series.push(scoreSeries);
   option.series.push(potentialScoreSeries);

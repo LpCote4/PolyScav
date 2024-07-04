@@ -30,7 +30,7 @@
     ]
   },
   "assets/js/challenges.js": {
-    "file": "assets/challenges.3eb6a466.js",
+    "file": "assets/challenges.bf931292.js",
     "src": "assets/js/challenges.js",
     "isEntry": true,
     "imports": [
@@ -39,12 +39,12 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.3b68667f.js",
+    "file": "assets/scoreboard.b766b559.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_index.a63f56ff.js",
+      "_index.4f041c97.js",
       "_echarts.54e741c1.js",
       "_CommentBox.a6c3c962.js"
     ]
@@ -58,25 +58,25 @@
     ]
   },
   "assets/js/teams/public.js": {
-    "file": "assets/teams_public.e6fdfc9b.js",
+    "file": "assets/teams_public.082af1e6.js",
     "src": "assets/js/teams/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.642a71ef.js",
-      "_index.a63f56ff.js",
+      "_userscore.80c7d281.js",
+      "_index.4f041c97.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/teams/private.js": {
-    "file": "assets/teams_private.5ec3ba9e.js",
+    "file": "assets/teams_private.1d13caff.js",
     "src": "assets/js/teams/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
       "_clipboard.46111c0a.js",
-      "_userscore.642a71ef.js",
-      "_index.a63f56ff.js",
+      "_userscore.80c7d281.js",
+      "_index.4f041c97.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -89,24 +89,24 @@
     ]
   },
   "assets/js/users/public.js": {
-    "file": "assets/users_public.a51eec95.js",
+    "file": "assets/users_public.45a95ec6.js",
     "src": "assets/js/users/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.642a71ef.js",
-      "_index.a63f56ff.js",
+      "_userscore.80c7d281.js",
+      "_index.4f041c97.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/users/private.js": {
-    "file": "assets/users_private.de7c8cce.js",
+    "file": "assets/users_private.b0e21b7a.js",
     "src": "assets/js/users/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.642a71ef.js",
-      "_index.a63f56ff.js",
+      "_userscore.80c7d281.js",
+      "_index.4f041c97.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -127,8 +127,8 @@
       "assets/js/index.js"
     ]
   },
-  "_CommentBox.6d8c9990.js": {
-    "file": "assets/CommentBox.6d8c9990.js",
+  "_CommentBox.a6c3c962.js": {
+    "file": "assets/CommentBox.a6c3c962.js",
     "imports": [
       "assets/js/index.js"
     ],
@@ -136,18 +136,18 @@
       "assets/CommentBox.10bc69fd.css"
     ]
   },
-  "_index.a63f56ff.js": {
-    "file": "assets/index.a63f56ff.js",
+  "_index.4f041c97.js": {
+    "file": "assets/index.4f041c97.js",
     "imports": [
       "assets/js/index.js",
       "_echarts.54e741c1.js"
     ]
   },
-  "_userscore.642a71ef.js": {
-    "file": "assets/userscore.642a71ef.js",
+  "_userscore.80c7d281.js": {
+    "file": "assets/userscore.80c7d281.js",
     "imports": [
       "assets/js/index.js",
-      "_index.a63f56ff.js"
+      "_index.4f041c97.js"
     ]
   },
   "CommentBox.css": {
@@ -158,53 +158,5 @@
     "file": "assets/main.6197f4c0.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
-  },
-  "_clipboard.bdecea7d.js": {
-    "file": "assets/clipboard.bdecea7d.js",
-    "imports": [
-      "assets/js/index.js"
-    ]
-  },
-  "_clipboard.177cb397.js": {
-    "file": "assets/clipboard.177cb397.js",
-    "imports": [
-      "assets/js/index.js"
-    ]
-  },
-  "_clipboard.0e848329.js": {
-    "file": "assets/clipboard.0e848329.js",
-    "imports": [
-      "assets/js/index.js"
-    ]
-  },
-  "_clipboard.8e1d71d1.js": {
-    "file": "assets/clipboard.8e1d71d1.js",
-    "imports": [
-      "assets/js/index.js"
-    ]
-  },
-  "_clipboard.f834e43c.js": {
-    "file": "assets/clipboard.f834e43c.js",
-    "imports": [
-      "assets/js/index.js"
-    ]
-  },
-  "_CommentBox.813d61bb.js": {
-    "file": "assets/CommentBox.813d61bb.js",
-    "imports": [
-      "assets/js/index.js"
-    ],
-    "css": [
-      "assets/CommentBox.10bc69fd.css"
-    ]
-  },
-  "_CommentBox.a6c3c962.js": {
-    "file": "assets/CommentBox.a6c3c962.js",
-    "imports": [
-      "assets/js/index.js"
-    ],
-    "css": [
-      "assets/CommentBox.10bc69fd.css"
-    ]
   }
 }
