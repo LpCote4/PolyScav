@@ -63,27 +63,27 @@ class FakeRequest(object):
     def __getitem__(self, item):
          return self.content[item]
          
-def correct_image_orientation(file_path_with_file_name):
-    try:
-        image = Image.open(file_path_with_file_name)
-        for orientation in ExifTags.TAGS.keys():
-            if ExifTags.TAGS[orientation] == 'Orientation':
-                break
+# def correct_image_orientation(file_path_with_file_name):
+#     try:
+#         image = Image.open(file_path_with_file_name)
+#         for orientation in ExifTags.TAGS.keys():
+#             if ExifTags.TAGS[orientation] == 'Orientation':
+#                 break
        
-        exif = image._getexif()
-        if exif is not None:
-            orientation = exif.get(orientation)
-            if orientation == 3:
-                image = image.rotate(180, expand=True)
-            elif orientation == 6:
-                image = image.rotate(270, expand=True)
-            elif orientation == 8:
-                image = image.rotate(90, expand=True)
-        image.save(file_path_with_file_name)
-        image.close()
-    except (AttributeError, KeyError, IndexError):
-        # Cases: image don't have getexif
-        pass
+#         exif = image._getexif()
+#         if exif is not None:
+#             orientation = exif.get(orientation)
+#             if orientation == 3:
+#                 image = image.rotate(180, expand=True)
+#             elif orientation == 6:
+#                 image = image.rotate(270, expand=True)
+#             elif orientation == 8:
+#                 image = image.rotate(90, expand=True)
+#         image.save(file_path_with_file_name)
+#         image.close()
+#     except (AttributeError, KeyError, IndexError):
+#         # Cases: image don't have getexif
+#         pass
 
 @files_namespace.route("")
 class FilesList(Resource):
@@ -246,7 +246,7 @@ class FilesList(Resource):
                     if not request.args.get("admin", False):
                         image.thumbnail((50, 50))
                     image.save(path.split('.')[0]+".png")
-                    correct_image_orientation(path.split('.')[0]+".png")
+                    #correct_image_orientation(path.split('.')[0]+".png")
                     response.data[i]["type"] = "thumbsnail"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
             else:
@@ -277,7 +277,7 @@ class FilesList(Resource):
                     if not request.args.get("admin", False):
                         image.thumbnail((width,width*(image.size[1]/image.size[0])))
                     image.save(path.split('.')[0]+".png")
-                    correct_image_orientation(path.split('.')[0]+".png")
+                    #correct_image_orientation(path.split('.')[0]+".png")
                     response.data[i]["type"] = "image/png"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
             
