@@ -132,9 +132,9 @@ def TeamSettingsForm(*args, **kwargs):
             _l("New Team Password"), description=_l("Set a new team join password")
         )
         color = HiddenField(
-        _l("Team Color"),
-        description=_l(
-            "Color used by theme to control team aesthetics.")
+            _l("Team Color"),
+            description=_l(
+            "Color used by team to control team aesthetics.")
         )
         confirm = PasswordField(
             _l("Confirm Current Team Password"),
@@ -235,7 +235,7 @@ class TeamBaseForm(BaseForm):
     name = StringField(_l("Team Name"), validators=[InputRequired()])
     email = EmailField(_l("Email"))
     password = PasswordField(_l("Password"))
-    color = HiddenField(_l("color"))
+    color = HiddenField(_l("Team color"))
     website = URLField(_l("Website"))
     affiliation = StringField(_l("Affiliation"))
     country = SelectField(_l("Country"), choices=SELECT_COUNTRIES_LIST)

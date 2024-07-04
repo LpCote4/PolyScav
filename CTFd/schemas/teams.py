@@ -27,6 +27,15 @@ class TeamSchema(ma.ModelSchema):
             validate.Length(min=1, max=128, error="Team names must not be empty")
         ],
     )
+    color = field_for(
+        Teams,
+        "color",
+        required=False,
+        allow_none=False,
+        validate=[
+            validate.Length(min=1, max=8, error="Team color error")
+        ],
+    )
     email = field_for(
         Teams,
         "email",
@@ -385,6 +394,7 @@ class TeamSchema(ma.ModelSchema):
             "name",
             "created",
             "country",
+            "color",
             "banned",
             "email",
             "affiliation",

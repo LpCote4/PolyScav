@@ -6,10 +6,6 @@
 		{{ form.name(class="form-control", autocomplete="off") }}
 	</div>
 	<div class="form-group">
-		{{ form.email.label }}
-		{{ form.email(class="form-control", autocomplete="off") }}
-	</div>
-	<div class="form-group">
 		{{ form.password.label }}
 		{{ form.password(class="form-control", autocomplete="off") }}
 	</div>
@@ -25,6 +21,18 @@
 		{{ form.country.label }}
 		{{ form.country(class="form-control custom-select", autocomplete="off") }}
 	</div>
+
+	<div class="form-group">
+        {{ form.color.label }}
+        <div class="row" style="padding: 15px;">
+            <div class="d-inline-block">
+				{{ form.color(id="config-color-input") }}
+				<div class="btn-group">
+					<input type="color" id="config-color-picker" class="pr-1" style="width: 100px; height: 30px;" value="{{ form.color.data }}" @input="setThemeColor">
+				</div>
+			</div>
+        </div>
+    </div>
 
 	{{ render_extra_fields(form.extra) }}
 
@@ -43,4 +51,17 @@
 	</div>
 	{{ form.submit(id="update-team", class="btn btn-primary btn-outlined float-right modal-action") }}
 </form>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var colorPicker = document.getElementById('config-color-picker');
+      var colorInput = document.getElementById('config-color-input');
+      
+      colorPicker.addEventListener('input', function () {
+        colorInput.value = colorPicker.value;
+      });
+
+      // Initialize the color input with the value from the color picker
+      colorInput.value = colorPicker.value;
+    });
+  </script>
 {% endwith %}
