@@ -282,7 +282,7 @@ class FilesList(Resource):
                         exif = image._getexif()
                     
                         if exif is not None:
-                        orientation = exif.get(orientation)
+                            orientation = exif.get(orientation)
                         if orientation == 3:
                             image = image.rotate(180, expand=True)
                         elif orientation == 6:
