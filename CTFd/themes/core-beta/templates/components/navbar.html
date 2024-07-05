@@ -13,6 +13,10 @@
       {% endif %}
     </a>
 
+    <a class="nav-link challenges-link" href="{{ url_for('challenges.listing') }}">
+      {% trans %}Challenges{% endtrans %}
+    </a>
+
     <button
         class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#base-navbars"
         aria-controls="base-navbars" aria-expanded="false" aria-label="Toggle navigation"
@@ -49,12 +53,6 @@
             </li>
           {% endif %}
         {% endif %}
-
-        <li class="nav-item">
-          <a class="nav-link" href="{{ url_for('challenges.listing') }}">
-            {% trans %}Challenges{% endtrans %}
-          </a>
-        </li>
       </ul>
 
       <hr class="d-sm-flex d-md-flex d-lg-none">
@@ -171,3 +169,19 @@
     </div>
   </div>
 </nav>
+
+<style>
+/* Mobile styles */
+@media (max-width: 767.98px) {
+  .challenges-link {
+    color: white !important;
+  }
+}
+
+/* Desktop styles */
+@media (min-width: 768px) {
+  .challenges-link {
+    color: #FFFFFF8C !important;
+  }
+}
+</style>
