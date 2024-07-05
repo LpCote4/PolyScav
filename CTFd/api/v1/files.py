@@ -246,9 +246,10 @@ class FilesList(Resource):
                     if not request.args.get("admin", False):
                         image.thumbnail((50, 50))
                     image.save(path.split('.')[0]+".png")
-                    #correct_image_orientation(path.split('.')[0]+".png")
                     response.data[i]["type"] = "thumbsnail"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
+
+            #operation pour image/video normale
             else:
                 if response.data[i]["type"].find("video") != -1:
                     clip = VideoFileClip(path)
@@ -273,11 +274,28 @@ class FilesList(Resource):
                     
                     image = Image.open(path)
                     os.remove(path)
+                    try:
+                        for orientation in ExifTags.TAGS.keys():
+                            if ExifTags.TAGS[orientation] == 'Orientation':
+                                break
+                    
+                        exif = image._getexif()
+                    
+                        if exif is not None:
+                        orientation = exif.get(orientation)
+                        if orientation == 3:
+                            image = image.rotate(180, expand=True)
+                        elif orientation == 6:
+                            image = image.rotate(270, expand=True)
+                        elif orientation == 8:
+                            image = image.rotate(90, expand=True)
+                    except:
+                        pass         
+
                     #same as image.resize but keeping the ratio ;-)
                     if not request.args.get("admin", False):
                         image.thumbnail((width,width*(image.size[1]/image.size[0])))
                     image.save(path.split('.')[0]+".png")
-                    #correct_image_orientation(path.split('.')[0]+".png")
                     response.data[i]["type"] = "image/png"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"
             
