@@ -1,13 +1,15 @@
 from flask_babel import lazy_gettext as _l
 from wtforms import BooleanField, PasswordField, SelectField, StringField, HiddenField
 from wtforms.fields.html5 import EmailField, URLField
-from wtforms.validators import InputRequired
+from wtforms.validators import InputRequired, Length
 
 from CTFd.forms import BaseForm
 from CTFd.forms.fields import SubmitField
 from CTFd.models import Brackets, TeamFieldEntries, TeamFields
 from CTFd.utils.countries import SELECT_COUNTRIES_LIST
 from CTFd.utils.user import get_current_team
+
+teamNameLength = 25
 
 
 def build_team_bracket_field(form_cls, value=None):
@@ -99,14 +101,17 @@ def attach_custom_team_fields(form_cls, **kwargs):
 
 
 class TeamJoinForm(BaseForm):
-    name = StringField(_l("Team Name"), validators=[InputRequired()])
+    name = StringField(_l("Team Name"), validators=[InputRequired(), Length(max=teamNameLength)])
     password = PasswordField(_l("Team Password"), validators=[InputRequired()])
     submit = SubmitField(_l("Join"))
 
 
 def TeamRegisterForm(*args, **kwargs):
     class _TeamRegisterForm(BaseForm):
-        name = StringField(_l("Team Name"), validators=[InputRequired()])
+        name = StringField(_l("Team Name"), validators=[
+            InputRequired(),
+            Length(max=teamNameLength, message='You have to enter less characters')
+        ], render_kw={"maxlength": teamNameLength})
         password = PasswordField(_l("Team Password"), validators=[InputRequired()])
         color = HiddenField(_l("Team Color"))
         submit = SubmitField(_l("Create"))
@@ -232,7 +237,10 @@ class PublicTeamSearchForm(BaseForm):
 
 
 class TeamBaseForm(BaseForm):
-    name = StringField(_l("Team Name"), validators=[InputRequired()])
+    name = StringField(_l("Team Name"), validators=[
+            InputRequired(),
+            Length(max=teamNameLength, message='You have to enter less characters')
+        ], render_kw={"maxlength": teamNameLength})
     email = EmailField(_l("Email"))
     password = PasswordField(_l("Password"))
     color = HiddenField(_l("Team color"))

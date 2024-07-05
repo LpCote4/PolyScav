@@ -76,11 +76,14 @@ export function getOption(mode, places) {
     }
   };
 
+  let characterCount = 0;
   for (let i = 0; i < teams.length; i++) {
     const teamName = places[teams[i]]["name"];
     const teamScore = places[teams[i]]["score"];
     const teamPotentialScore = places[teams[i]]["potential_score"];
     const teamColor = places[teams[i]]["color"];
+
+    characterCount += teamName.length;
 
     lsData.push(teamName);
 
@@ -101,7 +104,7 @@ export function getOption(mode, places) {
   }
 
   // Determine if labels need rotation based on available space
-  const xAxisWidth = lsData.length * 100;
+  const xAxisWidth = characterCount * 20 + 30;
   const containerWidth = document.getElementById('score-graph').offsetWidth;
   if(xAxisWidth > containerWidth*2){
     option.xAxis.axisLabel = {

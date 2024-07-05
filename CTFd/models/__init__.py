@@ -370,7 +370,7 @@ class Users(db.Model):
     name = db.Column(db.String(128))
     password = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
-    color = db.Column(db.String(7))
+    color = db.Column(db.String(6))
     type = db.Column(db.String(80))
     secret = db.Column(db.String(128))
 
@@ -594,10 +594,10 @@ class Teams(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     oauth_id = db.Column(db.Integer, unique=True)
     # Team names are not constrained to be unique to allow for official/unofficial teams.
-    name = db.Column(db.String(128))
+    name = db.Column(db.String(25))
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
-    color = db.Column(db.String(7))
+    color = db.Column(db.String(6))
     secret = db.Column(db.String(128))
 
     members = db.relationship(
