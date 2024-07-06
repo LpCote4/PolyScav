@@ -231,7 +231,7 @@ export function getTimeStamp(challengeDate){
     return "il y a " + Math.floor(timeBetween/(1000*60)) + " minutes";
   }
   else{
-    return "il y a moin de 2 minutes";
+    return "il y a un instant";
   }
 }
 

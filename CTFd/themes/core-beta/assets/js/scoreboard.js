@@ -110,8 +110,8 @@ Alpine.data("LogImage", () => ({
       }
       id = toshow + "%" + String(Math.random()*100000000000000000);
       window.allSubmited.push(id);
-      
     }
+
       
     if (window.allSubmited.length > window.maxCount){
       let obj = document.getElementById(this.id);
@@ -121,9 +121,14 @@ Alpine.data("LogImage", () => ({
       if (!notAMedia){
         obj.text = 'c_id:'+this.challenge_id+'t_id:'+this.team_id;
       }
-      
-      obj.id = id;
-      obj.hidden = true
+      try{
+        obj.id = id;
+        obj.hidden = true
+      }
+      catch (error){
+        this.id = id;
+        console.log(this.id);
+      }
     }
 
     
@@ -152,23 +157,28 @@ this.showXMore = async function(e){
 
   for (let i = window.maxCount; i < window.maxCount+window.maxCountIncrease; i++){
 
-    
-    if (i < window.allSubmited.length){
-      
-      if (!(window.allSubmited[i]).toString().includes("%")){
-       
-        imageToPull.push(window.allImages[i - window.decalage]);
+    try{
+      if (i < window.allSubmited.length){
+        
+        if (!(window.allSubmited[i]).toString().includes("%")){
+        
+          imageToPull.push(window.allImages[i - window.decalage]);
+        }
+        else {
+          let text = document.createElement("p");
+          text.textContent = "reponse cachée";
+          if (window.allSubmited[i].split('%').length > 1){
+            text.textContent = window.allSubmited[i].split('%')[0];
+          } 
+          
+          document.getElementById(window.allSubmited[i]).getElementsByClassName("imageContainer")[0].append(text);
+
+          window.decalage++;
+        }
+        document.getElementById(window.allSubmited[i]).hidden = false;
       }
-      else {
-        let text = document.createElement("p");
-        text.textContent = "reponse cachée";
-        if (window.allSubmited[i].split('%').length > 1){
-          text.textContent = window.allSubmited[i].split('%')[0];
-        } 
-        document.getElementById(window.allSubmited[i]).getElementsByClassName("imageContainer")[0].append(text);
-        window.decalage++;
-      }
-      document.getElementById(window.allSubmited[i]).hidden = false;
+    }
+    catch(error){
     }
   }
 
@@ -180,44 +190,41 @@ this.showXMore = async function(e){
 
   
   for (let i = 0; i < window.maxCountIncrease; i++){
+    try{
+      if (i < imageToPull.length){
+        let provide = bodyChallengesMedia["data"][i]["provided"];
+        let element = document.getElementById(imageToPull[i]);
     
-    if (i < imageToPull.length){
-      let provide = bodyChallengesMedia["data"][i]["provided"];
-      let element = document.getElementById(imageToPull[i]);
-  
-      let mediaContents = false;
-      try {
-        mediaContents = JSON.parse(provide);
-      } catch {}
-      //si media content est defis c que le provied est des photos/video
-      //sinon c autre chose genre du texte
-    
-      if (mediaContents) {
-        
-        let thumbsnailAvailable = false;
-        for (let i = 0; i < mediaContents.length; i++) {
-          if (mediaContents[i]["type"] == "thumbsnail") {
-            thumbsnailAvailable = true;
-            let thumbsnail = createMediaElement(mediaContents[i]);
-            thumbsnail.style.width = "50px";
-            thumbsnail.style.height = "auto";
-            element.getElementsByClassName("imageContainer")[0].appendChild(thumbsnail);
-            element.getElementsByClassName("imageContainer")[0].onclick = showLargeSubmissions;
-            element.value = provide;
+        let mediaContents = false;
+        try {
+          mediaContents = JSON.parse(provide);
+        } catch {}
+        //si media content est defis c que le provied est des photos/video
+        //sinon c autre chose genre du texte
+      
+        if (mediaContents) {
+          
+          let thumbsnailAvailable = false;
+          for (let i = 0; i < mediaContents.length; i++) {
+            if (mediaContents[i]["type"] == "thumbsnail") {
+              thumbsnailAvailable = true;
+              let thumbsnail = createMediaElement(mediaContents[i]);
+              thumbsnail.style.width = "50px";
+              thumbsnail.style.height = "auto";
+              element.getElementsByClassName("imageContainer")[0].appendChild(thumbsnail);
+              element.getElementsByClassName("imageContainer")[0].onclick = showLargeSubmissions;
+              element.value = provide;
+            }
           }
-        }
-        if (!thumbsnailAvailable) {
-          let text = document.createElement("p");
-          text.textContent = "No thumbsnail Available for the current media";
-          element.getElementsByClassName("imageContainer")[0].appendChild(text);
+          if (!thumbsnailAvailable) {
+            let text = document.createElement("p");
+            text.textContent = "No thumbsnail Available for the current media";
+            element.getElementsByClassName("imageContainer")[0].appendChild(text);
+          }
         }
       }
     }
-    
-
-
-    
-    
+    catch(error){}    
     //document.getElementById(window.allImages[i+window.maxCount]).onclick = showLargeSubmissions;
   }
   
@@ -227,6 +234,16 @@ this.showXMore = async function(e){
     document.getElementById("plus-btn").disabled = true;
     
   }
+
+  let elements = document.getElementsByClassName("award-icon");
+  for(let i = 0; i < elements.length; i++){
+    console.log(elements[i].parentElement);
+    if(!elements[i].parentElement.getElementsByClassName("challenge_name")[0].textContent){
+      elements[i].hidden = false;
+      elements[i].parentElement.getElementsByClassName("challenge_name")[0].hidden = true;
+    }
+    
+  }  
 };
 this.createMediaElement = function(mediaContent) {
 
@@ -359,3 +376,5 @@ window.reloadCarousel = function (element) {
 };
 
 Alpine.start();
+
+

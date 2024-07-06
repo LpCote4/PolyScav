@@ -11,9 +11,11 @@
       </h1>
       <p class="ctfd-event-countdown">&nbsp;</p>
     </div>
+    {% if Configs.ctf_description %}
     <div class="container" style="padding-top: 10px;">
       {{ Configs.ctf_description }}
     </div>
+    {% endif %}
   </div>
   
   <div class="container">
@@ -63,7 +65,11 @@
                       
                       
                     </td>
-                    <td x-text="standing.challenge_name"></td>
+                    <td x-text="standing.challenge_name" class="challenge_name"></td>
+                    <td class="award-icon" hidden style="width: 100%; height: 104.8px; display: block; position: relative;">
+                      <i class="fas fa-trophy" style="color: gold; width: 100%; height: 104.8px; display: flex; justify-content: center; align-items: center;"></i>
+                    </td>
+                    
                     <td x-data="LogImage" class="imageContainer"></td>
                     <td x-text="standing.value"></td>
                     
