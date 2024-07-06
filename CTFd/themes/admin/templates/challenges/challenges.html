@@ -155,7 +155,7 @@
 									<select class="form-control custom-select" id="categories-selector" name="category">
 										<!-- Existing categories will be dynamically added here by JavaScript -->
 									</select>
-									<input type="text" class="form-control mt-2" id="categories-selector-input" placeholder="Type new category" style="display: none;">
+									<input type="text" class="form-control mt-2" id="categories-selector-input" placeholder="Type new category">
 								</td>
 								
 								<td class="editable text-center" data-editable="value" >
@@ -215,9 +215,17 @@
 
         // Show/hide the category input based on selection
         const categoryInput = document.getElementById('categories-selector-input');
+		if (categoriesSelector.value == 'other' || categories.length == 0) {
+			categoryInput.style.display = 'block';
+			categoryInput.name = "category";
+		} else {
+			categoryInput.style.display = 'none';
+			categoryInput.value = ''; // Clear input if not used
+			categoryInput.name = '';
+		}
         categoriesSelector.addEventListener('change', function() {
-            if (categoriesSelector.value === 'other') {
-                categoryInput.style.display = '';
+            if (categoriesSelector.value == 'other' || categories.length == 0) {
+                categoryInput.style.display = 'block';
 				categoryInput.name = "category";
             } else {
                 categoryInput.style.display = 'none';
