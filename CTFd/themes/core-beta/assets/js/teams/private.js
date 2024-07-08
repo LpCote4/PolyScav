@@ -6,6 +6,9 @@ import { copyToClipboard } from "../utils/clipboard";
 import { colorHash } from "@ctfdio/ctfd-js/ui";
 import { getOption as getUserScoreOption } from "../utils/graphs/echarts/userscore";
 import { embed } from "../utils/graphs/echarts";
+import $ from "jquery";
+import {ezQuery} from "../compat/ezq";
+import "../compat/format";
 
 window.Alpine = Alpine;
 window.CTFd = CTFd;
@@ -204,3 +207,37 @@ Alpine.data("TeamGraphs", () => ({
 }));
 
 Alpine.start();
+
+
+
+$(".delete-member").click(function (e) {
+  e.preventDefault();
+  const member_id = $(this).attr("member-id");
+  const member_name = $(this).attr("member-name");
+  const team_name = $(this).attr("team-name");
+ 
+  const params = {
+    user_id: member_id,
+  };
+
+  const row = $(this).parent().parent();
+
+  ezQuery({
+    title: "Remove Member",
+    body: "<p> Es-tu sûr de vouloir supprimer <strong>" + member_name + "</strong> de <strong>" + team_name + "</strong>? <p><br><br><strong> Tous leurs défis résolus, tentatives, récompenses et indices débloqués seront également supprimés !</strong>",
+    success: function () {
+      CTFd.fetch("/api/v1/teams/" + CTFd.team.id + "/members", {
+        method: "DELETE",
+        body: JSON.stringify(params),
+      })
+        .then(function (response) {
+          return response.json();
+        })
+        .then(function (response) {
+          if (response.success) {
+            row.remove();
+          }
+        });
+    },
+  });
+});

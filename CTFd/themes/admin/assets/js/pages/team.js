@@ -661,7 +661,7 @@ $(() => {
     e.preventDefault();
     const member_id = $(this).attr("member-id");
     const member_name = $(this).attr("member-name");
-
+    console.log(member_id);
     const params = {
       user_id: member_id,
     };

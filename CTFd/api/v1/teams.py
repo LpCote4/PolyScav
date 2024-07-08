@@ -533,39 +533,46 @@ class TeamMembers(Resource):
 
         return {"success": True, "data": members}
 
-    @admins_only
+    
     def delete(self, team_id):
         team = Teams.query.filter_by(id=team_id).first_or_404()
+        if is_admin() or team.captain_id == session["id"]:
+            team = Teams.query.filter_by(id=team_id).first_or_404()
 
-        data = request.get_json()
-        user_id = data["user_id"]
-        user = Users.query.filter_by(id=user_id).first_or_404()
+            data = request.get_json()
+            user_id = data["user_id"]
+            if team.captain_id != user_id or is_admin():
+                user = Users.query.filter_by(id=user_id).first_or_404()
 
-        if user.team_id == team.id:
-            team.members.remove(user)
+                if user.team_id == team.id:
+                    team.members.remove(user)
+                    
+                    # Remove information that links the user to the team
+                    Submissions.query.filter_by(user_id=user.id).delete()
+                    Awards.query.filter_by(user_id=user.id).delete()
+                    Unlocks.query.filter_by(user_id=user.id).delete()
 
-            # Remove information that links the user to the team
-            Submissions.query.filter_by(user_id=user.id).delete()
-            Awards.query.filter_by(user_id=user.id).delete()
-            Unlocks.query.filter_by(user_id=user.id).delete()
+                    db.session.commit()
+                else:
+                    return (
+                        {"success": False, "errors": {"id": ["User is not part of this team"]}},
+                        400,
+                    )
 
-            db.session.commit()
+                view = "admin" if is_admin() else "user"
+                schema = TeamSchema(view=view)
+                response = schema.dump(team)
+
+                if response.errors:
+                    return {"success": False, "errors": response.errors}, 400
+
+                members = response.data.get("members")
+
+                return {"success": True, "data": members}
+            else:
+                return {"success": False, "data": "team captaine can not be remove from team"}
         else:
-            return (
-                {"success": False, "errors": {"id": ["User is not part of this team"]}},
-                400,
-            )
-
-        view = "admin" if is_admin() else "user"
-        schema = TeamSchema(view=view)
-        response = schema.dump(team)
-
-        if response.errors:
-            return {"success": False, "errors": response.errors}, 400
-
-        members = response.data.get("members")
-
-        return {"success": True, "data": members}
+            return {"success": False, "data": "permission denied"}
 
 
 @teams_namespace.route("/me/solves")

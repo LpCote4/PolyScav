@@ -333,6 +333,20 @@
                 {% endif %}
               </td>
               <td>{{ member.score }}</td>
+              {% if team.captain_id == user.id %}
+                
+                <td class="text-center">
+                  {% if team.captain_id != member.id %}
+                  
+                  <span class="delete-member cursor-pointer" member-id="{{ member.id }}"
+                      member-name="{{ member.name }}" team-name="{{ team.name }}" data-toggle="tooltip"
+                      data-placement="top" title="Remove {{ member.name }}">
+                    <i class="fas fa-times"></i>
+                  </span>
+                  {% endif %}
+                </td>
+              
+              {% endif %}
             </tr>
           {% endfor %}
 

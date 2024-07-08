@@ -219,39 +219,56 @@ export function ezToast(args) {
 }
 
 export function ezQuery(args) {
-  const modal = modalTpl.format(args.title);
-  const obj = $(modal);
-
+  let modalElement = document.createElement("div");
+  modalElement.innerHTML = modalTpl;
+  modalElement = modalElement.firstChild;
+  
+  let modalBody = document.createElement("div");
+  
   if (typeof args.body === "string") {
-    obj.find(".modal-body").append(`<p>${args.body}</p>`);
+    
+    modalBody.innerHTML = args.body;
+    
+    for (let i = 0; i < modalBody.children.length; i++){
+
+      let child = modalBody.children[i]
+      modalElement.getElementsByClassName("modal-body")[0].appendChild(child.cloneNode(true));
+
+    }
+
+    
   } else {
-    obj.find(".modal-body").append($(args.body));
+    modalBody.innerHTML = $(args.body);
   }
+  modalElement.getElementsByClassName("modal-title")[0].textContent = args.title;
 
-  const yes = $(yesTpl);
-  const no = $(noTpl);
+  let yes = document.createElement("div");
+  yes.innerHTML = yesTpl;
+  yes = yes.firstChild;
+  let no = document.createElement("div");
+  no.innerHTML = noTpl;
+  no = no.firstChild;
 
-  obj.find(".modal-footer").append(no);
-  obj.find(".modal-footer").append(yes);
+
+  modalElement.getElementsByClassName("modal-footer")[0].append(no);
+  modalElement.getElementsByClassName("modal-footer")[0].append(yes);
 
   // Syntax highlighting
-  obj.find("pre code").each(function (_idx) {
-    hljs.highlightBlock(this);
-  });
-
-  $("main").append(obj);
-
-  $(obj).on("hidden.bs.modal", function () {
-    $(this).modal("dispose");
-  });
-
-  $(yes).click(function () {
+  $(yes).click(function (e) {
     args.success();
+    visioneur.dispose();e.target.parentElement.parentElement.parentElement.parentElement.outerHTML = ""; document.body.style = "";
+  });
+  $(no).click(function (e) {
+    visioneur.dispose();e.target.parentElement.parentElement.parentElement.parentElement.outerHTML = ""; document.body.style = "";
   });
 
-  obj.modal("show");
 
-  return obj;
+  let visioneur = new Modal(modalElement);
+  
+  visioneur.show();
+
+  
+  modalElement.getElementsByClassName("btn-close")[0].onclick = (e) => {visioneur.dispose();e.target.parentElement.parentElement.parentElement.parentElement.outerHTML = ""; document.body.style = "";}
 }
 
 export function ezProgressBar(args) {
