@@ -44,9 +44,12 @@ export function getOption(mode, places) {
     xAxis: {
       type: 'category',
       data: [],
+      show: false,
     },
     yAxis: {
-      type: 'value'
+      type: 'value',
+      axisLabel:"",
+      show: false,
     },
     series: [],
   };
@@ -62,7 +65,8 @@ export function getOption(mode, places) {
     data: [],
     itemStyle: {
       color: 'rgba(0, 0, 0, 0.85)', // Default color for the score bars
-    }
+    },
+
   };
 
   let potentialScoreSeries = {
@@ -73,7 +77,9 @@ export function getOption(mode, places) {
     itemStyle: {
       color: 'rgba(0, 0, 0, 0.45)', // Default color for the potential score bars
       opacity: 0.5, // Reduce opacity to distinguish potential score bars
-    }
+    },
+
+   
   };
 
   let characterCount = 0;
@@ -86,11 +92,13 @@ export function getOption(mode, places) {
     characterCount += teamName.length;
 
     lsData.push(teamName);
-
+    
+    potentialScoreSeries.label = {show: true,formatter: '{b}', position: 'top', fontSize:24};
     scoreSeries.data.push({
       value: teamScore,
       itemStyle: {
         color: teamColor,
+        borderRadius :(teamPotentialScore == 0) ? [30, 30, 0, 0] : "",
       }
     });
 
@@ -99,7 +107,11 @@ export function getOption(mode, places) {
       itemStyle: {
         color: teamColor,
         opacity: 0.5,
-      }
+        borderRadius: [30, 30, 0, 0],
+        
+      },
+     
+      
     });
   }
 
