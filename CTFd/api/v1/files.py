@@ -206,6 +206,7 @@ class FilesList(Resource):
         response = schema.dump(objs)
         
         width = 800
+        widthThumbsnail = 50
         fps = 24
         if (heavyData):
             width = 500
@@ -232,11 +233,23 @@ class FilesList(Resource):
             if i == 0:
                 if response.data[i]["type"].find("video") != -1:
                     clip = VideoFileClip(path)
-                    
+                    if clip.rotation == 90:
+                        clip = clip.resize(clip.size[::-1])
+                        clip.rotation = 0
+                    print(clip.size[0])
+                    print(clip.size[1])
+                    input()
                     os.remove(path)
                     path = path.split('.')[0]+".png"
-                    clip.save_frame(path, t = 1)
+                    work = False
+                    for x in range(10):
+                        try:
+                            clip.save_frame(path, t = 0.2*x)
+                        except:
+                           
+                            pass
                     
+
                     response.data[i]["type"] = "image/png"
                 #we also want to reduce the size of videos thumbsnail
                 if response.data[i]["type"].find("image") != -1:
