@@ -30,23 +30,23 @@
     ]
   },
   "assets/js/challenges.js": {
-    "file": "assets/challenges.eea4303d.js",
+    "file": "assets/challenges.707cbea1.js",
     "src": "assets/js/challenges.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_CommentBox.395c042e.js"
+      "_CommentBox.c031319a.js"
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.a1cecd40.js",
+    "file": "assets/scoreboard.025f2616.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
       "_index.7acfc0c9.js",
       "_echarts.54e741c1.js",
-      "_CommentBox.395c042e.js"
+      "_CommentBox.c031319a.js"
     ]
   },
   "assets/js/notifications.js": {
@@ -69,7 +69,7 @@
     ]
   },
   "assets/js/teams/private.js": {
-    "file": "assets/teams_private.f9567eba.js",
+    "file": "assets/teams_private.f74506c3.js",
     "src": "assets/js/teams/private.js",
     "isEntry": true,
     "imports": [
@@ -77,7 +77,7 @@
       "_clipboard.46111c0a.js",
       "_userscore.b88e7a45.js",
       "_index.7acfc0c9.js",
-      "_CommentBox.395c042e.js",
+      "_CommentBox.c031319a.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -774,6 +774,33 @@
   },
   "_CommentBox.395c042e.js": {
     "file": "assets/CommentBox.395c042e.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.10bc69fd.css"
+    ]
+  },
+  "_CommentBox.7af1b3c7.js": {
+    "file": "assets/CommentBox.7af1b3c7.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.10bc69fd.css"
+    ]
+  },
+  "_CommentBox.3ddba7a5.js": {
+    "file": "assets/CommentBox.3ddba7a5.js",
+    "imports": [
+      "assets/js/index.js"
+    ],
+    "css": [
+      "assets/CommentBox.10bc69fd.css"
+    ]
+  },
+  "_CommentBox.c031319a.js": {
+    "file": "assets/CommentBox.c031319a.js",
     "imports": [
       "assets/js/index.js"
     ],

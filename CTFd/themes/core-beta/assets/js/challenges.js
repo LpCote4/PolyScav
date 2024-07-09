@@ -269,7 +269,7 @@ Alpine.data("Challenge", () => ({
             //   thiis.$dispatch("load-challenges");
             // }
             // document.getElementById("challenge-submit").disabled = false;
-            // document.getElementById('spinner').hidden = true;
+            
             
             
           });
@@ -281,7 +281,7 @@ Alpine.data("Challenge", () => ({
             this.response.data.message = "en error happen pls contact the admin for "+error;
             this.$dispatch("load-challenges");
             document.getElementById("challenge-submit").disabled = false;
-            document.getElementById('spinner').hidden = true;
+            
           }
       }
       else{
@@ -312,7 +312,7 @@ Alpine.data("Challenge", () => ({
       else {
         alert("You're currently trying to send nothing.");
       }
-      document.getElementById('spinner').hidden = true;
+      
     
     }
     document.getElementById("file-input").textContent = "Selectioner un fichier";
