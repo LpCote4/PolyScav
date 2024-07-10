@@ -6,7 +6,7 @@
       <h1>{% trans %}Team{% endtrans %}</h1>
     </div>
   </div>
-  <div class="container">
+  <div class="container" x-data="TeamShowDown" x-ref="scoregraph" :class="{'d-none': !show}">
     <div class="row">
       <div class="col-md-6 offset-md-3 text-center">
         <p class="h2">{% trans %}Welcome to{% endtrans %} {{ Configs.ctf_name }}!</p>
@@ -15,9 +15,9 @@
         </p>
       </div>
     </div>
-
+   
     {% if integrations.mlc() %}
-      <div class="row">
+      <div class="row" >
         <div class="col-md-6 offset-md-3 text-center">
           <a class="btn btn-primary w-100" href="{{ url_for('auth.oauth_login') }}">{% trans %}Play with Official Team{% endtrans %}</a>
         </div>
@@ -40,5 +40,53 @@
         </div>
       </div>
     {% endif %}
+    <hr>
+    
+   
+
+    <div class="row col-md-6 offset-md-3 text-center">
+      <div class="col-md-12">
+        <table class="table table-striped" >
+          <thead>
+          <tr>
+            <td ><b>{% trans %}Color{% endtrans %}</b></td>
+            <td ><b>{% trans %}Team{% endtrans %}</b></td>
+            <td class="d-none d-md-table-cell"><b>{% trans %}Participants{% endtrans %}</b></td>
+        
+          </tr>
+          </thead>
+          <tbody >
+            <template x-for="(team, index) in teams" >
+              <tr>
+                <td class="team-id text-center" x-data="{ bcolor: team.color}">
+                  
+                  <b class="team-id text-center w-100" x-text="team.color" :style="`display:block;background-color: ${bcolor} !important;`"></b>
+                </td>
+                
+                <td >
+                  <b  x-text="team.name"></b>
+                </td>
+  
+                <td >
+                  <b  x-text="team.members.length"></b>
+                </td>
+              </tr>
+            </template>
+          
+            
+            
+          
+
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+
+    
   </div>
+{% endblock %}
+
+{% block scripts %}
+  {{ Assets.js("assets/js/teams/list.js") }}
 {% endblock %}
