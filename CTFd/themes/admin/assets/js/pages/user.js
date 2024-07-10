@@ -8,6 +8,7 @@ import { ezQuery, ezBadge } from "../compat/ezq";
 import { createGraph, updateGraph } from "../compat/graphs";
 import Vue from "vue";
 import CommentBox from "../components/comments/CommentBox.vue";
+import { showProvided } from "../compat/visual.js";
 
 function createUser(event) {
   event.preventDefault();
@@ -57,7 +58,7 @@ function createUser(event) {
             ezBadge({
               type: "error",
               body: response.errors[key],
-            }),
+            })
           );
           const i = $("#user-info-form").find("input[name={0}]".format(key));
           const input = $(i);
@@ -107,10 +108,10 @@ function updateUser(event) {
             ezBadge({
               type: "error",
               body: response.errors[key],
-            }),
+            })
           );
           const i = $("#user-info-edit-form").find(
-            "input[name={0}]".format(key),
+            "input[name={0}]".format(key)
           );
           const input = $(i);
           input.addClass("input-filled-invalid");
@@ -125,7 +126,7 @@ function deleteUser(event) {
   ezQuery({
     title: "Delete User",
     body: "Are you sure you want to delete {0}".format(
-      "<strong>" + htmlEntities(window.USER_NAME) + "</strong>",
+      "<strong>" + htmlEntities(window.USER_NAME) + "</strong>"
     ),
     success: function () {
       CTFd.fetch("/api/v1/users/" + window.USER_ID, {
@@ -170,7 +171,7 @@ function awardUser(event) {
             ezBadge({
               type: "error",
               body: response.errors[key],
-            }),
+            })
           );
           const i = $("#user-award-form").find("input[name={0}]".format(key));
           const input = $(i);
@@ -202,7 +203,7 @@ function emailUser(event) {
           ezBadge({
             type: "success",
             body: "E-Mail sent successfully!",
-          }),
+          })
         );
         $("#user-mail-form").find("input[type=text], textarea").val("");
       } else {
@@ -212,10 +213,10 @@ function emailUser(event) {
             ezBadge({
               type: "error",
               body: response.errors[key],
-            }),
+            })
           );
           var i = $("#user-mail-form").find(
-            "input[name={0}], textarea[name={0}]".format(key),
+            "input[name={0}], textarea[name={0}]".format(key)
           );
           var input = $(i);
           input.addClass("input-filled-invalid");
@@ -329,7 +330,7 @@ function solveSelectedMissingChallenges(event) {
   let challengeIDs = $("input[data-missing-challenge-id]:checked").map(
     function () {
       return $(this).data("missing-challenge-id");
-    },
+    }
   );
   let target = challengeIDs.length === 1 ? "challenge" : "challenges";
 
@@ -395,7 +396,7 @@ const createGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     createGraph(
       "category_breakdown",
@@ -404,7 +405,7 @@ const createGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     createGraph(
       "solve_percentages",
@@ -413,7 +414,7 @@ const createGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
   });
 };
@@ -433,7 +434,7 @@ const updateGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     updateGraph(
       "category_breakdown",
@@ -442,7 +443,7 @@ const updateGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
     updateGraph(
       "solve_percentages",
@@ -451,7 +452,7 @@ const updateGraphs = (type, id, name, account_id) => {
       type,
       id,
       name,
-      account_id,
+      account_id
     );
   });
 };
@@ -482,11 +483,14 @@ $(() => {
   });
 
   $("#correct-fail-button").click(correctSubmissions);
+  $("#correct-submissions-button").click(correctSubmissions);
 
   $("#fails-delete-button").click(function (e) {
     deleteSelectedSubmissions(e, "fails");
   });
-
+  $("#submissions-delete-button").click(function (e) {
+    deleteSelectedSubmissions(e, "fails");
+  });
   $("#awards-delete-button").click(function (e) {
     deleteSelectedAwards(e);
   });
@@ -527,3 +531,7 @@ $(() => {
     $("#user-statistics-modal").modal("toggle");
   });
 });
+let elements = document.getElementsByClassName("imageContainer");
+for (let i = 0; i < elements.length; i++) {
+  showProvided(elements[i]);
+}

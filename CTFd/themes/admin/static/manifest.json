@@ -46,6 +46,13 @@
       "assets/js/pages/main.js"
     ]
   },
+  "_visual-Q9NV1XRo.js": {
+    "file": "assets/visual-Q9NV1XRo.js",
+    "name": "visual",
+    "imports": [
+      "assets/js/pages/main.js"
+    ]
+  },
   "assets/css/admin.scss": {
     "file": "assets/admin-css-Dp4ixPKk.css",
     "src": "assets/css/admin.scss",
@@ -169,16 +176,17 @@
     ]
   },
   "assets/js/pages/submissions.js": {
-    "file": "assets/pages/submissions-DNiV4CG-.js",
+    "file": "assets/pages/submissions-Dl3eQUOu.js",
     "name": "pages/submissions",
     "src": "assets/js/pages/submissions.js",
     "isEntry": true,
     "imports": [
-      "assets/js/pages/main.js"
+      "assets/js/pages/main.js",
+      "_visual-Q9NV1XRo.js"
     ]
   },
   "assets/js/pages/team.js": {
-    "file": "assets/pages/team-Defk4wui.js",
+    "file": "assets/pages/team-CMPXbW-f.js",
     "name": "pages/team",
     "src": "assets/js/pages/team.js",
     "isEntry": true,
@@ -186,6 +194,7 @@
       "assets/js/pages/main.js",
       "_graphs-DU2cPmAY.js",
       "_CommentBox-DA29xK8h.js",
+      "_visual-Q9NV1XRo.js",
       "_echarts.common-C26q-R3s.js"
     ]
   },
@@ -199,7 +208,7 @@
     ]
   },
   "assets/js/pages/user.js": {
-    "file": "assets/pages/user-agNnVWAM.js",
+    "file": "assets/pages/user-C0VuwsZQ.js",
     "name": "pages/user",
     "src": "assets/js/pages/user.js",
     "isEntry": true,
@@ -207,6 +216,7 @@
       "assets/js/pages/main.js",
       "_graphs-DU2cPmAY.js",
       "_CommentBox-DA29xK8h.js",
+      "_visual-Q9NV1XRo.js",
       "_echarts.common-C26q-R3s.js"
     ]
   },
