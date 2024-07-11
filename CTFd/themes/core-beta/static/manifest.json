@@ -82,7 +82,7 @@
     ]
   },
   "assets/js/teams/list.js": {
-    "file": "assets/teams_list.6f641641.js",
+    "file": "assets/teams_list.1abaa917.js",
     "src": "assets/js/teams/list.js",
     "isEntry": true,
     "imports": [
@@ -156,7 +156,7 @@
     "src": "CommentBox.css"
   },
   "assets/scss/main.scss": {
-    "file": "assets/main.6197f4c0.css",
+    "file": "assets/main.c24b0e5e.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
   }

@@ -14,7 +14,6 @@ Alpine.data("TeamShowDown", () => ({
       this.teams = await CTFd.pages.scoreboard.getScoreboard();
      
 
-      console.log(this.teams[0])
       this.show = true;
     },
   }));

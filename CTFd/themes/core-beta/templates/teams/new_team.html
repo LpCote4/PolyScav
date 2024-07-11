@@ -52,6 +52,45 @@
       </div>
     </div>
   </div>
+  <hr>
+  <div class="row col-md-6 offset-md-3 text-center"  x-data="TeamShowDown" x-ref="scoregraph" :class="{'d-none': !show}">
+    <div class="col-md-12" >
+      <table class="table table-striped teams-show-down" >
+        <thead>
+        <tr>
+          <td ><b>{% trans %}Color{% endtrans %}</b></td>
+          <td ><b>{% trans %}Team{% endtrans %}</b></td>
+          <td class="d-none d-md-table-cell"><b>{% trans %}Participants{% endtrans %}</b></td>
+      
+        </tr>
+        </thead>
+        <tbody class="table table-striped " >
+          <template x-for="(team, index) in teams">
+            <tr >
+              <td class="team-id text-center" x-data="{ bcolor: team.color}" :style="`display:flex;justify-content: center;`">
+                
+                <b class="team-id text-center w-100"  :style="`margin: 10% !important;display:block;background-color: ${bcolor} !important;width:10% !important;border-radius: 100%;`"></b>
+               
+              </td>
+              
+              <td >
+                <b  x-text="team.name"></b>
+              </td>
+
+              <td  >
+                <b  x-text="team.members.length"></b>
+              </td>
+            </tr>
+          </template>
+        
+          
+          
+        
+
+        </tbody>
+      </table>
+    </div>
+  </div>
   <script>
     document.addEventListener('DOMContentLoaded', function () {
       var colorPicker = document.getElementById('config-color-picker');
@@ -65,4 +104,7 @@
       colorInput.value = colorPicker.value;
     });
   </script>
+{% endblock %}
+{% block scripts %}
+  {{ Assets.js("assets/js/teams/list.js") }}
 {% endblock %}
