@@ -152,19 +152,21 @@ class CommentList(Resource):
         # Always force author IDs to be the actual user
         req["author_id"] = session["id"]
         CommentModel = get_comment_model(data=req)
+        if req["content"] != "" and req["content"].split(':')[1] != " " :
+     
+            m = CommentModel(**req)
 
-        m = CommentModel(**req)
+            db.session.add(m)
+            db.session.commit()
 
-        db.session.add(m)
-        db.session.commit()
+            schema = CommentSchema()
 
-        schema = CommentSchema()
+            response = schema.dump(m)
+            db.session.close()
 
-        response = schema.dump(m)
-        db.session.close()
+            return {"success": True, "data": response.data}
 
-        return {"success": True, "data": response.data}
-
+        return {"success": False, "data": "cant add nothing as a comment"}
 
 @comments_namespace.route("/<comment_id>")
 class Comment(Resource):
