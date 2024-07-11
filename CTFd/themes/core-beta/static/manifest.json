@@ -39,12 +39,12 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.97824112.js",
+    "file": "assets/scoreboard.120501e4.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_index.7acfc0c9.js",
+      "_index.6707ae0f.js",
       "_echarts.54e741c1.js",
       "_CommentBox.3be5197b.js"
     ]
@@ -58,25 +58,25 @@
     ]
   },
   "assets/js/teams/public.js": {
-    "file": "assets/teams_public.6b2a0a42.js",
+    "file": "assets/teams_public.70e91285.js",
     "src": "assets/js/teams/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.b88e7a45.js",
-      "_index.7acfc0c9.js",
+      "_userscore.f077797f.js",
+      "_index.6707ae0f.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/teams/private.js": {
-    "file": "assets/teams_private.e747b09d.js",
+    "file": "assets/teams_private.b0b8052c.js",
     "src": "assets/js/teams/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
       "_clipboard.46111c0a.js",
-      "_userscore.b88e7a45.js",
-      "_index.7acfc0c9.js",
+      "_userscore.f077797f.js",
+      "_index.6707ae0f.js",
       "_CommentBox.3be5197b.js",
       "_echarts.54e741c1.js"
     ]
@@ -90,24 +90,24 @@
     ]
   },
   "assets/js/users/public.js": {
-    "file": "assets/users_public.17aa2b26.js",
+    "file": "assets/users_public.b23388f9.js",
     "src": "assets/js/users/public.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.b88e7a45.js",
-      "_index.7acfc0c9.js",
+      "_userscore.f077797f.js",
+      "_index.6707ae0f.js",
       "_echarts.54e741c1.js"
     ]
   },
   "assets/js/users/private.js": {
-    "file": "assets/users_private.b3d5a2cd.js",
+    "file": "assets/users_private.fc58c581.js",
     "src": "assets/js/users/private.js",
     "isEntry": true,
     "imports": [
       "assets/js/index.js",
-      "_userscore.b88e7a45.js",
-      "_index.7acfc0c9.js",
+      "_userscore.f077797f.js",
+      "_index.6707ae0f.js",
       "_echarts.54e741c1.js"
     ]
   },
@@ -221,6 +221,34 @@
     ],
     "css": [
       "assets/CommentBox.10bc69fd.css"
+    ]
+  },
+  "_index.dcf54108.js": {
+    "file": "assets/index.dcf54108.js",
+    "imports": [
+      "assets/js/index.js",
+      "_echarts.54e741c1.js"
+    ]
+  },
+  "_userscore.cec2da61.js": {
+    "file": "assets/userscore.cec2da61.js",
+    "imports": [
+      "assets/js/index.js",
+      "_index.dcf54108.js"
+    ]
+  },
+  "_index.6707ae0f.js": {
+    "file": "assets/index.6707ae0f.js",
+    "imports": [
+      "assets/js/index.js",
+      "_echarts.54e741c1.js"
+    ]
+  },
+  "_userscore.f077797f.js": {
+    "file": "assets/userscore.f077797f.js",
+    "imports": [
+      "assets/js/index.js",
+      "_index.6707ae0f.js"
     ]
   }
 }

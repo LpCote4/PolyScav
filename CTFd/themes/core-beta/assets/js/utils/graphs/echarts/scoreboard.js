@@ -30,14 +30,7 @@ export function getOption(mode, places) {
       bottom: 35,
       data: [],
     },
-    toolbox: {
-      feature: {
-        dataZoom: {
-          yAxisIndex: "none",
-        },
-        saveAsImage: {},
-      },
-    },
+    
     grid: {
       containLabel: true,
     },
