@@ -98,59 +98,58 @@ export function ezAlert(args, helpers, user) {
   modalElement.getElementsByClassName("modal-title")[0].textContent = args.title;
 
   let modalLikeBtn = document.createElement("button");
-  modalLikeBtn.onclick = () => {submitLike(args.ids, helpers, user, modalLikeBtn)};
+  modalLikeBtn.onclick = () => {submitLike(args.challenge_id, args.ids, helpers, user, modalLikeBtn)};
   
   modalLikeBtn.className = "btn";
   modalLikeBtn.style.backgroundColor = "rgba(255, 130, 238, 0.7)";
 
   modalElement.getElementsByClassName("modal-body")[0].append(modalLikeBtn);
-  loadLike(args.ids, helpers, modalLikeBtn, user);
+  loadLike(args.challenge_id, args.ids, helpers, modalLikeBtn, user);
   
 
   let visioneur = new Modal(modalElement);
   
   visioneur.show();
-  showComments(modalElement.getElementsByClassName("modal-footer")[0], args.ids);
+  showComments(modalElement.getElementsByClassName("modal-footer")[0], args.challenge_id, args.ids);
   
   modalElement.getElementsByClassName("btn-close")[0].onclick = (e) => {visioneur.dispose();e.target.parentElement.parentElement.parentElement.parentElement.outerHTML = ""; document.body.style = "";}
 
 }
-function showComments(element, ids) {
-  let challenge_id = ids.split("c_id:")[1].split("t_id:")[0];
-  let team_id = ids.split("c_id:")[1].split("t_id:")[1];
+function showComments(element, challenge_id, ids) {
+  
+  
   
   const commentBox = Vue.extend(CommentBox);
   let vueContainer = document.createElement("div");
   element.appendChild(vueContainer);
   new commentBox({
-    propsData: { type: "challenge", id: challenge_id, challenge_id: team_id},
+    propsData: { type: "challenge", id: challenge_id, challenge_id: ids},
   }).$mount(vueContainer);
   
 }
-function submitLike(ids, helpers, user, object) {
-  let challenge_id = ids.split("c_id:")[1].split("t_id:")[0];
-  let team_id = ids.split("c_id:")[1].split("t_id:")[1];
+function submitLike(challenge_id, ids, helpers, user, object) {
+
   let args = {};
   args["challenge_id"] = challenge_id;
-  let comment = "#"+team_id+"LIKE"+":"+user.id+" "+user.name;
+  let comment = "#"+ids+"LIKE"+":"+user.id+" "+user.name;
   if (comment.length > 0) {
     helpers.comments.add_comment(
       comment,
       "challenge",
       args,
       () => {
-        loadLike(ids, helpers, object, user);
+        loadLike(challenge_id, ids, helpers, object, user);
       },
     );
   }
   comment = "";
 }
-function loadLike(ids, helpers, element, user){
-  let challenge_id = ids.split("c_id:")[1].split("t_id:")[0];
-  let team_id = ids.split("c_id:")[1].split("t_id:")[1];
+function loadLike(challenge_id, ids, helpers, element, user){
+  
+
   let args = {};
   args["challenge_id"] = challenge_id;
-  args[`challengeid`] = team_id+"LIKE";
+  args[`challengeid`] = ids+"LIKE";
   args[`page`] = 1;
   args[`per_page`] = 1000;
       
@@ -285,7 +284,7 @@ export function ezProgressBar(args) {
       thiis.response.data.status = "already_solved";
       thiis.response.data.message = "Media(s) en cours de compression, elle devrait apparaître sous peu (tout dépend de la taille !), vous pouvez fermer la page!!!";
       thiis.$dispatch("load-challenges");
-      
+
     }
     return args.target;
   }

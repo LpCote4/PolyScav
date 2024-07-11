@@ -78,6 +78,7 @@ Alpine.data("ScoreboardList", () => ({
             }
           }
           window.nbStandings = this.standings.length;
+          
         }
         
       
@@ -119,7 +120,7 @@ Alpine.data("LogImage", () => ({
         obj.className += "inSubmission";
       }
       if (!notAMedia){
-        obj.text = 'c_id:'+this.challenge_id+'t_id:'+this.team_id;
+        obj.text = this.challenge_id;
       }
       try{
         obj.id = id;
@@ -313,12 +314,13 @@ this.showLargeSubmissions = function(_event) {
   imagesHTML += "<button style='position:absolute;top:40%;right:1rem;' class='btn btn-primary carousel__navigation-button slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>" +
   `<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" fill="white" transform="translate(85,100) rotate(180)"></path></svg>` +
   "</button>";
-
+  console.log(element.id)
   ezAlert({
       title: "Visioneurs",
       body:imagesHTML,
       button: "retour",
-      ids: element.text,
+      challenge_id: element.text,
+      ids: element.id,
       additionalClassMain: "FullSizeCarousel",
   }, helpers, CTFd.user);
   document.getElementsByClassName("modal-dialog")[0].style.listStyle = "none";
