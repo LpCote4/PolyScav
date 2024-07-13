@@ -41,23 +41,29 @@
         </template>
 
         <div class="col-md-12" x-show="standings.length">
-          <div style="display:grid;grid-template-columns: 45% 45%;column-gap: 10%;row-gap: 20px;width: 100%; max-height: 100%; justify-content: center;">
+          
+          <div class="container" style="display:grid;grid-template-columns: 45% 45%;column-gap: 10%;row-gap: 20px;width: 100%; max-height: 100%; justify-content: center;align-items: center;margin: auto;">
+           
               <tbody id="challengeRecap">
-                <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)" >
-                  <tr  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type, color:standing.color}" :style="`background-color: ${color} !important;display:flex; width:100%;max-width:200px; height:fit-content;flex-direction: column;border-radius: 7%;grid-row-start: ${index+1};
+                
+                <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)" style="z-index:2;">
+                  <div  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type, color:standing.color}" :style="`z-index:2;position:relative; align-self: center;background-color: ${color} !important;display:flex; width:100%s;max-width:200px; height:fit-content;flex-direction: column;border-radius: 15px;grid-row-start: ${index+1};
                   grid-row-end: ${index+3};`">
-                    <th class="header" style="display: flex;justify-content: space-between;text-align: center;align-items: center;">
-                      <p style="font-size: 12px;width: 40%;height: 0px;text-align: start;padding-left: 5px;font-family: Raleway,sans-serif;" x-text="standing.time"></p>
-                      <div  :style="`background-color: ${color};width: 45px;height: 45px;margin: -45px;border-radius: 100%;left: 30%; z-index: 1;`">
-                        <b style="position: relative;top: 25%;width: 100%;height: 100%;font-family: Raleway,sans-serif;color: white;font-weight:bolder;" x-text="standing.value"></b>
+                   
+                    <div class="header" :style="`display: flex;justify-content: space-between;text-align: center;align-items: center;z-index: 3;background-color: ${color};border-top-left-radius:15px;border-top-right-radius:15px`">
+                      <p style="font-size: 12px;width: 40%;height: 0px;text-align: start;padding-left: 5px;z-index: 3;" x-text="standing.time"></p>
+                      <div  :style="`background-color: ${color};width: 45px;height: 45px;margin: -45px;border-radius: 100%;left: 30%; z-index: 3;`">
+                        <b style="position: relative;top: 25%;width: 100%;height: 100%;color: white;font-weight:bolder;z-index: 2;" x-text="standing.value"></b>
                       </div>
                       <div style="width: 40%;text-align: end;">
-                        <p style="font-size: 10px;font-family: Raleway, sans-serif;text-overflow: ellipsis;height: 0px;font-weight:bolder; " x-text="">aaaaaaaaaa</p>
+                        <p style="font-size: 10px;font-family: Raleway, sans-serif;text-overflow: ellipsis;height: 0px;font-weight:bolder;padding-right: 3px; " x-text="standing.user_name"></p>
                       </div>
                       
-                    </th>
-                    <th class="content" style="align-items: center;min-width: 100%;"><td style="align-items: center;min-width: fit-content;" x-text=" " x-data="LogImage" class="imageContainer"></td></th>
-                    <th class="header" style="display: flex;min-width: 100%;font-family: Raleway, sans-serif;align-items: center;"><p style="font-size: 15px;font-family: Raleway, sans-serif;font-weight:bolder;text-align: center;width: 100%;" x-text="standing.challenge_name"></p></th>
+                    </div>
+                    <div class="content" style="align-items: center;width: 100%;z-index: 2;"><div :style="`align-items: center;min-width: fit-content;z-index: 2;opacity: 1;background-color: ${color};`" x-text=" " x-data="LogImage" class="imageContainer"></div></div>
+                    <div class="header" style="display: flex;font-family: Raleway, sans-serif;align-items: center;text-align: center;width: 100%;display: flex;justify-content: center; z-index: 2;"><p style="font-size: 12px;font-family: Raleway, sans-serif;font-weight:bolder;text-align: center; max-width: 130px; z-index: 2;" x-text="standing.challenge_name"></p></div>
+                    
+                   
                     <!-- 
                     <th scope="row" class="text-center" x-text="standing.time"></th>
                     <td style="padding-left: 2% !important;">
@@ -75,9 +81,13 @@
                     <td x-data="LogImage" class="imageContainer"></td>
                     <td x-text="standing.value"></td>
                     -->
-                  </tr>
+                    <div class="splash" :style="`--teamColor: ${color};z-index:1;`"><img  src="/themes/core-beta/static/img/splash1.png"></div>
+                    <div class="splash" :style="`--teamColor: ${color};z-index:1;`"><img  src="/themes/core-beta/static/img/splash1.png"></div>
+                    <div class="splash" :style="`--teamColor: ${color};z-index:1;`"><img  src="/themes/core-beta/static/img/splash1.png"></div>
+                  </div>
                   
                 </template>
+                
               </tbody>  
               
           </div>

@@ -21,6 +21,13 @@ window.imageInit = false;
 window.theninit = 0;
 window.decalage = 0
 
+window.splashPosition = {1:[["-55px","0","-30px","0px"],["0px","-50px","50%","0px"],["","-50px","0px","0px"]],
+  2:[["-50px","0px","35%","0"],["","-10px","60%","0px"],["-40px","","-35px","0px"]],
+  3:[["-45px","0px","65%","0"],["","-30px","60%","0px"],["15%","","-35px","0px"]],
+  4:[["-40px","0px","-10%","0"],["","-40px","60%","0"],["-40px","","-35px","0px"]],
+  5:[["-40px","0px","-10%","0"],["","-30px","60%","0"],["","-30px","-25px","0px"]],
+  6:[["-0px","0px","-30%","0"],["","40px","60%","0"],["","-30px","-30px","0px"]],}
+
 Alpine.data("ScoreboardDetail", () => ({
   data: {},
   show: true,
@@ -215,7 +222,7 @@ this.showXMore = async function(e){
               thumbsnail.style["display"]= "block";
               thumbsnail.style["height"] = "auto";
               
-              thumbsnail.onload = function(thumbsnail){checkImageOrientation(thumbsnail);};
+              thumbsnail.onload = function(thumbsnail){stylingImage(thumbsnail);};
               element.getElementsByClassName("imageContainer")[0].appendChild(thumbsnail);
               
               element.getElementsByClassName("imageContainer")[0].onclick = showLargeSubmissions;
@@ -253,23 +260,36 @@ this.showXMore = async function(e){
     
   }  
 };
-this.checkImageOrientation = function(event) {
+this.stylingImage = function(event) {
   const img = event.target;
   console.log(img.naturalWidth);
   console.log(img.naturalHeight);
   if (img.naturalWidth > img.naturalHeight) {
     img.classList.add('landscape');
     img.parentElement.classList.add('landscape-td');
-    img.parentElement.parentElement.classList.add('landscape-td');
+    img.parentElement.parentElement.parentElement.classList.add('landscape-td');
     
   } else {
     img.classList.add('portrait');
     img.parentElement.classList.add('portrait-td');
-    img.parentElement.parentElement.classList.add('portrait-td');
+    img.parentElement.parentElement.parentElement.classList.add('portrait-td');
     
   }
   
-  img.parentElement.parentElement["style"]["transform"] += "rotate("+((Math.random() > 0.50 ? -1:1)*(Math.random()*6))+"deg)";
+  img.parentElement.parentElement.parentElement["style"]["transform"] += "rotate("+((Math.random() > 0.50 ? -1:1)*(Math.random()*6))+"deg)";
+  let splashes = img.parentElement.parentElement.parentElement.getElementsByClassName("splash")
+  let positions = window.splashPosition[Math.floor(Math.random()*6)+1]
+  for (let i = 0; i < splashes.length; i++){
+    let position = positions[i];
+    let splash = splashes[i];
+    
+    splash.firstChild.style.top = position[0];
+    splash.firstChild.style.bottom = position[1];
+    splash.firstChild.style.left =position[2];
+    splash.firstChild.style.right =position[3];
+    splash.firstChild.src = "/themes/core/static/img/splash"+(Math.floor(Math.random()*5)+1)+".png"
+    
+  }
 
 }
 this.createMediaElement = function(mediaContent) {
@@ -299,10 +319,10 @@ this.showLargeSubmissions = function(_event) {
   let element;
 
   try {
-    mediaContents = JSON.parse(_event.srcElement.parentElement.value);
+    mediaContents = JSON.parse(_event.srcElement.parentElement.parentElement.value);
     element = _event.srcElement.parentElement;
   } catch {
-    mediaContents = JSON.parse(_event.srcElement.parentElement.parentElement.value);
+    mediaContents = JSON.parse(_event.srcElement.parentElement.parentElement.parentElement.value);
     element = _event.srcElement.parentElement.parentElement;
   }
 

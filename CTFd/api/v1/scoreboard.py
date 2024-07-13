@@ -1,6 +1,6 @@
 from collections import defaultdict
 
-from flask import request
+from flask import request,url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy import select
 
@@ -143,6 +143,8 @@ class ScoreboardDetail(Resource):
         solves_mapper = defaultdict(list)
         fails_mapper = defaultdict(list)
 
+        print(url_for("views.themes", path="img/splash2.png"))
+     
         for solve in solves:
             solves_mapper[solve.account_id].append(
                 {

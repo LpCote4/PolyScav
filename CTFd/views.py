@@ -206,19 +206,22 @@ def setup():
 
             # Upload banner
             default_ctf_banner_location = url_for("views.themes", path="img/logo.png")
+           
+
             ctf_banner = request.files.get("ctf_banner")
             if ctf_banner:
                 f = upload_file(file=ctf_banner, page_id=page.id)
                 default_ctf_banner_location = url_for("views.files", path=f.location)
                 set_config("ctf_banner", f.location)
 
+            
             # Splice in our banner
             index = f"""<div class="row" onload="window.location.assign('https://www.w3schools.com')">
     <div class="col-md-6 offset-md-3">
         <img class="w-100 mx-auto d-block" style="max-width: 500px;padding: 50px;padding-top: 14vh;" src="{default_ctf_banner_location}" />
     </div>
 </div>"""
-
+            
             page.content = index
 
             # Visibility
