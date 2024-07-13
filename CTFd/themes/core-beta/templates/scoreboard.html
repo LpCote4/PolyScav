@@ -41,22 +41,24 @@
         </template>
 
         <div class="col-md-12" x-show="standings.length">
-          <div>
-            <table class="table table-striped">
-              <thead>
-                
-              <tr>
-                <td style="width: 10px"><b>{% trans %}Temps{% endtrans %}</b></td>
-                <td><b>{% trans %} {% endtrans %}</b></td>
-                <td><b>{% trans %}Defi{% endtrans %}</b></td>
-                <td><b>{% trans %}Photo{% endtrans %}</b></td>
-                <td><b>{% trans %}Score{% endtrans %}</b></td>
-              </tr>
-              </thead>
-  
+          <div style="display:grid;grid-template-columns: 45% 45%;column-gap: 10%;row-gap: 20px;width: 100%; max-height: 100%; justify-content: center;">
               <tbody id="challengeRecap">
-                <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)">
-                  <tr  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type,}" >
+                <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)" >
+                  <tr  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type, color:standing.color}" :style="`background-color: ${color} !important;display:flex; width:100%;max-width:200px; height:fit-content;flex-direction: column;border-radius: 7%;grid-row-start: ${index+1};
+                  grid-row-end: ${index+3};`">
+                    <th class="header" style="display: flex;justify-content: space-between;text-align: center;align-items: center;">
+                      <p style="font-size: 12px;width: 40%;height: 0px;text-align: start;padding-left: 5px;font-family: Raleway,sans-serif;" x-text="standing.time"></p>
+                      <div  :style="`background-color: ${color};width: 45px;height: 45px;margin: -45px;border-radius: 100%;left: 30%; z-index: 1;`">
+                        <b style="position: relative;top: 25%;width: 100%;height: 100%;font-family: Raleway,sans-serif;color: white;font-weight:bolder;" x-text="standing.value"></b>
+                      </div>
+                      <div style="width: 40%;text-align: end;">
+                        <p style="font-size: 10px;font-family: Raleway, sans-serif;text-overflow: ellipsis;height: 0px;font-weight:bolder; " x-text="">aaaaaaaaaa</p>
+                      </div>
+                      
+                    </th>
+                    <th class="content" style="align-items: center;min-width: 100%;"><td style="align-items: center;min-width: fit-content;" x-text=" " x-data="LogImage" class="imageContainer"></td></th>
+                    <th class="header" style="display: flex;min-width: 100%;font-family: Raleway, sans-serif;align-items: center;"><p style="font-size: 15px;font-family: Raleway, sans-serif;font-weight:bolder;text-align: center;width: 100%;" x-text="standing.challenge_name"></p></th>
+                    <!-- 
                     <th scope="row" class="text-center" x-text="standing.time"></th>
                     <td style="padding-left: 2% !important;">
                       <div><b><p style="width: 15ch;overflow: hidden;text-overflow: ellipsis;" x-text="'Par: ' + standing.user_name"></p></b>
@@ -72,17 +74,17 @@
                     
                     <td x-data="LogImage" class="imageContainer"></td>
                     <td x-text="standing.value"></td>
-                    
+                    -->
                   </tr>
                   
                 </template>
-              </tbody>
+              </tbody>  
               
-            </table>
           </div>
+          <button class="btn btn-primary" id="plus-btn" style="position: relative; bottom: -20px; left: 45%;" @click="showXMore">plus...</button>
           
-          <button class="btn btn-primary" id="plus-btn" style="position: relative; left: 45%;" @click="showXMore">plus...</button>
         </div>
+        
       <div class="col-md-12" x-show="! standings.length">
         <h3 class="text-center text-muted">{% trans %}Scoreboard is empty{% endtrans %}</h3>
       </div>

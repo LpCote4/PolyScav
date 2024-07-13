@@ -28,7 +28,7 @@ Alpine.data("ScoreboardDetail", () => ({
   async init() {
     window.standings = await CTFd.pages.scoreboard.getScoreboard();
     window.ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(window.standings.length)
-  
+    
 
     let option = getOption(CTFd.config.userMode, window.standings);
     var chartDom = document.getElementById('score-graph');
@@ -80,7 +80,7 @@ Alpine.data("ScoreboardList", () => ({
           window.nbStandings = this.standings.length;
           
         }
-        
+        console.log(this.standings)
       
     
     
@@ -210,10 +210,16 @@ this.showXMore = async function(e){
             if (mediaContents[i]["type"] == "thumbsnail") {
               thumbsnailAvailable = true;
               let thumbsnail = createMediaElement(mediaContents[i]);
-              thumbsnail.style.width = "50px";
-              thumbsnail.style.height = "auto";
+             
+              thumbsnail.style["max-width"] = "100%";
+              thumbsnail.style["display"]= "block";
+              thumbsnail.style["height"] = "auto";
+              
+              thumbsnail.onload = function(thumbsnail){checkImageOrientation(thumbsnail);};
               element.getElementsByClassName("imageContainer")[0].appendChild(thumbsnail);
+              
               element.getElementsByClassName("imageContainer")[0].onclick = showLargeSubmissions;
+              
               element.value = provide;
             }
           }
@@ -228,6 +234,7 @@ this.showXMore = async function(e){
     catch(error){}    
     //document.getElementById(window.allImages[i+window.maxCount]).onclick = showLargeSubmissions;
   }
+  
   
   window.maxCount += window.maxCountIncrease;
   
@@ -246,6 +253,25 @@ this.showXMore = async function(e){
     
   }  
 };
+this.checkImageOrientation = function(event) {
+  const img = event.target;
+  console.log(img.naturalWidth);
+  console.log(img.naturalHeight);
+  if (img.naturalWidth > img.naturalHeight) {
+    img.classList.add('landscape');
+    img.parentElement.classList.add('landscape-td');
+    img.parentElement.parentElement.classList.add('landscape-td');
+    
+  } else {
+    img.classList.add('portrait');
+    img.parentElement.classList.add('portrait-td');
+    img.parentElement.parentElement.classList.add('portrait-td');
+    
+  }
+  
+  img.parentElement.parentElement["style"]["transform"] += "rotate("+((Math.random() > 0.50 ? -1:1)*(Math.random()*6))+"deg)";
+
+}
 this.createMediaElement = function(mediaContent) {
 
   let htmlElement;

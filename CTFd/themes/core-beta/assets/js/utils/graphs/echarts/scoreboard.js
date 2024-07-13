@@ -141,7 +141,7 @@ export function getOption(mode, places) {
 }
 
 export function getTenLast(places, standings, dictIdChallenge){
-  
+  console.log(standings)
   const teams = Object.keys(places);
   let last10 = [];
   let max = 999;
@@ -153,11 +153,12 @@ export function getTenLast(places, standings, dictIdChallenge){
     
     for (let solved = 0; solved < solves.length; solved++) {
       let challengeDate = solves[solved].date;
+      console.log( places[teams[i]]);
       solves[solved]["team_name"] = places[teams[i]].name;
       solves[solved]["user_name"] = dictIdNom[solves[solved]["user_id"]];
       solves[solved]["challenge_name"] = dictIdChallenge[solves[solved]["challenge_id"]];
       solves[solved]["time"] = getTimeStamp(challengeDate);
-
+      solves[solved]["color"] = standings[i]["color"];
 
       for (let x = last10.length; x > 0; x--){
         if (dayjs(challengeDate) > dayjs(last10[x-1].date)){
@@ -191,6 +192,7 @@ export function getTenLast(places, standings, dictIdChallenge){
         fails[solved]["user_name"] = dictIdNom[fails[solved]["user_id"]];
         fails[solved]["challenge_name"] = dictIdChallenge[fails[solved]["challenge_id"]];
         fails[solved]["time"] = getTimeStamp(challengeDate);
+        fails[solved]["color"] = standings[i]["color"];
 
 
         for (let x = last10.length; x > 0; x--){
@@ -227,16 +229,17 @@ export function getTenLast(places, standings, dictIdChallenge){
 export function getTimeStamp(challengeDate){
   let timeBetween = dayjs() - dayjs(challengeDate);
   if (timeBetween/(1000*60*60*24) >= 2){
-    return "il y a " + Math.floor(timeBetween/(1000*60*60*24)) + " jours";
+    //avant il y avait les il y a 
+    return "" + Math.floor(timeBetween/(1000*60*60*24)) + " jours";
   }
   else if (timeBetween/(1000*60*60) >=2){
-    return "il y a " + Math.floor(timeBetween/(1000*60*60)) + " heures";
+    return "" + Math.floor(timeBetween/(1000*60*60)) + " heures";
   }
   else if (timeBetween/(1000*60) >=2){
-    return "il y a " + Math.floor(timeBetween/(1000*60)) + " minutes";
+    return "" + Math.floor(timeBetween/(1000*60)) + " min";
   }
   else{
-    return "il y a un instant";
+    return "a l'instant";
   }
 }
 

@@ -206,7 +206,7 @@ class FilesList(Resource):
         response = schema.dump(objs)
         
         width = 800
-        widthThumbsnail = 50
+        widthThumbsnail = 100
         fps = 24
         if (heavyData):
             width = 500
@@ -236,9 +236,14 @@ class FilesList(Resource):
                     if clip.rotation == 90:
                         clip = clip.resize(clip.size[::-1])
                         clip.rotation = 0
-                    print(clip.size[0])
-                    print(clip.size[1])
-                    input()
+                    
+                    #on force un ration 16/9  si jamais on nas un ratio portrait trop fin
+                    if clip.size[0]/clip.size[1] < 0.78403755868:
+                            clip = clip.resize((widthThumbsnail*0.78403755868,widthThumbsnail))
+                            
+                        
+
+
                     os.remove(path)
                     path = path.split('.')[0]+".png"
                     work = False
@@ -274,8 +279,9 @@ class FilesList(Resource):
                     except:
                         pass   
                     #same as image.resize but keeping the ratio ;-)
+                    
                     if not request.args.get("admin", False):
-                        image.thumbnail((50, 50))
+                        image.thumbnail((widthThumbsnail, widthThumbsnail))
                     image.save(path.split('.')[0]+".png")
                     response.data[i]["type"] = "thumbsnail"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".png"

@@ -21,16 +21,12 @@
   padding: 0rem 0rem !important;
 }
 
-.inSubmission td{
 
-  background-color:rgba($color: #FDFD96, $alpha: 0.3) !important;
-  box-shadow: none;
-}
-.inSubmission th{
+.inSubmission img{
+  opacity: 0.7;
 
-  background-color:rgba($color: #FDFD96, $alpha: 0.3) !important;
-  box-shadow: none;
-}
+} 
+
 .loader {
   border: 16px solid #f3f3f3;
   border-radius: 50%;
@@ -140,4 +136,22 @@ blockquote {
 
 .teams-show-down{
   font-family: "Rubik", sans-serif;
+}
+
+.landscape {
+  
+  width: 100% !important;
+  height: auto !important;
+}
+
+.portrait {
+  width: auto !important;
+  height: 200px !important;
+}
+
+
+
+.portrait-td {
+  width: fit-content !important;
+  max-width: 45%;
 }
