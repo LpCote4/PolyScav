@@ -3,19 +3,166 @@
 {% block content %}
   <div class="jumbotron">
     <div class="container">
-      
       <h1>
         {% trans %}Challenges{% endtrans %}
       </h1>
       <div>
-        <progress id="scoreProgressBar" value="0" max="100" style="background: green ;"></progress>
-        <p id="scoreProgressText"> 0 / 0</p>
+        <progress id="scoreProgressBar" value="0" max="100" style="background: green;"></progress>
+        <p id="scoreProgressText">0 / 0</p>
       </div>
       <h3 id="scoreProgressTitle">
         0 points
-      </h1>
+      </h3>
     </div>
   </div>
+
+  <style>
+    .category-color-0 {
+      background-color: #FF5733; /* Red */
+    }
+    .category-color-1 {
+      background-color: #33FF57; /* Green */
+    }
+    .category-color-2 {
+      background-color: #3357FF; /* Blue */
+    }
+    .category-color-3 {
+      background-color: #FF33FF; /* Pink */
+    }
+    .category-color-4 {
+      background-color: #FFFF33; /* Yellow */
+    }
+    .category-bg-0 {
+      background-color: rgba(255, 87, 51, 0.5); /* Red with 50% opacity */
+    }
+    .category-bg-1 {
+      background-color: rgba(51, 255, 87, 0.5); /* Green with 50% opacity */
+    }
+    .category-bg-2 {
+      background-color: rgba(51, 87, 255, 0.5); /* Blue with 50% opacity */
+    }
+    .category-bg-3 {
+      background-color: rgba(255, 51, 255, 0.5); /* Pink with 50% opacity */
+    }
+    .category-bg-4 {
+      background-color: rgba(255, 255, 51, 0.5); /* Yellow with 50% opacity */
+    }
+    #challenges-row {
+      width: 90vw;
+      display: flex;
+      justify-self: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    .challenge-box {
+      padding: 10px;
+      display: block;
+      position: relative;
+      box-sizing: border-box;
+      background-size: cover;
+      background-position: center;
+      color: white;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .challenge-button {
+      height: 100%;
+      width: 100%;
+      position: relative;
+      background: rgba(0, 0, 0, 0.5);
+      border: none;
+      background-image: url('/themes/core-beta/static/img/12en12.png');
+      background-size: cover;
+      background-position: center;
+      border-radius: 15px;
+      overflow: hidden;
+    }
+    .challenge-title {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      padding: 5px;
+      font-size: 14px;
+      font-weight: bold;
+      text-align: center;
+      color: white;
+      background-color: rgba(0, 0, 0, 0.7);
+      z-index: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: block;
+    }
+    .challenge-value {
+      position: absolute;
+      bottom: 5px;
+      right: 5px;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: white;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      z-index: 1;
+    }
+    @media (min-width: 740px) {
+      .challenge-box {
+        height: 200px;
+        width: 200px;
+        margin: 10px;
+      }
+    }
+    @media (max-width: 740px) {
+      .challenge-box {
+        height: 35vw;
+        width: 35vw;
+      }
+      #categories-tab {
+        display: none;
+      }
+    }
+    #categories-tab {
+      position: relative;
+      top: 0;
+      left: 0;
+      width: 200px;
+      height: 100%;
+      background-color: #333;
+      padding-top: 20px;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.5);
+    }
+    .categories-list {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+    .category-item {
+      padding: 10px 20px;
+      text-align: left;
+      font-size: 18px;
+      color: white;
+      text-decoration: none;
+      display: block;
+    }
+    .category-item:hover {
+      background-color: #575757;
+    }
+    .main-content {
+      margin-left: 220px;
+      padding: 20px;
+    }
+    .category-header {
+      width: 100%;
+      text-align: center;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      color: white;
+      font-size: 24px;
+      font-weight: bold;
+      position: relative;
+    }
+  </style>
 
   <div class="container">
     <div class="row">
@@ -23,11 +170,11 @@
         {% include "components/errors.html" %}
       </div>
     </div>
-
     <div 
       x-data="ChallengeBoard" 
       @load-challenges.window="loadChallenges()" 
       @load-challenge.window="loadChallenge($event.detail)"
+      style="display: flex; justify-content: center;"
     >
       <div
           x-ref="challengeWindow" id="challenge-window" class="modal fade" tabindex="-1" role="dialog" x-data=""
@@ -42,44 +189,35 @@
         </div>
       </div>
 
-      <div x-show="loaded">
-        <template x-for="(category, idx) in getCategories()" :key="idx">
-          <div class="pt-5">
-            <div class="category-header mb-3">
-              <h3 x-text="category"></h3>
-            </div>
-
-            <div class="category-challenges d-flex flex-column">
-              <div class="challenges-row row">
-                <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
-                  <div class="col-sm-6 col-md-4 col-lg-3">
-                    <button
-                        class="challenge-button btn btn-dark w-100 text-truncate my-3"
-                        :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited': ''"
-                        :value="c.id" @click="loadChallenge(c.id)" 
-                    >
-                    
-                    <div style="position: absolute;">
-                    <i class="float-end" :id="c.id+'a'" style="left: 75%; position: relative;"></i>
-                    <p style="left: -45%; top: -4px; ;position: relative; color: white;" :id="c.id"><p>
-                    </div>
-                    
-                      
-                      <div class="challenge-inner my-3">
-                        <p x-text="c.name"></p>
-                        <span x-text="c.value"></span>
-                      </div>
-                    </button>
-                  </div>
-                </template>
+      <div x-show="loaded" style="width:90vw; justify-content: center;">
+        <div id="challenges-row">
+          <template x-for="(category, idx) in getCategories()" :key="idx">
+            <div class="pt-5" :class="`category-bg-${idx % 5}`" style="border-radius: 10px; padding: 15px;">
+              <div :class="`category-header mb-3 category-color-${idx % 5}`">
+                <h3 x-text="category"></h3>
               </div>
+              <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
+                <div class="challenge-box">
+                  <button
+                      class="challenge-button w-100 text-truncate"
+                      :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : ''"
+                      :value="c.id" @click="loadChallenge(c.id)" 
+                  >
+                    <div style="position: absolute;">
+                      <i class="float-end" :id="c.id+'a'" style="left: 75%; position: relative;"></i>
+                      <p style="left: -45%; top: -4px; position: relative; color: white;" :id="c.id"></p>
+                    </div>
+                    <div class="challenge-inner my-3">
+                      <p x-text="c.name" class="challenge-title"></p>
+                      <div class="challenge-value" x-text="`${c.value} pts`"></div>
+                    </div>
+                  </button>
+                </div>
+              </template>
             </div>
-          </div>
-        </template>
+          </template>
+        </div>
       </div>
-
-      
-
     </div>
   </div>
 {% endblock %}
