@@ -354,7 +354,7 @@ this.drawLines = function(){
     
     //set the z-index propely
 
-    canvas.parentElement.parentElement.parentElement.style["z-index"] = window.laoded-i;
+    //canvas.parentElement.parentElement.parentElement.style["z-index"] = window.laoded-i;
   
 
 
