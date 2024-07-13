@@ -22,7 +22,7 @@
 }
 
 
-.inSubmission img{
+.inSubmission{
   opacity: 0.7;
 
 } 
@@ -159,6 +159,6 @@ blockquote {
 .splash img{
   position:absolute;
   opacity: 1;
-  filter: drop-shadow(100000px 0px 0 var(--teamColor));
-  transform: translateX(-100000px);
+  filter: drop-shadow(1000px 0px 0 var(--teamColor));
+  transform: translateX(-1000px);
 }

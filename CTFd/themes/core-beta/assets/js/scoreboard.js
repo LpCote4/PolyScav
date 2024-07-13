@@ -5,6 +5,7 @@ import { embed } from "./utils/graphs/echarts";
 import * as echarts from 'echarts';
 import { ezAlert } from "./compat/ezq";
 import { default as helpers } from "./compat/helpers";
+import { left, offset } from "@popperjs/core";
 
 window.Alpine = Alpine;
 window.CTFd = CTFd;
@@ -19,7 +20,9 @@ window.maxCount = 0;
 window.maxCountIncrease = 5;
 window.imageInit = false;
 window.theninit = 0;
-window.decalage = 0
+window.decalage = 0;
+window.laoded = 0;
+
 
 window.splashPosition = {1:[["-55px","0","-30px","0px"],["0px","-50px","50%","0px"],["","-50px","0px","0px"]],
   2:[["-50px","0px","35%","0"],["","-10px","60%","0px"],["-40px","","-35px","0px"]],
@@ -275,8 +278,8 @@ this.stylingImage = function(event) {
     img.parentElement.parentElement.parentElement.classList.add('portrait-td');
     
   }
-  
-  img.parentElement.parentElement.parentElement["style"]["transform"] += "rotate("+((Math.random() > 0.50 ? -1:1)*(Math.random()*6))+"deg)";
+  let rotation = ((Math.random() > 0.50 ? -1:1)*(Math.random()*6));
+  img.parentElement.parentElement.parentElement["style"]["transform"] += "rotate("+rotation+"deg)";
   let splashes = img.parentElement.parentElement.parentElement.getElementsByClassName("splash")
   let positions = window.splashPosition[Math.floor(Math.random()*6)+1]
   for (let i = 0; i < splashes.length; i++){
@@ -290,8 +293,103 @@ this.stylingImage = function(event) {
     splash.firstChild.src = "/themes/core/static/img/splash"+(Math.floor(Math.random()*5)+1)+".png"
     
   }
+  window.laoded +=1;
 
+  if (window.laoded == window.allImages.length || window.laoded == window.maxCount ){
+    drawLines();
+  }
+  /*
+  var bodyRect = document.body.getBoundingClientRect();
+  let lineStartSelf = img.parentElement.parentElement.parentElement.getElementsByClassName("lineStart")[0];
+  let elemRectSelf = lineStartSelf.getBoundingClientRect();
+  let offsetSelf = {
+    "top":elemRectSelf.top - bodyRect.top,
+    "left":elemRectSelf.left - bodyRect.left
+  };
+  console.log(img.parentElement.parentElement.parentElement);
+  let lineStart = img.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("lineStart")[img.parentElement.value+1];
+  let elemRect = lineStart.getBoundingClientRect();
+  let offset = {
+    "top":elemRect.top - bodyRect.top,
+    "left":elemRect.left - bodyRect.left
+  };
+  console.log(offsetSelf);
+  console.log(offset);
+
+
+
+  var c = img.parentElement.parentElement.parentElement.getElementsByClassName("lineCanvas")[0];
+  let cRect = c.getBoundingClientRect();
+  c.height = (elemRect["top"] - cRect["top"]);
+  c.width = (elemRect["left"] - cRect["left"])+(elemRectSelf.left-cRect.left);
+  c["style"]["transform"] += "rotate("+(-rotation)+"deg)";
+
+  console.log(c.style.height);
+  
+  var ctx=c.getContext("2d");
+  var grad= ctx.createLinearGradient(50, 50, 150, 150);
+  grad.addColorStop(0, "red");
+  grad.addColorStop(1, "green");
+  ctx.setLineDash([40, 20]);
+  ctx.strokeStyle = grad;
+  console.log(cRect.width)
+  ctx.beginPath(); 
+  ctx.lineWidth="7";
+  ctx.moveTo(elemRectSelf.left-cRect.left,25);
+  ctx.lineTo(500,elemRect.top-elemRectSelf.top);
+  ctx.stroke();
+  */
 }
+this.drawLines = function(){
+  var bodyRect = document.body.getBoundingClientRect();
+  for (let i = 0; i < window.laoded; i++){
+    let element = document.getElementsByClassName("lineStart")[i];
+    let nextElement = document.getElementsByClassName("lineStart")[i+1];
+
+    //obtient la position de notre elements et du suivants
+    let elementRect = element.getBoundingClientRect();
+    let nextElementRect = nextElement.getBoundingClientRect();
+
+    var canvas =  document.getElementsByClassName("lineCanvas")[i];
+    
+    //set the z-index propely
+
+    canvas.parentElement.parentElement.parentElement.style["z-index"] = window.laoded-i;
+  
+
+
+    //le mettre droit so il a pas le meme angle que le frame
+    let rotationCommands = canvas.parentElement.parentElement.parentElement["style"]["transform"];
+    let deg =  parseFloat(rotationCommands.split("rotate(")[1].split("deg")[0]);
+    
+    canvas["style"]["transform"] = "rotate("+(-deg)+"deg)"
+    canvas.style.left = (nextElementRect["left"] < elementRect["left"] ? nextElementRect["left"]-elementRect["left"]:0)+"px";
+    //creer la taile sur mesure pour que on puisse se rendre a l'element suivant
+    let canvasRect = canvas.getBoundingClientRect();
+    canvas.width = (nextElementRect["left"] - canvasRect["left"])+Math.abs(elementRect.left-canvasRect.left)+element.offsetHeight/2;
+    canvas.height = (nextElementRect["top"] - canvasRect["top"])+Math.abs(elementRect.top-canvasRect.top)+element.offsetWidth/2;
+
+    let start = {"x":elementRect.left-canvasRect.left+element.offsetWidth/2, "y":elementRect.top-canvasRect.top+(element.offsetHeight/2)}
+    let mouvement = {"x":nextElementRect.left-canvasRect.left+(nextElementRect["left"] < elementRect["left"]?element.offsetWidth:0), "y":nextElementRect.top-canvasRect.top+(nextElement.offsetHeight/4)}
+
+    //on dessine la ligne
+    var ctx=canvas.getContext("2d");
+    var grad= ctx.createLinearGradient(start["x"],start["y"], mouvement["x"],canvas.height);
+    console.log(window.standings[i])
+    grad.addColorStop(0, element["value"]);
+    grad.addColorStop(1, nextElement["value"]);
+    ctx.setLineDash([40, 20]);
+    ctx.strokeStyle = grad;
+    console.log(canvasRect.width)
+    ctx.beginPath(); 
+    ctx.lineWidth="7";
+    ctx.moveTo(start["x"],start["y"]);
+    ctx.lineTo(mouvement["x"],mouvement["y"]);
+    ctx.stroke();
+
+  }
+}
+
 this.createMediaElement = function(mediaContent) {
 
   let htmlElement;
@@ -320,10 +418,10 @@ this.showLargeSubmissions = function(_event) {
 
   try {
     mediaContents = JSON.parse(_event.srcElement.parentElement.parentElement.value);
-    element = _event.srcElement.parentElement;
+    element = _event.srcElement.parentElement.parentElement;
   } catch {
     mediaContents = JSON.parse(_event.srcElement.parentElement.parentElement.parentElement.value);
-    element = _event.srcElement.parentElement.parentElement;
+    element = _event.srcElement.parentElement.parentElement.parentElement;
   }
 
   let decalage = false;
