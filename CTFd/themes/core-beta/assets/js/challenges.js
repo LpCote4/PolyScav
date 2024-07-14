@@ -535,7 +535,7 @@ this.hit = function(){
 }
 
 this.changeLabel = function(event){
-  let output = event.target.files.length + " folder(s) uploded";
+  let output = event.target.files.length + " file(s) uploaded";
   let totalSize = 0;
   let formats_video = [
     "hevc",

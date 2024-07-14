@@ -348,6 +348,7 @@ class ChallengeList(Resource):
             "type": (str, None),
             "state": (str, None),
             "q": (str, None),
+            "thumbsnail": (str, None),
             "field": (
                 RawEnum(
                     "ChallengeFields",
