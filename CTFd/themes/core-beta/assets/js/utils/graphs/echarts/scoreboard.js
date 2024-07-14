@@ -11,133 +11,54 @@ export function cumulativeSum(arr) {
   return result;
 }
 
-export function getOption(mode, places) {
-  let option = {
-    title: {
-      left: "center",
-      text: (mode === "teams" ? "Teams" : "Users") + " Score",
-    },
-    tooltip: {
-      trigger: "axis",
-      axisPointer: {
-        type: "shadow",
-      },
-    },
-    legend: {
-      type: "scroll",
-      orient: "horizontal",
-      align: "left",
-      bottom: 35,
-      data: [],
-    },
-    
-    grid: {
-      containLabel: true,
-    },
-    xAxis: {
-      type: 'category',
-      data: [],
-      show: false,
-    },
-    yAxis: {
-      type: 'value',
-      axisLabel:"",
-      show: false,
-    },
-    series: [],
-  };
-
-  const teams = Object.keys(places);
-
-  let lsData = [];
-
-  let scoreSeries = {
-    name: 'Score',
-    type: 'bar',
-    stack: 'total',
-    data: [],
-    itemStyle: {
-      color: 'rgba(0, 0, 0, 0.85)', // Default color for the score bars
-    },
-
-  };
-
-  let potentialScoreSeries = {
-    name: 'Potential Score',
-    type: 'bar',
-    stack: 'total',
-    data: [],
-    itemStyle: {
-      color: 'rgba(0, 0, 0, 0.45)', // Default color for the potential score bars
-      opacity: 0.5, // Reduce opacity to distinguish potential score bars
-    },
-
-   
-  };
-
-  let characterCount = 0;
-  for (let i = 0; i < teams.length; i++) {
-    const teamName = places[teams[i]]["name"];
-    const teamScore = places[teams[i]]["score"];
-    const teamPotentialScore = places[teams[i]]["potential_score"];
-    const teamColor = places[teams[i]]["color"];
-
-    characterCount += teamName.length;
-
-    lsData.push(teamName);
-    
-    potentialScoreSeries.label = {show: true,formatter: '{b}', position: 'top', fontSize:24};
-    scoreSeries.data.push({
-      value: teamScore,
-      itemStyle: {
-        color: teamColor,
-        borderRadius :(teamPotentialScore == 0) ? [30, 30, 0, 0] : "",
+export function trier(standings) {
+  let lsOutput = [];
+  
+  if (standings.length > 0){
+    for (let i =0; i < standings.length; i++){
+      let standing = standings[i];
+      if (lsOutput.length == 0){
+        lsOutput.push(standing);
       }
-    });
-
-    potentialScoreSeries.data.push({
-      value: teamPotentialScore,
-      itemStyle: {
-        color: teamColor,
-        opacity: 0.5,
-        borderRadius: [30, 30, 0, 0],
-        
-      },
-     
+      else{
+        console.log(lsOutput);
+        for (let x = lsOutput.length; x > 0; x--){
+          if (getTeamTotalScore(standing) > getTeamTotalScore(lsOutput[x-1])){
+            let temp = lsOutput[x-1];
+            lsOutput[x-1] = standing;
+            lsOutput[x] = temp;
+          }
+          else{
+            if (x == lsOutput.length){
+              lsOutput.push(standing);
+              console.log(standing);
+              break
+            }
+            
+          }
+        }
+      }
       
-    });
+      
+    }
+  }
+  let output = {}
+  for (let i =0; i < lsOutput.length; i++){
+    lsOutput[i].pos = i+1;
+    output[i] =  lsOutput[i];
   }
 
-  // Determine if labels need rotation based on available space
-  const xAxisWidth = characterCount * 20 + 30;
-  const containerWidth = document.getElementById('score-graph').offsetWidth;
-  if(xAxisWidth > containerWidth*2){
-    option.xAxis.axisLabel = {
-      interval: 0,
-      rotate: 90,
-    };
-  }
-  else if (xAxisWidth > containerWidth) {
-    option.xAxis.axisLabel = {
-      interval: 0,
-      rotate: 45,
-    };
-  } else {
-    option.xAxis.axisLabel = {
-      interval: 0,
-      rotate: 0,
-    };
-  }
+  return output;
+  
+}
 
-  option.xAxis.data = lsData;
-  option.series.push(scoreSeries);
-  option.series.push(potentialScoreSeries);
-  option.series.forEach(series => {
-    series.barGap = '0%'; // Overlap bars for the same team
-    series.barCategoryGap = '50%'; // Adjust the gap between categories (teams)
-  });
-
-  return option;
+export function getTeamTotalScore(team){
+  let output = team.score + team.potential_score;
+  if (team.potential_score == 0){
+    output += 0.1;
+  }
+  console.log(output);
+  return output;
 }
 
 export function getTenLast(places, standings, dictIdChallenge){
@@ -228,15 +149,15 @@ export function getTenLast(places, standings, dictIdChallenge){
 
 export function getTimeStamp(challengeDate){
   let timeBetween = dayjs() - dayjs(challengeDate);
-  if (timeBetween/(1000*60*60*24) >= 2){
+  if (timeBetween/(1000*60*60*24) >= 1){
     //avant il y avait les il y a 
-    return "" + Math.floor(timeBetween/(1000*60*60*24)) + " jours";
+    return "il y a " + Math.floor(timeBetween/(1000*60*60*24)) + " jours";
   }
-  else if (timeBetween/(1000*60*60) >=2){
-    return "" + Math.floor(timeBetween/(1000*60*60)) + " heures";
+  else if (timeBetween/(1000*60*60) >=1){
+    return "il y a " + Math.floor(timeBetween/(1000*60*60)) + " heures";
   }
-  else if (timeBetween/(1000*60) >=2){
-    return "" + Math.floor(timeBetween/(1000*60)) + " min";
+  else if (timeBetween/(1000*60) >=1){
+    return "il y a " + Math.floor(timeBetween/(1000*60)) + " min";
   }
   else{
     return "a l'instant";

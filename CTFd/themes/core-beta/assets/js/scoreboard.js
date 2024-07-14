@@ -1,6 +1,6 @@
 import Alpine from "alpinejs";
 import CTFd from "./index";
-import { getOption, getTenLast } from "./utils/graphs/echarts/scoreboard";
+import { trier, getTenLast } from "./utils/graphs/echarts/scoreboard";
 import { embed } from "./utils/graphs/echarts";
 import * as echarts from 'echarts';
 import { ezAlert } from "./compat/ezq";
@@ -31,8 +31,19 @@ window.splashPosition = {1:[["-55px","0","-30px","0px"],["0px","-50px","50%","0p
   5:[["-40px","0px","-10%","0"],["","-30px","60%","0"],["","-30px","-25px","0px"]],
   6:[["-0px","0px","-30%","0"],["","40px","60%","0"],["","-30px","-30px","0px"]],}
 
+
+window.scoreboardSplashPosition = {
+  1:["95px","","","105px"],
+  2:["110px","","","50px"],
+  3:["85px","","-195px",""],
+  4:["130px","","","190px"],
+  5:["90px","","","290px"],
+}
+
 Alpine.data("ScoreboardDetail", () => ({
   data: {},
+  rankings: [],
+  top:{},
   show: true,
   
   async init() {
@@ -40,17 +51,44 @@ Alpine.data("ScoreboardDetail", () => ({
     window.ScoreboardDetail = await CTFd.pages.scoreboard.getScoreboardDetail(window.standings.length)
     
 
-    let option = getOption(CTFd.config.userMode, window.standings);
+
     var chartDom = document.getElementById('score-graph');
-
-
-    embed(chartDom, option);
+    console.log(window.standings);
+    this.rankings = trier(window.standings);
+    console.log(this.rankings);
+    this.top = this.rankings[0];
+    
 
     
     this.show = window.standings.length > 0;
 
   },
 }));
+
+this.loserSplash = function(e, index){
+  if (e.value != "laoded"){
+    //splash spetial pour le dernier
+    e.parentElement.style.position = "abosolute";
+    if (window.standings.length -1 == index){
+      e.src = "/themes/core/static/img/splash"+1+".png";
+      e.parentElement.style.top = "125px";
+      e.parentElement.style.right = "75%";
+    }
+    else {
+      e.src = "/themes/core/static/img/splash"+((index%5)+1)+".png";
+      let position = window.scoreboardSplashPosition[((index%5)+1)];
+      e.parentElement.style.top = position[0];
+      e.parentElement.style.left = position[2];
+      e.parentElement.style.right = position[3];
+      
+    }
+    
+    e.value = "laoded";
+    
+  }
+ 
+  
+}
 
 Alpine.data("ScoreboardList", () => ({
   standings: [],
@@ -298,94 +336,60 @@ this.stylingImage = function(event) {
   if (window.laoded == window.allImages.length || window.laoded == window.maxCount ){
     drawLines();
   }
-  /*
-  var bodyRect = document.body.getBoundingClientRect();
-  let lineStartSelf = img.parentElement.parentElement.parentElement.getElementsByClassName("lineStart")[0];
-  let elemRectSelf = lineStartSelf.getBoundingClientRect();
-  let offsetSelf = {
-    "top":elemRectSelf.top - bodyRect.top,
-    "left":elemRectSelf.left - bodyRect.left
-  };
-  console.log(img.parentElement.parentElement.parentElement);
-  let lineStart = img.parentElement.parentElement.parentElement.parentElement.getElementsByClassName("lineStart")[img.parentElement.value+1];
-  let elemRect = lineStart.getBoundingClientRect();
-  let offset = {
-    "top":elemRect.top - bodyRect.top,
-    "left":elemRect.left - bodyRect.left
-  };
-  console.log(offsetSelf);
-  console.log(offset);
 
-
-
-  var c = img.parentElement.parentElement.parentElement.getElementsByClassName("lineCanvas")[0];
-  let cRect = c.getBoundingClientRect();
-  c.height = (elemRect["top"] - cRect["top"]);
-  c.width = (elemRect["left"] - cRect["left"])+(elemRectSelf.left-cRect.left);
-  c["style"]["transform"] += "rotate("+(-rotation)+"deg)";
-
-  console.log(c.style.height);
-  
-  var ctx=c.getContext("2d");
-  var grad= ctx.createLinearGradient(50, 50, 150, 150);
-  grad.addColorStop(0, "red");
-  grad.addColorStop(1, "green");
-  ctx.setLineDash([40, 20]);
-  ctx.strokeStyle = grad;
-  console.log(cRect.width)
-  ctx.beginPath(); 
-  ctx.lineWidth="7";
-  ctx.moveTo(elemRectSelf.left-cRect.left,25);
-  ctx.lineTo(500,elemRect.top-elemRectSelf.top);
-  ctx.stroke();
-  */
 }
 this.drawLines = function(){
   var bodyRect = document.body.getBoundingClientRect();
   for (let i = 0; i < window.laoded; i++){
-    let element = document.getElementsByClassName("lineStart")[i];
-    let nextElement = document.getElementsByClassName("lineStart")[i+1];
-
-    //obtient la position de notre elements et du suivants
-    let elementRect = element.getBoundingClientRect();
-    let nextElementRect = nextElement.getBoundingClientRect();
-
-    var canvas =  document.getElementsByClassName("lineCanvas")[i];
-    
-    //set the z-index propely
-
-    //canvas.parentElement.parentElement.parentElement.style["z-index"] = window.laoded-i;
+    try{
+      let element = document.getElementsByClassName("lineStart")[i];
+      let nextElement = document.getElementsByClassName("lineStart")[i+1];
   
-
-
-    //le mettre droit so il a pas le meme angle que le frame
-    let rotationCommands = canvas.parentElement.parentElement.parentElement["style"]["transform"];
-    let deg =  parseFloat(rotationCommands.split("rotate(")[1].split("deg")[0]);
+      //obtient la position de notre elements et du suivants
+      let elementRect = element.getBoundingClientRect();
+      let nextElementRect = nextElement.getBoundingClientRect();
+  
+      var canvas =  document.getElementsByClassName("lineCanvas")[i];
+      
+      //set the z-index propely
+  
+      //canvas.parentElement.parentElement.parentElement.style["z-index"] = window.laoded-i;
     
-    canvas["style"]["transform"] = "rotate("+(-deg)+"deg)"
-    canvas.style.left = (nextElementRect["left"] < elementRect["left"] ? nextElementRect["left"]-elementRect["left"]:0)+"px";
-    //creer la taile sur mesure pour que on puisse se rendre a l'element suivant
-    let canvasRect = canvas.getBoundingClientRect();
-    canvas.width = (nextElementRect["left"] - canvasRect["left"])+Math.abs(elementRect.left-canvasRect.left)+element.offsetHeight/2;
-    canvas.height = (nextElementRect["top"] - canvasRect["top"])+Math.abs(elementRect.top-canvasRect.top)+element.offsetWidth/2;
-
-    let start = {"x":elementRect.left-canvasRect.left+element.offsetWidth/2, "y":elementRect.top-canvasRect.top+(element.offsetHeight/2)}
-    let mouvement = {"x":nextElementRect.left-canvasRect.left+(nextElementRect["left"] < elementRect["left"]?element.offsetWidth:0), "y":nextElementRect.top-canvasRect.top+(nextElement.offsetHeight/4)}
-
-    //on dessine la ligne
-    var ctx=canvas.getContext("2d");
-    var grad= ctx.createLinearGradient(start["x"],start["y"], mouvement["x"],canvas.height);
-    console.log(window.standings[i])
-    grad.addColorStop(0, element["value"]);
-    grad.addColorStop(1, nextElement["value"]);
-    ctx.setLineDash([40, 20]);
-    ctx.strokeStyle = grad;
-    console.log(canvasRect.width)
-    ctx.beginPath(); 
-    ctx.lineWidth="7";
-    ctx.moveTo(start["x"],start["y"]);
-    ctx.lineTo(mouvement["x"],mouvement["y"]);
-    ctx.stroke();
+  
+  
+      //le mettre droit so il a pas le meme angle que le frame
+      let rotationCommands = canvas.parentElement.parentElement.parentElement["style"]["transform"];
+      let deg =  parseFloat(rotationCommands.split("rotate(")[1].split("deg")[0]);
+      
+      canvas["style"]["transform"] = "rotate("+(-deg)+"deg)"
+      canvas.style.left = (nextElementRect["left"] < elementRect["left"] ? nextElementRect["left"]-elementRect["left"]:0)+"px";
+      //creer la taile sur mesure pour que on puisse se rendre a l'element suivant
+      let canvasRect = canvas.getBoundingClientRect();
+      canvas.width = (nextElementRect["left"] - canvasRect["left"])+Math.abs(elementRect.left-canvasRect.left)+element.offsetHeight/2;
+      canvas.height = (nextElementRect["top"] - canvasRect["top"])+Math.abs(elementRect.top-canvasRect.top)+element.offsetWidth/2;
+  
+      let start = {"x":elementRect.left-canvasRect.left+element.offsetWidth/2, "y":elementRect.top-canvasRect.top+(element.offsetHeight/2)}
+      let mouvement = {"x":nextElementRect.left-canvasRect.left+(nextElementRect["left"] < elementRect["left"]?element.offsetWidth:0), "y":nextElementRect.top-canvasRect.top+(nextElement.offsetHeight/4)}
+  
+      //on dessine la ligne
+      var ctx=canvas.getContext("2d");
+      var grad= ctx.createLinearGradient(start["x"],start["y"], mouvement["x"],canvas.height);
+      console.log(window.standings[i])
+      grad.addColorStop(0, element["value"]);
+      grad.addColorStop(1, nextElement["value"]);
+      ctx.setLineDash([40, 20]);
+      ctx.strokeStyle = grad;
+      console.log(canvasRect.width)
+      ctx.beginPath(); 
+      ctx.lineWidth="7";
+      ctx.moveTo(start["x"],start["y"]);
+      ctx.lineTo(mouvement["x"],mouvement["y"]);
+      ctx.stroke();
+    }
+    catch {
+      console.log("could not load the content")
+    }
+    
 
   }
 }

@@ -21,11 +21,154 @@
   padding: 0rem 0rem !important;
 }
 
-
+body {
+  overflow-x: hidden !important;
+}
+html{
+  overflow-x: hidden !important
+}
+body {
+  background: radial-gradient(white,#fbfaff);
+  
+  
+}
 .inSubmission{
   opacity: 0.7;
 
 } 
+.potentialscore {
+  opacity: 0.7;
+  font-size: 1rem !important;
+}
+#score-graph h1 {
+  font-family: "Rubik", sans-serif;
+  font-size: 1.7rem;
+  color: #141a39;
+  text-transform: uppercase;
+  cursor: default;
+}
+
+#score-graph #leaderboard {
+  
+  position: relative;
+}
+
+#score-graph table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+  color: #141a39;
+  cursor: default;
+}
+
+#score-graph tr {
+  transition: all 0.2s ease-in-out;
+  border-radius: 0.2rem;
+}
+
+
+#score-graph tr:nth-child(odd) {
+  background-color: #f9f9f9;
+}
+
+#score-graph tr:nth-child(2) {
+  color: #fff;
+}
+
+#score-graph td {
+  height: 5rem;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.4rem;
+  padding: 1rem 2rem;
+  position: relative;
+}
+#score-graph text {
+  height: 5rem;
+  font-family: "Rubik", sans-serif;
+  font-size: 1.4rem;
+  padding: 1rem 2rem;
+  position: relative;
+}
+
+#score-graph .number {
+  width: 1rem;
+  font-size: 30px;
+  font-weight: bold;
+  text-align: left;
+}
+
+#score-graph .name {
+  text-align: left;
+  font-size: 1.2rem;
+}
+
+#score-graph .points {
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+#score-graph .points p {
+  font-weight: bold;
+  font-size: 20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items:center;
+  padding-top: 1rem;
+}
+
+#score-graph .gold-medal {
+  height: 3rem;
+  margin-left: 25px;
+}
+#leaderboard .ribbon {
+
+  width: 105%;
+  height: 5.5rem;
+  top: -0.5rem;
+  left: -2.5%;
+  background-color: var(--teamColor);
+  position: absolute;
+
+  -webkit-box-shadow: 0px 15px 11px -6px #7a7a7d;
+  box-shadow: 0px 15px 11px -6px #7a7a7d;
+}
+@media only screen and (max-device-width: 767px){
+  
+  #leaderboard .ribbon::before {
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    bottom: -0.75rem;
+    left: 1.20%;
+    transform: rotate(45deg);
+    background-color: var(--teamColor);
+    position: absolute;
+    z-index: -1;
+   
+  }
+  
+  #leaderboard .ribbon::after {
+    content: "";
+    height: 1.5rem;
+    width: 1.5rem;
+    bottom: -0.75rem;
+    right: 1.20%;
+    transform: rotate(45deg);
+    background-color: var(--teamColor);
+    position: absolute;
+    z-index: -1;
+  
+  }
+}
+
+
+
+
+
+
 
 .loader {
   border: 16px solid #f3f3f3;
@@ -158,7 +301,30 @@ blockquote {
 
 .splash img{
   position:absolute;
+  z-index: 10;
   opacity: 1;
-  filter: drop-shadow(1000px 0px 0 var(--teamColor));
-  transform: translateX(-1000px);
+  filter: drop-shadow(10000px 0px 0 var(--teamColor));
+  transform: translateX(-10000px);
+}
+
+.fa-clock-o:hover p{
+  visibility: visible;
+}
+
+@media only screen and (max-device-width: 960px){
+  .imageShownDown{
+    grid-template-columns: 45% 45%;
+    column-gap: 10%;
+  
+    
+    
+  }
+}
+@media only screen and (min-device-width: 960px){
+  .imageShownDown{
+    grid-template-columns: 20% 20%;
+    width: 40%;
+    column-gap: 0%;
+   
+  }
 }
