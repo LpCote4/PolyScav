@@ -21,7 +21,7 @@ export function trier(standings) {
         lsOutput.push(standing);
       }
       else{
-        console.log(lsOutput);
+        
         for (let x = lsOutput.length; x > 0; x--){
           if (getTeamTotalScore(standing) > getTeamTotalScore(lsOutput[x-1])){
             let temp = lsOutput[x-1];
@@ -31,7 +31,7 @@ export function trier(standings) {
           else{
             if (x == lsOutput.length){
               lsOutput.push(standing);
-              console.log(standing);
+             
               break
             }
             
@@ -57,12 +57,12 @@ export function getTeamTotalScore(team){
   if (team.potential_score == 0){
     output += 0.1;
   }
-  console.log(output);
+ 
   return output;
 }
 
 export function getTenLast(places, standings, dictIdChallenge){
-  console.log(standings)
+
   const teams = Object.keys(places);
   let last10 = [];
   let max = 999;
@@ -74,7 +74,7 @@ export function getTenLast(places, standings, dictIdChallenge){
     
     for (let solved = 0; solved < solves.length; solved++) {
       let challengeDate = solves[solved].date;
-      console.log( places[teams[i]]);
+
       solves[solved]["team_name"] = places[teams[i]].name;
       solves[solved]["user_name"] = dictIdNom[solves[solved]["user_id"]];
       solves[solved]["challenge_name"] = dictIdChallenge[solves[solved]["challenge_id"]];

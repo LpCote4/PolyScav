@@ -53,9 +53,9 @@ Alpine.data("ScoreboardDetail", () => ({
 
 
     var chartDom = document.getElementById('score-graph');
-    console.log(window.standings);
+
     this.rankings = trier(window.standings);
-    console.log(this.rankings);
+   
     this.top = this.rankings[0];
     
 
@@ -128,7 +128,7 @@ Alpine.data("ScoreboardList", () => ({
           window.nbStandings = this.standings.length;
           
         }
-        console.log(this.standings)
+     
       
     
     
@@ -176,7 +176,7 @@ Alpine.data("LogImage", () => ({
       }
       catch (error){
         this.id = id;
-        console.log(this.id);
+   
       }
     }
 
@@ -293,7 +293,7 @@ this.showXMore = async function(e){
 
   let elements = document.getElementsByClassName("award-icon");
   for(let i = 0; i < elements.length; i++){
-    console.log(elements[i].parentElement);
+  
     if(!elements[i].parentElement.getElementsByClassName("challenge_name")[0].textContent){
       elements[i].hidden = false;
       elements[i].parentElement.getElementsByClassName("challenge_name")[0].hidden = true;
@@ -303,8 +303,7 @@ this.showXMore = async function(e){
 };
 this.stylingImage = function(event) {
   const img = event.target;
-  console.log(img.naturalWidth);
-  console.log(img.naturalHeight);
+
   if (img.naturalWidth > img.naturalHeight) {
     img.classList.add('landscape');
     img.parentElement.classList.add('landscape-td');
@@ -374,12 +373,12 @@ this.drawLines = function(){
       //on dessine la ligne
       var ctx=canvas.getContext("2d");
       var grad= ctx.createLinearGradient(start["x"],start["y"], mouvement["x"],canvas.height);
-      console.log(window.standings[i])
+
       grad.addColorStop(0, element["value"]);
       grad.addColorStop(1, nextElement["value"]);
       ctx.setLineDash([40, 20]);
       ctx.strokeStyle = grad;
-      console.log(canvasRect.width)
+ 
       ctx.beginPath(); 
       ctx.lineWidth="7";
       ctx.moveTo(start["x"],start["y"]);
@@ -462,7 +461,7 @@ this.showLargeSubmissions = function(_event) {
   imagesHTML += "<button style='position:absolute;top:40%;right:1rem;' class='btn btn-primary carousel__navigation-button slide-arrow-next' id='slide-arrow-next' onclick='upCarousel(this)'>" +
   `<svg viewBox="0 0 100 100"><path d="M 50,0 L 60,10 L 20,50 L 60,90 L 50,100 L 0,50 Z" class="arrow" fill="white" transform="translate(85,100) rotate(180)"></path></svg>` +
   "</button>";
-  console.log(element.id)
+
   ezAlert({
       title: "Visioneurs",
       body:imagesHTML,
