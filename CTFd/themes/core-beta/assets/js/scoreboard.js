@@ -342,6 +342,7 @@ this.drawLines = function(){
   for (let i = 0; i < window.laoded; i++){
     try{
       let element = document.getElementsByClassName("lineStart")[i];
+      var canvas =  document.getElementsByClassName("lineCanvas")[i];
       let nextElement = document.getElementsByClassName("lineStart")[i+1];
   
       //obtient la position de notre elements et du suivants
@@ -386,6 +387,8 @@ this.drawLines = function(){
       ctx.stroke();
     }
     catch {
+      //sinon le dernier canvas vas full depasser de lecran si il est a droite
+      canvas.style.width ="0px"
       console.log("could not load the content")
     }
     
