@@ -72,3 +72,8 @@ class ChallengeSchema(ma.ModelSchema):
         "requirements",
         validate=[ChallengeRequirementsValidator()],
     )
+
+    thumbsnail = field_for(
+        Challenges,
+        "thumbsnail",
+    )

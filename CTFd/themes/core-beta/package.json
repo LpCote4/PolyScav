@@ -24,6 +24,7 @@
     "jquery": "^3.7.1",
     "lolight": "^1.4.0",
     "markdown-it": "^14.1.0",
+    "node": "^18.20.4",
     "q": "^1.5.1"
   },
   "devDependencies": {

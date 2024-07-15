@@ -1,9 +1,12 @@
 from typing import List  # noqa: I001
-
+import logging
 from flask import abort, render_template, request, url_for
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 import json
+from PIL import Image
+from io import BytesIO
+import base64
 from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
 from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessResponse
@@ -53,6 +56,16 @@ from CTFd.utils.user import (
     is_admin,
 )
 
+def resize_image(image_data, size=(100, 100)):
+    # Open the image
+    image = Image.open(BytesIO(image_data))
+    # Resize the image while maintaining aspect ratio
+    image.thumbnail(size, Image.ANTIALIAS)
+    # Save the image to a BytesIO object
+    output = BytesIO()
+    image.save(output, format='PNG')
+    # Get the binary content of the image
+    return output.getvalue()
 
 def outgoingPost(request):
     submission_id = -1
@@ -358,6 +371,7 @@ class ChallengeList(Resource):
                         "category": "category",
                         "type": "type",
                         "state": "state",
+                        "thumbsnail": "thumbsnail",
                     },
                 ),
                 None,
@@ -506,12 +520,26 @@ class ChallengeList(Resource):
     )
     def post(self):
         data = request.form or request.get_json()
+        # logging.info(f"Received form data: {data}")
+        print(data)
+
+        thumbsnail_file = request.files.get('thumbsnail')
+        print(f"Thumbsnail file: {thumbsnail_file}")  # Debugging
+    
+        if thumbsnail_file:
+            thumbsnail_data = thumbsnail_file.read()
+            resized_thumbsnail_data = resize_image(thumbsnail_data)
+            # Encode resized image to base64
+            resized_thumbsnail_b64 = base64.b64encode(resized_thumbsnail_data).decode('utf-8')
+            # Create a data URL
+            data['thumbsnail'] = f"data:image/png;base64,{resized_thumbsnail_b64}"
 
         # Load data through schema for validation but not for insertion
         schema = ChallengeSchema()
         response = schema.load(data)
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
+
         challenge_type = data["type"]
         challenge_class = get_chal_class(challenge_type)
         challenge = challenge_class.create(request)

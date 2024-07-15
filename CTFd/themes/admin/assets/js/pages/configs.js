@@ -135,7 +135,7 @@ function updateConfigs(event) {
 }
 
 function uploadLogo(event) {
-  alert();
+  alert(event.target);
   event.preventDefault();
   let form = event.target;
   helpers.files.upload(form, {}, function (response) {

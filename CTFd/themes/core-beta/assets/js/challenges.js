@@ -570,12 +570,12 @@ this.changeLabel = function(event){
   
     totalSize += event.target.files[i].size;
     if (!formats_video.includes(extension.toLowerCase()) && !formats_image.includes(extension.toLowerCase())){
-      alert("We can not garented ." + extension + " will be supported")
+      alert("We cannot guarantee ." + extension + " will be supported")
     }
 
   }
   if (totalSize > 100000000 && totalSize < 200000000){
-    alert("The folders you're trying to upload are bigger than 100MB and will be further compressed to reduce their size even more. This may impact the quality and the upload time by a lot!. FolderSize: "+totalSize/1000000 + "MB" );
+    alert("The files you're trying to upload are bigger than 100MB and will be compressed to reduce their size. This will impact the quality and the upload time!. FolderSize: "+totalSize/1000000 + "MB" );
   }
   else if (totalSize > 200000000){
     alert("File can't be bigger than 200MB, even with compression. Please use external tools and share it with a link");
