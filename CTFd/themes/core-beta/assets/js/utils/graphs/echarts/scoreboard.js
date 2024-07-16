@@ -69,15 +69,21 @@ export function getTenLast(places, standings, dictIdChallenge){
   
   for (let i = 0; i < ((teams.length >= max) ? max : teams.length); i++) {
     let solves = places[teams[i]]["solves"];
+   
     let fails = places[teams[i]]["fails"];
     let dictIdNom = dictUserIdToUserName(standings[i]["members"]);
     
     for (let solved = 0; solved < solves.length; solved++) {
+
       let challengeDate = solves[solved].date;
 
       solves[solved]["team_name"] = places[teams[i]].name;
       solves[solved]["user_name"] = dictIdNom[solves[solved]["user_id"]];
       solves[solved]["challenge_name"] = dictIdChallenge[solves[solved]["challenge_id"]];
+      if (!solves[solved]["challenge_name"]){
+        solves[solved]["challenge_name"] = solves[solved]["challenge_id"];
+        
+      }
       solves[solved]["time"] = getTimeStamp(challengeDate);
       solves[solved]["color"] = standings[i]["color"];
 

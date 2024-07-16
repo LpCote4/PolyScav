@@ -21,13 +21,7 @@
   padding: 0rem 0rem !important;
 }
 
-body {
- 
-  
-}
-html{
-  width: fit-content;
-}
+
 body {
   background: radial-gradient(white,#fbfaff);
   
@@ -285,20 +279,24 @@ blockquote {
 
 .landscape {
   
-  width: 100% !important;
+  width: 200px !important;
   height: auto !important;
+  max-width: 100% !important;
 }
 
 .portrait {
   width: auto !important;
-  height: 200px !important;
+  height: 225px !important;
 }
 
-
+.landscape-td {
+  width: fit-content !important;
+  
+}
 
 .portrait-td {
   width: fit-content !important;
-  max-width: 45%;
+  max-width: 50%;
 }
 
 .splash img{
@@ -315,8 +313,8 @@ blockquote {
 
 @media only screen and (max-device-width: 960px){
   .imageShownDown{
-    grid-template-columns: 45% 45%;
-    column-gap: 10%;
+    grid-template-columns: 55% 55%;
+    column-gap: 2%;
   
     
     

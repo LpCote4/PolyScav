@@ -122,7 +122,13 @@ Alpine.data("ScoreboardList", () => ({
           else {
             let last = getTenLast(window.ScoreboardDetail, window.standings, ChallengeIdToChallengeName);
             for (let i = 0; i < last.length; i++){
+              if (!last[i].provided){
+                last[i].provided = last[i].date;
+              }
               this.standings[i] = last[i];
+
+              //vue que on utilise leurs provided faire sure que il est unique si il est vide
+              
             }
           }
           window.nbStandings = this.standings.length;
@@ -146,6 +152,7 @@ Alpine.data("LogImage", () => ({
   async init() {
     let notAMedia = false;
     let id = 0;
+  
     try{
       id = JSON.parse(this.id)[0]["id"];
       window.allImages.push(id);
@@ -163,6 +170,7 @@ Alpine.data("LogImage", () => ({
 
       
     if (window.allSubmited.length > window.maxCount){
+      
       let obj = document.getElementById(this.id);
       if (this.type == "manual" || this.type == "manualRecursive"){
         obj.className += "inSubmission";
@@ -172,6 +180,7 @@ Alpine.data("LogImage", () => ({
       }
       try{
         obj.id = id;
+        
         obj.hidden = true
       }
       catch (error){
@@ -214,21 +223,37 @@ this.showXMore = async function(e){
           imageToPull.push(window.allImages[i - window.decalage]);
         }
         else {
-          let text = document.createElement("p");
-          text.textContent = "reponse cachée";
-          if (window.allSubmited[i].split('%').length > 1){
-            text.textContent = window.allSubmited[i].split('%')[0];
-          } 
           
-          document.getElementById(window.allSubmited[i]).getElementsByClassName("imageContainer")[0].append(text);
-
+          document.getElementById(window.allSubmited[i]).getElementsByClassName("header")[1].style.height = "100px";
+          document.getElementById(window.allSubmited[i]).getElementsByClassName("header")[1].style.width = "186px";
+          
+          let rotation = ((Math.random() > 0.50 ? -1:1)*(Math.random()*6));
+          document.getElementById(window.allSubmited[i])["style"]["transform"] += "rotate("+rotation+"deg)";
+          let splashes = document.getElementById(window.allSubmited[i]).getElementsByClassName("splash")
+          let positions = window.splashPosition[Math.floor(Math.random()*6)+1]
+          for (let i = 0; i < splashes.length; i++){
+            let position = positions[i];
+            let splash = splashes[i];
+            
+            splash.firstChild.style.top = position[0];
+            splash.firstChild.style.bottom = position[1];
+            splash.firstChild.style.left =position[2];
+            splash.firstChild.style.right =position[3];
+            splash.firstChild.src = "/themes/core/static/img/splash"+(Math.floor(Math.random()*5)+1)+".png"
+            
+          }
+          window.laoded +=1;
           window.decalage++;
+          
+          
+         
         }
         document.getElementById(window.allSubmited[i]).hidden = false;
       }
     }
     catch(error){
     }
+    
   }
 
   let responseChallengesMedia= await CTFd.fetch(`/api/v1/teams?ids=`+JSON.stringify(imageToPull), {
@@ -239,6 +264,7 @@ this.showXMore = async function(e){
 
   
   for (let i = 0; i < window.maxCountIncrease; i++){
+    
     try{
       if (i < imageToPull.length){
         let provide = bodyChallengesMedia["data"][i]["provided"];
@@ -275,18 +301,27 @@ this.showXMore = async function(e){
             let text = document.createElement("p");
             text.textContent = "No thumbsnail Available for the current media";
             element.getElementsByClassName("imageContainer")[0].appendChild(text);
+            
           }
+          
         }
+        
       }
     }
     catch(error){}    
-    //document.getElementById(window.allImages[i+window.maxCount]).onclick = showLargeSubmissions;
+          //document.getElementById(window.allImages[i+window.maxCount]).onclick = showLargeSubmissions;
+          
+          
   }
   
   
   window.maxCount += window.maxCountIncrease;
   
-  if (window.allImages.length <= window.maxCount){
+  if (window.laoded == window.allSubmited.length || window.laoded == window.maxCount  ){
+    drawLines();
+  }
+
+  if (window.allSubmited.length <= window.maxCount){
     document.getElementById("plus-btn").disabled = true;
     
   }
@@ -330,66 +365,83 @@ this.stylingImage = function(event) {
     splash.firstChild.src = "/themes/core/static/img/splash"+(Math.floor(Math.random()*5)+1)+".png"
     
   }
-  window.laoded +=1;
 
-  if (window.laoded == window.allImages.length || window.laoded == window.maxCount ){
+  window.laoded +=1;
+  
+  if (window.laoded == window.allSubmited.length || window.laoded == window.maxCount ){
     drawLines();
   }
+
+  
 
 }
 this.drawLines = function(){
   var bodyRect = document.body.getBoundingClientRect();
-  for (let i = 0; i < window.laoded; i++){
+  let nb =  window.maxCount-window.maxCountIncrease
+
+  //le dernier element a pas de lien et defois lorsque sa ajoute plus le dernier vas bouger un peut donc on refais l'avant dernier et le sien
+  for (let i = (nb == 0)? nb : nb-2; i < window.laoded-1; i++){
+    
+    var canvas =  document.getElementsByClassName("lineCanvas")[i];
+    
     try{
       let element = document.getElementsByClassName("lineStart")[i];
-      var canvas =  document.getElementsByClassName("lineCanvas")[i];
-      let nextElement = document.getElementsByClassName("lineStart")[i+1];
-  
-      //obtient la position de notre elements et du suivants
-      let elementRect = element.getBoundingClientRect();
-      let nextElementRect = nextElement.getBoundingClientRect();
-  
-      var canvas =  document.getElementsByClassName("lineCanvas")[i];
       
-      //set the z-index propely
+      
+        let nextElement = document.getElementsByClassName("lineStart")[i+1];
   
-      //canvas.parentElement.parentElement.parentElement.style["z-index"] = window.laoded-i;
+        //obtient la position de notre elements et du suivants
+        let elementRect = element.getBoundingClientRect();
+        let nextElementRect = nextElement.getBoundingClientRect();
     
-  
-  
-      //le mettre droit so il a pas le meme angle que le frame
-      let rotationCommands = canvas.parentElement.parentElement.parentElement["style"]["transform"];
-      let deg =  parseFloat(rotationCommands.split("rotate(")[1].split("deg")[0]);
+        var canvas =  document.getElementsByClassName("lineCanvas")[i];
+        
+        //set the z-index propely
+    
+        //canvas.parentElement.parentElement.parentElement.style["z-index"] = window.laoded-i;
       
-      canvas["style"]["transform"] = "rotate("+(-deg)+"deg)"
-      canvas.style.left = (nextElementRect["left"] < elementRect["left"] ? nextElementRect["left"]-elementRect["left"]:0)+"px";
-      //creer la taile sur mesure pour que on puisse se rendre a l'element suivant
-      let canvasRect = canvas.getBoundingClientRect();
-      canvas.width = (nextElementRect["left"] - canvasRect["left"])+Math.abs(elementRect.left-canvasRect.left)+element.offsetHeight/2;
-      canvas.height = (nextElementRect["top"] - canvasRect["top"])+Math.abs(elementRect.top-canvasRect.top)+element.offsetWidth/2;
+    
+    
+        //le mettre droit so il a pas le meme angle que le frame
+        let rotationCommands = canvas.parentElement.parentElement.parentElement["style"]["transform"];
+        let deg =  parseFloat(rotationCommands.split("rotate(")[1].split("deg")[0]);
+        
+        canvas["style"]["transform"] = "rotate("+(-deg)+"deg)"
+        canvas.style.left = (nextElementRect["left"] < elementRect["left"] ? nextElementRect["left"]-elementRect["left"]:0)+"px";
+        //creer la taile sur mesure pour que on puisse se rendre a l'element suivant
+        console.log(nextElement);
+        let canvasRect = canvas.getBoundingClientRect();
+        
+        console.log(nextElementRect["left"]);
+        canvas.width = (nextElementRect["left"] - canvasRect["left"])+Math.abs(elementRect.left-canvasRect.left)+element.offsetHeight/2;
+        canvas.height = (nextElementRect["top"] - canvasRect["top"])+Math.abs(elementRect.top-canvasRect.top)+element.offsetWidth/2;
+        
+        let start = {"x":elementRect.left-canvasRect.left+element.offsetWidth/2, "y":elementRect.top-canvasRect.top+(element.offsetHeight/2)}
+        let mouvement = {"x":nextElementRect.left-canvasRect.left+(nextElementRect["left"] < elementRect["left"]?element.offsetWidth:0), "y":nextElementRect.top-canvasRect.top+(nextElement.offsetHeight/4)}
+        
+        //on dessine la ligne
+        var ctx=canvas.getContext("2d");
+        var grad= ctx.createLinearGradient(start["x"],start["y"], mouvement["x"],canvas.height);
   
-      let start = {"x":elementRect.left-canvasRect.left+element.offsetWidth/2, "y":elementRect.top-canvasRect.top+(element.offsetHeight/2)}
-      let mouvement = {"x":nextElementRect.left-canvasRect.left+(nextElementRect["left"] < elementRect["left"]?element.offsetWidth:0), "y":nextElementRect.top-canvasRect.top+(nextElement.offsetHeight/4)}
-  
-      //on dessine la ligne
-      var ctx=canvas.getContext("2d");
-      var grad= ctx.createLinearGradient(start["x"],start["y"], mouvement["x"],canvas.height);
-
-      grad.addColorStop(0, element["value"]);
-      grad.addColorStop(1, nextElement["value"]);
-      ctx.setLineDash([40, 20]);
-      ctx.strokeStyle = grad;
- 
-      ctx.beginPath(); 
-      ctx.lineWidth="7";
-      ctx.moveTo(start["x"],start["y"]);
-      ctx.lineTo(mouvement["x"],mouvement["y"]);
-      ctx.stroke();
+        grad.addColorStop(0, element["value"]);
+        grad.addColorStop(1, nextElement["value"]);
+        ctx.setLineDash([40, 20]);
+        ctx.strokeStyle = grad;
+   
+        ctx.beginPath(); 
+        ctx.lineWidth="7";
+        ctx.moveTo(start["x"],start["y"]);
+        ctx.lineTo(mouvement["x"],mouvement["y"]);
+        ctx.stroke();
+        
+      
+      
     }
-    catch {
+    catch (e){
       //sinon le dernier canvas vas full depasser de lecran si il est a droite
       canvas.style.width ="0px"
-      console.log("could not load the content")
+     
+      console.log(e)
     }
     
 

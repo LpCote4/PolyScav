@@ -543,11 +543,9 @@
 							</th>
 							<th class="sort-col text-center"><b>Name</b></th>
 							<th class="sort-col text-center"><b>User</b></th>
-							<th class="sort-col text-center"><b>Description</b></th>
 							<th class="sort-col text-center"><b>Date</b></th>
 							<th class="sort-col text-center"><b>Value</b></th>
-							<th class="sort-col text-center"><b>Category</b></th>
-							<th class="sort-col text-center"><b>Icon</b></th>
+							
 						</tr>
 						</thead>
 						<tbody id="awards-body">
@@ -564,13 +562,12 @@
 										{{ award.user.name }}
 									</a>
 								</td>
-								<td class=""><pre>{{ award.description }}</pre></td>
+							
 								<td class="text-center solve-time">
 									<span data-time="{{ award.date | isoformat }}"></span>
 								</td>
 								<td class="text-center">{{ award.value }}</td>
-								<td class="text-center">{{ award.category }}</td>
-								<td class="text-center"><i class="award-icon award-{{ award.icon }}"></i> {{ award.icon }}</td>
+							
 							</tr>
 						{% endfor %}
 						</tbody>

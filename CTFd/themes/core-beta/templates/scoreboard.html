@@ -73,43 +73,27 @@
               <tbody id="challengeRecap">
                 
                 <template x-for="(standing, index) in standings.filter(i => activeBracket ? i.bracket_id==activeBracket : true)" style="z-index:2;">
-                  <div  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type, color:standing.color,index:index}"  :style="`justify-self:center;background-color: ${color} !important;display:flex; width:100%;max-width:200px; height:fit-content;flex-direction: column;border-radius: 15px;grid-row-start: ${index+1};grid-row-end: ${index+3};grid-column-start: auto;grid-column-end: auto;`">
+                  <div  :id="standing.provided" x-data="{id: standing.provided, team_id: standing.team_id, challenge_id: standing.challenge_id, type:standing.type, color:standing.color,index:index}"  :style="`justify-self:center;background-color: ${color} !important;display:flex; width:100%;max-width:200px; height:fit-content;flex-direction: column;grid-row-start: ${index+1};grid-row-end: ${index+3};grid-column-start: auto;grid-column-end: auto;`">
                    
-                    <div class="header" :style="`display: flex;justify-content: space-between;text-align: center;align-items: center;z-index: 3;background-color: ${color};border-top-left-radius:15px;border-top-right-radius:15px`">
+                    <div class="header" :style="`display: flex;max-width:105% !important;justify-content: space-between;text-align: center;align-items: center;z-index: 3;background-color: ${color};`">
+                      
                       <div style="width: 40%;align-items: center;display: flex;justify-content: space-around;">
-                        <p style="font-size: 7px;width: 7ch;height: 1px;text-align: center;z-index: 3;vertical-align: middle;padding-top: -1px;font-family: Raleway, sans-serif;font-weight: bolder;" x-text="standing.time"></p>
+                        <p style="font-size: 11px;height: 1px;text-align: center;z-index: 3;vertical-align: middle;padding-top: -1px;font-family: Raleway, sans-serif;font-weight: bolder;" x-text="standing.time"></p>
                       </div>
                       
-                      <div class="lineStart" :style="`background-color: ${color};width: 45px;height: 45px;margin: -45px;border-radius: 100%;left: 30%; z-index: 0;`" :value="color">
+                      <div class="lineStart" :style="`display:flex;background-color: ${color};width: 35px;height: 35px;margin: -35px;border-radius: 100%;left: 30%; z-index: 0;box-shadow: 10px 10px 11px -6px #212529;`" :value="color">
                         <canvas class="lineCanvas"  style="position: absolute;left: 0%;right: 0%;z-index: -2;pointer-events: none;"></canvas>
-                        <b style="position: relative;top: 25%;width: 100%;height: 100%;color: white;font-weight:bolder;z-index: 2;" x-text="standing.value"></b>
+                        <b style="position: relative;top: 20%;width: 100%;height: 100%;color: white;font-weight:bolder;z-index: 2;text-align:center;text-align: center;" x-text="standing.value"></b>
+                        
                       </div>
-                      <div style="width: 40%;text-align: end;">
-                        <p style="font-size: 10px;font-family: Raleway, sans-serif;text-overflow: ellipsis;height: 0px;font-weight:bolder;padding-right: 3px; " x-text="standing.user_name"></p>
+                      <div style="width: 40%;text-align: center;display: flex; justify-content: center;">
+                        <p style="font-size: 12px;width: 8ch;font-family: Raleway, sans-serif;text-overflow: clip;height: fit-content; overflow: hidden;white-space: nowrap;overflow: hidden;font-weight:bolder;padding-right: 3px; align-items: center;margin-bottom: 7px;padding-top: 4px; " x-text="standing.user_name"></p>
                       </div>
                       
                     </div>
                     <div class="content" style="align-items: center;width: 100%;z-index: 2;"><div :style="`align-items: center;min-width: fit-content;z-index: 2;opacity: 1;background-color: ${color};`"  x-text=" " x-data="LogImage" class="imageContainer"></div></div>
-                    <div class="header" style="display: flex;font-family: Raleway, sans-serif;align-items: center;text-align: center;width: 100%;display: flex;justify-content: center; z-index: 2;"><p style="font-size: 12px;font-family: Raleway, sans-serif;font-weight:bolder;text-align: center; max-width: 130px; z-index: 2;" x-text="standing.challenge_name"></p></div>
-                    
-                   
-                    <!-- 
-                    <th scope="row" class="text-center" x-text="standing.time"></th>
-                    <td style="padding-left: 2% !important;">
-                      <div><b><p style="width: 15ch;overflow: hidden;text-overflow: ellipsis;" x-text="'Par: ' + standing.user_name"></p></b>
-                        <p></p>
-                       <b> <p :href="standing.account_id" style="width: 15ch;overflow: hidden;text-overflow: ellipsis;" x-text="'Dans l\'équipe: '+standing.team_name" ></p></b></div>
-                      
-                      
-                    </td>
-                    <td x-text="standing.challenge_name" class="challenge_name"></td>
-                    <td class="award-icon" hidden style="width: 100%; height: 104.8px; display: block; position: relative;">
-                      <i class="fas fa-trophy" style="color: gold; width: 100%; height: 104.8px; display: flex; justify-content: center; align-items: center;"></i>
-                    </td>
-                    
-                    <td x-data="LogImage" class="imageContainer"></td>
-                    <td x-text="standing.value"></td>
-                    -->
+                    <div class="header" style="display: flex;font-family: Raleway, sans-serif;align-items: center;text-align: center;width: 100%;display: flex;justify-content: center; z-index: 2;text-align: center;vertical-align: middle;"><p style="font-size: 10px;font-family: Raleway, sans-serif;font-weight:bolder;text-align: center; max-width: 165px; z-index: 2;" x-text="standing.challenge_name">
+                     </p></div>
                     <div class="splash" :style="`--teamColor: ${color};z-index:1;`"><img  src="/themes/core-beta/static/img/splash1.png"></div>
                     <div class="splash" :style="`--teamColor: ${color};z-index:1;`"><img  src="/themes/core-beta/static/img/splash1.png"></div>
                     <div class="splash" :style="`--teamColor: ${color};z-index:1;`"><img  src="/themes/core-beta/static/img/splash1.png"></div>
