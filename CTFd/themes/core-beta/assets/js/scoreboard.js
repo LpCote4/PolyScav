@@ -22,7 +22,7 @@ window.imageInit = false;
 window.theninit = 0;
 window.decalage = 0;
 window.laoded = 0;
-
+window.canShowMore = true;
 
 window.splashPosition = {1:[["-55px","0","-30px","0px"],["0px","-50px","50%","0px"],["","-50px","0px","0px"]],
   2:[["-50px","0px","35%","0"],["","-10px","60%","0px"],["-40px","","-35px","0px"]],
@@ -210,6 +210,7 @@ Alpine.data("LogImage", () => ({
 
 
 this.showXMore = async function(e){
+  
   let imageToPull = [];
 
 
@@ -290,7 +291,13 @@ this.showXMore = async function(e){
               thumbsnail.style["height"] = "auto";
               
               thumbsnail.onload = function(thumbsnail){stylingImage(thumbsnail);};
-              element.getElementsByClassName("imageContainer")[0].appendChild(thumbsnail);
+              
+              if (element.getElementsByClassName("imageContainer")[0].value != true){
+                element.getElementsByClassName("imageContainer")[0].appendChild(thumbsnail);
+                element.getElementsByClassName("imageContainer")[0].value = true;
+              }
+              
+              
               
               element.getElementsByClassName("imageContainer")[0].onclick = showLargeSubmissions;
               
@@ -335,6 +342,7 @@ this.showXMore = async function(e){
     }
     
   }  
+  
 };
 this.stylingImage = function(event) {
   const img = event.target;
@@ -444,8 +452,11 @@ this.drawLines = function(){
       console.log(e)
     }
     
-
+    
   }
+  var canvas =  document.getElementsByClassName("lineCanvas")[window.laoded-1];
+  canvas.style.width ="0px";
+  
 }
 
 this.createMediaElement = function(mediaContent) {
@@ -579,6 +590,44 @@ window.reloadCarousel = function (element) {
   }
 };
 
+let scrollerUpdate = async function(ev) {
+  window.onscroll = "";
+  if (window.canShowMore){
+    if (checkVisible(document.getElementById("plus-btn"))) {
+      
+      if (document.getElementById("plus-btn").disabled != true){
+        window.canShowMore = false;
+        self.showXMore();
+        await new Promise(r => setTimeout(r, 1000));
+        window.canShowMore = true;
+        
+      }
+  }
+  }
+  await new Promise(r => setTimeout(r, 100));
+  if (window.canShowMore){
+    if (checkVisible(document.getElementById("plus-btn"))) {
+      
+      if (document.getElementById("plus-btn").disabled != true){
+        window.canShowMore = false;
+        self.showXMore();
+        await new Promise(r => setTimeout(r, 1000));
+        window.canShowMore = true;
+        
+      }
+  }
+  }
+  window.onscroll = scrollerUpdate;
+  
+};
+
+window.onscroll = scrollerUpdate;
+
+function checkVisible(elm) {
+  var rect = elm.getBoundingClientRect();
+  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
+  return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
+}
 Alpine.start();
 
 
