@@ -23,24 +23,28 @@ document.addEventListener('DOMContentLoaded', function(event) {
     const formData = new FormData(form);
     formData.append('file', file);
     formData.append("nonce", CTFd.config.csrfNonce);
+    
     fetch(CTFd.config.urlRoot + '/api/v1/files?admin=true&is_challenge_thumbnail=true', {
         method: 'POST',
         body: formData
     })
-    .then(response => response.json())
-    .then(f => {
-        if (f.success) {
-            const imgPath = f.location;
-            document.getElementById('thumbsnail-path').value = imgPath; // Assuming your server responds with the path
-            console.log('Thumbnail uploaded successfully:', imgPath);
+    .then(response => response.json())  // Ensure the response is parsed as JSON
+    .then(response => {
+        const f = response.data[0];  // Access the first item in the data array
+        const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
+        document.getElementById('thumbsnail-path').value = imgPath;
+        console.log('Thumbnail uploaded successfully:', imgPath);
 
-            // Update the image preview
-            const img = document.getElementById('image-preview');
-            img.src = imgPath; // Use the path received from the server
-            img.style.display = 'block';
-        } else {
-            alert('Error uploading image: ' + f.errors);
-        }
+        // Update the image preview
+        const img = document.getElementById('image-preview');
+        img.src = imgPath; // Use the path received from the server
+        img.style.display = 'block';
+        // if(f.location != ""){ Code gestion erreur a rajouter 
+
+        // }
+        // } else {
+        //     alert('Error uploading image: ' + f.errors);
+        // }
     })
     .catch(error => {
         console.error('Error uploading file:', error);
@@ -131,6 +135,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   // Handle form submission
   document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
+    console.log("New challenge form!")
     event.preventDefault(); // Prevent the default form submission
     const formData = new FormData(this); // Create a FormData object from the form
 
