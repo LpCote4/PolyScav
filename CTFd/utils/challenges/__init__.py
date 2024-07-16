@@ -13,7 +13,7 @@ from CTFd.utils.helpers.models import build_model_filters
 from CTFd.utils.modes import generate_account_url, get_model
 
 Challenge = namedtuple(
-    "Challenge", ["id", "type", "name", "value", "category", "tags", "requirements"]
+    "Challenge", ["id", "type", "name", "value", "category", "tags", "requirements", "thumbsnail"]
 )
 
 
@@ -42,6 +42,7 @@ def get_all_challenges(admin=False, field=None, q=None, **query_args):
             value=c.value,
             category=c.category,
             requirements=c.requirements,
+            thumbsnail=c.thumbsnail,
             tags=tag_schema.dump(c.tags).data,
         )
         results.append(ct)

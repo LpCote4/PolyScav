@@ -68,9 +68,9 @@
       height: 100%;
       width: 100%;
       position: relative;
-      background: rgba(0, 0, 0, 0.5);
+      background: rgba(0, 0, 0, 0.7);
       border: none;
-      background-image: url('/themes/core-beta/static/img/12en12.png');
+      /* background-image: url('/themes/core-beta/static/img/12en12.png'); */
       background-size: cover;
       background-position: center;
       border-radius: 15px;
@@ -228,6 +228,7 @@
                 <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
                   <div class="challenge-box">
                     <button
+                        :style="'background-image: url(' + c.thumbsnail + ');'"
                         class="challenge-button w-100 text-truncate"
                         :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : ''"
                         :value="c.id" @click="loadChallenge(c.id)" 

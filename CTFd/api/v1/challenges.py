@@ -494,6 +494,7 @@ class ChallengeList(Resource):
                     "provided": provided,
                     "solves": solve_counts.get(challenge.id, solve_count_dfl),
                     "solved_by_me": challenge.id in user_solves,
+                    "thumbsnail" : challenge.thumbsnail,
                     "submited" : is_submited,
                     "category": challenge.category,
                     "tags": tag_schema.dump(challenge.tags).data,

@@ -154,36 +154,36 @@ class FilesList(Resource):
         is_challenge_thumbnail = request.args.get('is_challenge_thumbnail', 'false').lower() == 'true'
         
 
-        if is_challenge_thumbnail:
-            print("Challenge thumbnail")
-            if 'file' not in request.files:
-                return {"success": False, "errors": "No file part"}, 400
+        # if is_challenge_thumbnail:
+        #     print("Challenge thumbnail")
+        #     if 'file' not in request.files:
+        #         return {"success": False, "errors": "No file part"}, 400
 
-            file = request.files['file']
-            if file.filename == '':
-                return {"success": False, "errors": "No selected file"}, 400
+        #     file = request.files['file']
+        #     if file.filename == '':
+        #         return {"success": False, "errors": "No selected file"}, 400
 
-            filename = secure_filename(file.filename)
-            file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-            file.save(file_path)
+        #     filename = secure_filename(file.filename)
+        #     file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
+        #     file.save(file_path)
 
-            thumbnail_path = self.create_image_thumbnail(file_path)
-            # Save file details in the database
-            file_data = {
-                "location": thumbnail_path,
-                "type": file.content_type,
-            }
-            new_file = Files(**file_data)
-            db.session.add(new_file)
-            db.session.commit()
+        #     thumbnail_path = self.create_image_thumbnail(file_path)
+        #     # Save file details in the database
+        #     file_data = {
+        #         "location": thumbnail_path,
+        #         "type": file.content_type,
+        #     }
+        #     new_file = Files(**file_data)
+        #     db.session.add(new_file)
+        #     db.session.commit()
 
-            schema = FileSchema()
-            response = schema.dump(new_file)
+        #     schema = FileSchema()
+        #     response = schema.dump(new_file)
 
-            if response.errors:
-                return {"success": False, "errors": response.errors}, 400
+        #     if response.errors:
+        #         return {"success": False, "errors": response.errors}, 400
 
-            return {"success": True, "data": response.data}
+        #     return {"success": True, "data": response.data}
 
         submission_id = -1
         heavyData = False
@@ -216,6 +216,7 @@ class FilesList(Resource):
         #we are creating the submissions to make sure nobody can take it if sending a smaller file
         item = FakeRequest()
         if not request.args.get("admin", False):
+            print("fake request")
             item.setJson({"challenge_id": request.form.get("id"), "submission":"Media en train d'être traité", "type":"None"})
             item.access_route = request.access_route
             item.remote_addr = request.remote_addr
@@ -242,6 +243,7 @@ class FilesList(Resource):
                 first = False
                 
             except ValueError as e:
+                print("return valueError")
                 return {
                     "success": False,
                     "errors": {"location": [str(e)]},
@@ -385,7 +387,7 @@ class FilesList(Resource):
             
         
         if response.errors:
-            
+            print("response.errors")
             return {"success": False, "errors": response.errors}, 400
 
         if not request.args.get("admin", False):
@@ -396,7 +398,8 @@ class FilesList(Resource):
             
             db.session.commit()
             
-            
+        print("final return")
+        print(response.data)
         return {"success": True, "data": response.data}
     
     def get_rotation(self, file_path_with_file_name):
