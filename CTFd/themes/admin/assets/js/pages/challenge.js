@@ -21,7 +21,7 @@ import NextChallenge from "../components/next/NextChallenge.vue";
 function loadAndhandleChallenge(event) {
   event.preventDefault();
 
-  const params = $("#challenge-create-options-quick form").serializeJSON();
+  const params = $("#challenge-create-options-quick").serializeJSON();
   delete params.challenge_id;
   delete params.flag_type;
   params.description = "";
