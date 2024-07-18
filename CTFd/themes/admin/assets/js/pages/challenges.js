@@ -18,7 +18,6 @@ document.addEventListener('DOMContentLoaded', function(event) {
     let form = document.getElementById('thumbsnail-upload-form');
     // Upload the image to /files endpoint
     const extra_data = { is_challenge_thumbnail: true };
-    alert(form)
 
     const formData = new FormData(form);
     formData.append('file', file);
@@ -134,27 +133,43 @@ document.addEventListener('DOMContentLoaded', function(event) {
   document.getElementById('challenge_id').value = newId;
 
   // Handle form submission
-  document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
-    console.log("New challenge form!")
-    event.preventDefault(); // Prevent the default form submission
-    const formData = new FormData(this); // Create a FormData object from the form
+  document.getElementById('submit-button').addEventListener('click', function(event) {
+    document.getElementById('challenge-create-options-quick').submit();
+  });
+
+  // Handle form submission
+  // document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
+  //   console.log("New challenge form!")
+  //   event.preventDefault(); // Prevent the default form submission
+  //   const formData = new FormData(this); // Create a FormData object from the form
+
+  //   const formDataObject = {};
+  //   formData.forEach((value, key) => {
+  //       formDataObject[key] = value;
+  //   });
+
+  //   // Convert plain object to JSON
+  //   const jsonFormData = JSON.stringify(formDataObject);
 
     // Use fetch API to send the form data
-    fetch(this.action, {
-      method: 'POST',
-      body: formData
-    }).then(response => response.json()).then(data => {
-      // Handle the response data
-      if (data.success) {
-        alert('Challenge added successfully!');
-        // Optionally, redirect or update the UI
-      } else {
-        alert('Error adding challenge: ' + data.errors);
-      }
-    }).catch(error => {
-      console.error('Error:', error);
-    });
-  });
+    // fetch(this.action, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   body: jsonFormData
+    // }).then(response => response.json()).then(data => {
+    //   // Handle the response data
+    //   if (data.success) {
+    //     alert('Challenge added successfully!');
+    //     // Optionally, redirect or update the UI
+    //   } else {
+    //     alert('Error adding challenge: ' + data.errors);
+    //   }
+    // }).catch(error => {
+    //   console.error('Error:', error);
+    // });
+//   });
 });
 
 function deleteSelectedChallenges(_event) {

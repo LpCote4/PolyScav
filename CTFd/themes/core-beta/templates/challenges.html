@@ -181,7 +181,10 @@
     }
     .category-div{
       width:100%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='250' height='30' viewBox='0 0 1000 120'%3E%3Cg fill='none' stroke='%23FFFFFF' stroke-width='25' stroke-opacity='0.21'%3E%3Cpath d='M-500 75c0 0 125-30 250-30S0 75 0 75s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 45c0 0 125-30 250-30S0 45 0 45s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 105c0 0 125-30 250-30S0 105 0 105s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 15c0 0 125-30 250-30S0 15 0 15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500-15c0 0 125-30 250-30S0-15 0-15s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3Cpath d='M-500 135c0 0 125-30 250-30S0 135 0 135s125 30 250 30s250-30 250-30s125-30 250-30s250 30 250 30s125 30 250 30s250-30 250-30'/%3E%3C/g%3E%3C/svg%3E");
+      /* Made with using https://www.svgbackgrounds.com/category/pattern/ */
     }
+    
 
     .challenge-div{
       width:100%;
@@ -220,8 +223,8 @@
       <div x-show="loaded" style="width:92vw; justify-content: center;">
         <div id="challenges-row">
           <template x-for="(category, idx) in getCategories()" :key="idx">
-            <div class="category-div" :class="`category-bg-${idx % 5}`" style="border-radius: 0px;">
-              <div :class="`category-header mb-3 category-color-${idx % 5}`">
+            <div class="category-div" :class="`category-bg-${idx % 4}`" style="border-radius: 0px;">
+              <div :class="`category-header mb-3 category-color-${idx % 4}`">
                 <h3 x-text="category" style="font-weight: bolder;"></h3>
               </div>
               <div class="challenge-div">

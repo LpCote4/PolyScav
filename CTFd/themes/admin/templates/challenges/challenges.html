@@ -65,9 +65,9 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-12 table-responsive" id="challenge-create-options-quick">
+		<div class="col-md-12 table-responsive">
 			<div>
-				<table id="challenges" class="table table-striped border">
+				<table id="challenges" class="table table-striped border" style="margin-bottom: 0;">
 					<thead>
 					<tr>
 						<td class="d-block border-right border-bottom text-center" data-checkbox>
@@ -110,7 +110,9 @@
 								{% set badge_state = 'badge-danger' if challenge.state == 'hidden' else 'badge-success' %}
 								<span class="badge {{ badge_state }}">{{ challenge.state }}</span>
 							</td>
+							{% if challenge.thumbsnail %}
 							<td><img src="{{ challenge.thumbsnail }}" alt="thumbsnail" class="img-thumbnail" style="width: 100px; height: 100px;"></td>
+							{% endif %}
 						</tr>
 					{% endfor %}
 						<style>
@@ -138,9 +140,9 @@
 								min-width: 150px; /* Adjust this value according to your needs */
 								width: auto; /* Allow the cell to adapt dynamically to content size */
 							}
-						</style>
-							<tr data-href="">
-								<form method="POST" enctype="multipart/form-data" id="create-challenge-form" action="/admin/challenges">
+						</style>sdf
+							<tr data-href=""> 
+								<form id="challenge-create-options-quick">
 									<td class="d-block border-right text-center" data-checkbox>
 										<div class="form-check">
 											<input type="checkbox" class="form-check-input" value="0" autocomplete="off" data-challenge-id="0">&nbsp;
@@ -175,11 +177,11 @@
 									<input type="hidden" name="flag_type" value="static"></input>
 									<input id="challenge_id" type="hidden" name="challenge_id"></input>
 									<!-- <input type="file" id="thumbsnail-input" class="form-control-file" accept="image/*" style="display: none;"> -->
-									<input type="hidden" name="thumbsnail" id="thumbsnail-path" form="create-challenge-form"></input>
+									<input type="hidden" name="thumbsnail" id="thumbsnail-path" form="challenge-create-options-quick"></input>
 									
 									<!-- <div class="form-group"> -->
-									<button class="btn btn-primary float-right create-challenge-submit" id="submit-button" type="submit">Add challenge</button>
 									<!-- </div> -->
+									<button class="btn btn-primary float-right create-challenge-submit" id="submit-button" type="submit" style="margin-left: 15px;">Add challenge</button>
 								</form>
 								<form id="thumbsnail-upload-form" class="form-upload" method="POST" enctype="multipart/form-data"></form>
 									<td class="editable" data-editable="thumbsnail" style="display: flex; justify-content: center; flex-wrap: wrap; align-items: center;">
@@ -197,11 +199,12 @@
 									<button id="trigger-file-input" class="btn btn-secondary" @click="document.getElementById('file-input').click();">Select File</button>
 								</td> -->
 								<!-- <input type="file" class="form-control-file" id="file-input"></input> -->
-						</tr>
+							</tr>
 					</tbody>
 				</table>
 			</div>
 		</div>
+		
 	</div>
 </div>
 {% endblock %}
