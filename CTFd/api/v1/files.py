@@ -285,10 +285,8 @@ class FilesList(Resource):
                         clip = clip.resize(clip.size[::-1])
                         clip.rotation = 0
                     
-                    #on force un ration 16/9  si jamais on nas un ratio portrait trop fin
-                    if clip.size[0]/clip.size[1] < 0.78403755868:
-                            clip = clip.resize((widthThumbsnail*0.78403755868,widthThumbsnail))
-                            
+                   
+                   
                         
 
 

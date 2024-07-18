@@ -5,23 +5,21 @@
       <div>
         <button type="button" class="btn-close float-end" data-bs-dismiss="modal" aria-label="Close"></button>
 
-        <ul class="nav nav-tabs">
+        <ul class="nav nav-tabs" style="font-size:13px">
           <li class="nav-item">
-            <button class="nav-link active" data-bs-target="#challenge" @click="showChallenge()">
+            <button class="nav-link active" data-bs-target="#challenge" @click="showChallenge()" style="padding-left:8px !important;padding-right:8px !important;">
               {% trans %}Challenge{% endtrans %}
             </button>
           </li>
           {% block solves %}
             <li class="nav-item">
-              <button class="nav-link challenge-solves" data-bs-target="#solves" @click="showSolves()">
-                {% if solves != None %}
-                  {{ ngettext("%(num)d Solve", "%(num)d Solves", solves) }}
-                {% endif %}
+              <button class="nav-link challenge-solves" data-bs-target="#solves" @click="showSolves()" style="padding-left:8px !important;padding-right:8px !important;">
+                {% trans %}Solves{% endtrans %}
               </button>
             </li>
           {% endblock %}
             <li class="nav-item">
-              <button class="nav-link challenge-solves" data-bs-target="#comment" @click="showComments()">
+              <button class="nav-link challenge-solves" data-bs-target="#comment" @click="showComments()" style="padding-left:8px !important;padding-right:8px !important;">
                 Commentaire
               </button>
             </li>

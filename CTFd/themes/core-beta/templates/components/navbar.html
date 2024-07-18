@@ -9,7 +9,7 @@
             height="25"
         >
       {% else %}
-        {{ Configs.ctf_name }}
+      <img class="img-responsive ctf_logo" src="{{ url_for('views.themes', theme='core', path='img/favicon.ico') }}" height="25" alt="{{ Configs.ctf_name }}"> {{ Configs.ctf_name }}
       {% endif %}
     </a>
 
