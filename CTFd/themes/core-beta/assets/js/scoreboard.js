@@ -385,13 +385,13 @@ this.stylingImage = function(event) {
 }
 this.drawLines = function(){
   var bodyRect = document.body.getBoundingClientRect();
-  let nb =  window.maxCount-window.maxCountIncrease
+  let nb =  window.maxCount-window.maxCountIncrease;
 
   //le dernier element a pas de lien et defois lorsque sa ajoute plus le dernier vas bouger un peut donc on refais l'avant dernier et le sien
   for (let i = (nb == 0)? nb : nb-2; i < window.laoded-1; i++){
     
     var canvas =  document.getElementsByClassName("lineCanvas")[i];
-    
+    canvas.hidden = false;
     try{
       let element = document.getElementsByClassName("lineStart")[i];
       
@@ -455,7 +455,7 @@ this.drawLines = function(){
     
   }
   var canvas =  document.getElementsByClassName("lineCanvas")[window.laoded-1];
-  canvas.style.width ="0px";
+  canvas.hidden =true;
   
 }
 
@@ -590,44 +590,7 @@ window.reloadCarousel = function (element) {
   }
 };
 
-let scrollerUpdate = async function(ev) {
-  window.onscroll = "";
-  if (window.canShowMore){
-    if (checkVisible(document.getElementById("plus-btn"))) {
-      
-      if (document.getElementById("plus-btn").disabled != true){
-        window.canShowMore = false;
-        self.showXMore();
-        await new Promise(r => setTimeout(r, 1000));
-        window.canShowMore = true;
-        
-      }
-  }
-  }
-  await new Promise(r => setTimeout(r, 100));
-  if (window.canShowMore){
-    if (checkVisible(document.getElementById("plus-btn"))) {
-      
-      if (document.getElementById("plus-btn").disabled != true){
-        window.canShowMore = false;
-        self.showXMore();
-        await new Promise(r => setTimeout(r, 1000));
-        window.canShowMore = true;
-        
-      }
-  }
-  }
-  window.onscroll = scrollerUpdate;
-  
-};
 
-window.onscroll = scrollerUpdate;
-
-function checkVisible(elm) {
-  var rect = elm.getBoundingClientRect();
-  var viewHeight = Math.max(document.documentElement.clientHeight, window.innerHeight);
-  return !(rect.bottom < 0 || rect.top - viewHeight >= 0);
-}
 Alpine.start();
 
 

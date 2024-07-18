@@ -254,7 +254,7 @@ class FilesList(Resource):
         response = schema.dump(objs)
         
         width = 800
-        widthThumbsnail = 100
+        widthThumbsnail = 150
         fps = 24
         if (heavyData):
             width = 500

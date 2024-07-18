@@ -39,7 +39,7 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.43431177.js",
+    "file": "assets/scoreboard.e0e8465a.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
@@ -156,7 +156,7 @@
     "src": "CommentBox.css"
   },
   "assets/scss/main.scss": {
-    "file": "assets/main.fe787af1.css",
+    "file": "assets/main.6d29124e.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
   }
