@@ -138,6 +138,7 @@ function uploadLogo(event) {
   alert(event.target);
   event.preventDefault();
   let form = event.target;
+  // console.log(form);
   helpers.files.upload(form, {}, function (response) {
     const f = response.data[0];
     const params = {

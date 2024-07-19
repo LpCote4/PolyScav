@@ -14,40 +14,52 @@ document.addEventListener('DOMContentLoaded', function(event) {
 
   document.getElementById('thumbsnail-get-path').addEventListener('change', function(event) {
     const file = event.target.files[0];
-    console.log("File selected:", file);
+    // console.log("File selected:", file);
     let form = document.getElementById('thumbsnail-upload-form');
     // Upload the image to /files endpoint
     const extra_data = { is_challenge_thumbnail: true };
 
     const formData = new FormData(form);
     formData.append('file', file);
-    formData.append("nonce", CTFd.config.csrfNonce);
-    
-    fetch(CTFd.config.urlRoot + '/api/v1/files?admin=true&is_challenge_thumbnail=true', {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.json())  // Ensure the response is parsed as JSON
-    .then(response => {
-        const f = response.data[0];  // Access the first item in the data array
-        const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
-        document.getElementById('thumbsnail-path').value = imgPath;
-        console.log('Thumbnail uploaded successfully:', imgPath);
+    // formData.append("nonce", CTFd.config.csrfNonce);
 
-        // Update the image preview
-        const img = document.getElementById('image-preview');
-        img.src = imgPath; // Use the path received from the server
-        img.style.display = 'block';
-        // if(f.location != ""){ Code gestion erreur a rajouter 
+    helpers.files.upload(formData, form, function (response) {
+      const f = response.data[0];
+      const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
+      document.getElementById('thumbsnail-path').value = imgPath;
+      console.log('Thumbnail uploaded successfully:', imgPath);
 
-        // }
-        // } else {
-        //     alert('Error uploading image: ' + f.errors);
-        // }
-    })
-    .catch(error => {
-        console.error('Error uploading file:', error);
+      // Update the image preview
+      const img = document.getElementById('image-preview');
+      img.src = imgPath; // Use the path received from the server
+      img.style.display = 'block';
     });
+    
+    // fetch(CTFd.config.urlRoot + '/api/v1/files?admin=true&is_challenge_thumbnail=true', {
+    //     method: 'POST',
+    //     body: formData
+    // })
+    // .then(response => response.json())  // Ensure the response is parsed as JSON
+    // .then(response => {
+    //     const f = response.data[0];  // Access the first item in the data array
+    //     const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
+    //     document.getElementById('thumbsnail-path').value = imgPath;
+    //     console.log('Thumbnail uploaded successfully:', imgPath);
+
+    //     // Update the image preview
+    //     const img = document.getElementById('image-preview');
+    //     img.src = imgPath; // Use the path received from the server
+    //     img.style.display = 'block';
+    //     // if(f.location != ""){ Code gestion erreur a rajouter 
+
+    //     // }
+    //     // } else {
+    //     //     alert('Error uploading image: ' + f.errors);
+    //     // }
+    // })
+    // .catch(error => {
+    //     console.error('Error uploading file:', error);
+    // });
 
     if (file) {
         const reader = new FileReader();
@@ -58,7 +70,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
         };
         reader.readAsDataURL(file);
     }
-  });
+  // });
     // helpers.files.upload(form, extra_data, function (response) {
     //   const f = response.data[0];
     //   if (f.success) {
@@ -67,7 +79,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
     //   } else {
     //     alert('Error uploading image: ' + f.errors);
     //   }
-    // });
+    });
     
 
         // if (file) {

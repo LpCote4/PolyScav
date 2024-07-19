@@ -12,12 +12,13 @@ const utils = {
 };
 
 const files = {
-  upload: (form, extra_data, cb) => {
+  upload: (formData, extra_data, cb) => {
     const CTFd = window.CTFd;
-    if (form instanceof jQuery) {
-      form = form[0];
-    }
-    var formData = new FormData(form);
+    // if (form instanceof jQuery) {
+    //   form = form[0];
+    // }
+    // var formData = new FormData(form);
+    let form = extra_data;
     formData.append("nonce", CTFd.config.csrfNonce);
     for (let [key, value] of Object.entries(extra_data)) {
       formData.append(key, value);

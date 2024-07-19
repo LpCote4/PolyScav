@@ -152,6 +152,7 @@ class FilesList(Resource):
     def post(self):
         print("File treatment")
         is_challenge_thumbnail = request.args.get('is_challenge_thumbnail', 'false').lower() == 'true'
+        print(request.files)
         
 
         # if is_challenge_thumbnail:

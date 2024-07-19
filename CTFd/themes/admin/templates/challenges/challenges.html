@@ -65,7 +65,7 @@
 	</div>
 
 	<div class="row">
-		<div class="col-md-12 table-responsive" id="challenge-create-options-quick">
+		<div class="col-md-12 table-responsive">
 			<div>
 				<table id="challenges" class="table table-striped border">
 					<thead>
@@ -110,7 +110,9 @@
 								{% set badge_state = 'badge-danger' if challenge.state == 'hidden' else 'badge-success' %}
 								<span class="badge {{ badge_state }}">{{ challenge.state }}</span>
 							</td>
+							{% if challenge.thumbsnail %}
 							<td><img src="{{ challenge.thumbsnail }}" alt="thumbsnail" class="img-thumbnail" style="width: 100px; height: 100px;"></td>
+							{% endif %}
 						</tr>
 					{% endfor %}
 						<style>
@@ -140,7 +142,7 @@
 							}
 						</style>
 							<tr data-href="">
-								<form method="POST" enctype="multipart/form-data" id="create-challenge-form" action="/admin/challenges">
+								<form method="POST" enctype="multipart/form-data" id="challenge-create-options-quick" action="/admin/challenges">
 									<td class="d-block border-right text-center" data-checkbox>
 										<div class="form-check">
 											<input type="checkbox" class="form-check-input" value="0" autocomplete="off" data-challenge-id="0">&nbsp;
@@ -175,7 +177,7 @@
 									<input type="hidden" name="flag_type" value="static"></input>
 									<input id="challenge_id" type="hidden" name="challenge_id"></input>
 									<!-- <input type="file" id="thumbsnail-input" class="form-control-file" accept="image/*" style="display: none;"> -->
-									<input type="hidden" name="thumbsnail" id="thumbsnail-path" form="create-challenge-form"></input>
+									<input type="hidden" name="thumbsnail" id="thumbsnail-path" form="challenge-create-options-quick"></input>
 									
 									<!-- <div class="form-group"> -->
 									<button class="btn btn-primary float-right create-challenge-submit" id="submit-button" type="submit">Add challenge</button>
