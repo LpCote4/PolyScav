@@ -183,39 +183,39 @@ function handleChallengeOptions(event) {
 }
 
 $(() => {
-  // $(".preview-challenge").click(function (_e) {
-  //   let url = `${CTFd.config.urlRoot}/admin/challenges/preview/${window.CHALLENGE_ID}`;
-  //   $("#challenge-window").html(
-  //     `<iframe src="${url}" height="100%" width="100%" frameBorder=0></iframe>`
-  //   );
-  //   $("#challenge-modal").modal();
-  // });
+  $(".preview-challenge").click(function (_e) {
+    let url = `${CTFd.config.urlRoot}/admin/challenges/preview/${window.CHALLENGE_ID}`;
+    $("#challenge-window").html(
+      `<iframe src="${url}" height="100%" width="100%" frameBorder=0></iframe>`
+    );
+    $("#challenge-modal").modal();
+  });
 
-  // $(".comments-challenge").click(function (_event) {
-  //   $("#challenge-comments-window").modal();
-  // });
+  $(".comments-challenge").click(function (_event) {
+    $("#challenge-comments-window").modal();
+  });
 
-  // $(".delete-challenge").click(function (_e) {
-  //   ezQuery({
-  //     title: "Delete Challenge",
-  //     body: `Are you sure you want to delete <strong>${htmlEntities(
-  //       window.CHALLENGE_NAME
-  //     )}</strong>`,
-  //     success: function () {
-  //       CTFd.fetch("/api/v1/challenges/" + window.CHALLENGE_ID, {
-  //         method: "DELETE",
-  //       })
-  //         .then(function (response) {
-  //           return response.json();
-  //         })
-  //         .then(function (response) {
-  //           if (response.success) {
-  //             window.location = CTFd.config.urlRoot + "/admin/challenges";
-  //           }
-  //         });
-  //     },
-  //   });
-  // });
+  $(".delete-challenge").click(function (_e) {
+    ezQuery({
+      title: "Delete Challenge",
+      body: `Are you sure you want to delete <strong>${htmlEntities(
+        window.CHALLENGE_NAME
+      )}</strong>`,
+      success: function () {
+        CTFd.fetch("/api/v1/challenges/" + window.CHALLENGE_ID, {
+          method: "DELETE",
+        })
+          .then(function (response) {
+            return response.json();
+          })
+          .then(function (response) {
+            if (response.success) {
+              window.location = CTFd.config.urlRoot + "/admin/challenges";
+            }
+          });
+      },
+    });
+  });
 
   $("#challenge-update-container > form").submit(function (e) {
     e.preventDefault();
