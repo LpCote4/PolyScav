@@ -193,6 +193,10 @@
       justify-content: center;
       padding-bottom: 15px;
     }
+
+    .challenge-no-thumbsnail{
+      color: white;
+    }
   </style>
 
   <div class="container">
@@ -231,7 +235,7 @@
                 <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
                   <div class="challenge-box">
                     <button
-                        :style="'background-image: url(' + c.thumbsnail + ');'"
+                        :style="c.thumbsnail ? 'background-image: url(' + c.thumbsnail + ');' : 'background-color: rgba(33, 37, 41, 1)'"
                         class="challenge-button w-100 text-truncate"
                         :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : ''"
                         :value="c.id" @click="loadChallenge(c.id)" 
@@ -241,7 +245,7 @@
                         <p style="left: -45%; top: -4px; position: relative; color: white;" :id="c.id"></p>
                       </div>
                       <div class="challenge-inner my-3">
-                        <p x-text="c.name" class="challenge-title"></p>
+                        <p x-text="c.name" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
                         <div class="challenge-value" x-text="`${c.value} pts`"></div>
                       </div>
                     </button>

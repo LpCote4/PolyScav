@@ -19,8 +19,8 @@ import NextChallenge from "../components/next/NextChallenge.vue";
 
 //To create challenge in one click with one simple interface
 function loadAndhandleChallenge(event) {
+  console.log("hello");
   event.preventDefault();
-
   const params = $("#challenge-create-options-quick").serializeJSON();
   delete params.challenge_id;
   delete params.flag_type;
@@ -40,11 +40,14 @@ function loadAndhandleChallenge(event) {
     body: JSON.stringify(params),
   })
     .then(function (response) {
+      console.log("hello2");
       return response.json();
     })
     .then(function (response) {
       if (response.success) {
-        handleChallengeOptions(event);
+        setTimeout(function () {
+          window.location = CTFd.config.urlRoot + "/admin/challenges#challenge-create-options-quick";
+        }, 700);
       } else {
         let body = "";
         for (const k in response.errors) {
@@ -122,27 +125,9 @@ function handleChallengeOptions(event) {
   };
   // Define a save_challenge function
   let save_challenge = function () {
-    CTFd.fetch("/api/v1/challenges/" + params.challenge_id, {
-      method: "PATCH",
-      credentials: "same-origin",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        state: params.state,
-      }),
-    })
-      .then(function (response) {
-        return response.json();
-      })
-      .then(function (data) {
-        if (data.success) {
-          setTimeout(function () {
-            window.location = CTFd.config.urlRoot + "/admin/challenges";
-          }, 700);
-        }
-      });
+    setTimeout(function () {
+      window.location = CTFd.config.urlRoot + "/admin/challenges#challenge-create-options-quick";
+    }, 700);
   };
   Promise.all([
     // Save flag
@@ -296,7 +281,7 @@ $(() => {
   });
 
   $("#challenge-create-options").submit(handleChallengeOptions);
-  $("#challenge-create-options-quick").submit(loadAndhandleChallenge);
+  // $("#challenge-create-options-quick").submit(loadAndhandleChallenge);
   // Load FlagList component
   if (document.querySelector("#challenge-flags")) {
     const flagList = Vue.extend(FlagList);

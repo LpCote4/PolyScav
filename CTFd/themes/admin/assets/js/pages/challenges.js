@@ -144,10 +144,58 @@ document.addEventListener('DOMContentLoaded', function(event) {
   document.getElementById('challenge_id_texte').textContent = newId;
   document.getElementById('challenge_id').value = newId;
 
+  function loadAndhandleChallenge(event) {
+    console.log("hello");
+    const params = $("#challenge-create-options-quick").serializeJSON();
+    delete params.challenge_id;
+    delete params.flag_type;
+    params.description = "";
+    if (params.category == "") {
+      params.category = document.getElementById(
+        "categories-selector-input"
+      ).placeholder;
+    }
+    CTFd.fetch("/api/v1/challenges", {
+      method: "POST",
+      credentials: "same-origin",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(params),
+    })
+      .then(function (response) {
+        console.log("hello2");
+        return response.json();
+      })
+      .then(function (response) {
+        if (response.success) {
+          setTimeout(function () {
+            window.location.reload(true);
+          }, 500);
+        } else {
+          let body = "";
+          for (const k in response.errors) {
+            body += response.errors[k].join("\n");
+            body += "\n";
+          }
+  
+          ezAlert({
+            title: "Error",
+            body: body,
+            button: "OK",
+          });
+        }
+      });
+  }
+
   // Handle form submission
   document.getElementById('submit-button').addEventListener('click', function(event) {
-    document.getElementById('challenge-create-options-quick').submit();
+    event.preventDefault();
+    loadAndhandleChallenge();
   });
+
+  
 
   // Handle form submission
   // document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
