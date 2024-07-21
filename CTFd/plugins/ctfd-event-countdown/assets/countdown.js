@@ -21,8 +21,10 @@
 
     var second = element.getElementsByClassName("countdown-seconds")[0];
     second.getElementsByClassName("number")[0].textContent = seconds;
-
-    element.getElementsByClassName("countdown-context")[0].textContent = prefix;
+    try {
+      element.getElementsByClassName("countdown-context")[0].textContent =
+        prefix;
+    } catch {}
   };
 
   setInterval(() => {

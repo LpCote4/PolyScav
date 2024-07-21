@@ -474,8 +474,9 @@ Alpine.data("ChallengeBoard", () => ({
       console.log("Error running challenge_order function");
       console.log(error);
     }
-
+    console.log(challenges);
     return challenges;
+    
   },
 
   async loadChallenges() {

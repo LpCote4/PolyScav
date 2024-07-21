@@ -30,7 +30,7 @@
     ]
   },
   "assets/js/challenges.js": {
-    "file": "assets/challenges.43ee3d26.js",
+    "file": "assets/challenges.7c9d5656.js",
     "src": "assets/js/challenges.js",
     "isEntry": true,
     "imports": [
@@ -39,7 +39,7 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.e0e8465a.js",
+    "file": "assets/scoreboard.4b4e0177.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [

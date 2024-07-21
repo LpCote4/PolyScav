@@ -544,6 +544,7 @@ class ChallengeList(Resource):
         challenge_type = data["type"]
         challenge_class = get_chal_class(challenge_type)
         challenge = challenge_class.create(request)
+       
         response = challenge_class.read(challenge)
 
         clear_challenges()

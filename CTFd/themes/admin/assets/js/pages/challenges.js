@@ -5,147 +5,146 @@ import $ from "jquery";
 import "../compat/json";
 import { ezAlert, ezQuery } from "../compat/ezq";
 
-
-document.addEventListener('DOMContentLoaded', function(event) {
-  document.getElementById('btn-file-input').addEventListener('click', function(event) {
-      document.getElementById('thumbsnail-get-path').click();
+document.addEventListener("DOMContentLoaded", function (event) {
+  document
+    .getElementById("btn-file-input")
+    .addEventListener("click", function (event) {
+      document.getElementById("thumbsnail-get-path").click();
       //document.getElementById('thumbsnail-get-path').value = document.getElementById('thumbsnail-input')
-  });
-
-  document.getElementById('thumbsnail-get-path').addEventListener('change', function(event) {
-    const file = event.target.files[0];
-    // console.log("File selected:", file);
-    let form = document.getElementById('thumbsnail-upload-form');
-    // Upload the image to /files endpoint
-    const extra_data = { is_challenge_thumbnail: true };
-
-    const formData = new FormData(form);
-    formData.append('file', file);
-    // formData.append("nonce", CTFd.config.csrfNonce);
-
-    helpers.files.upload(formData, form, function (response) {
-      const f = response.data[0];
-      const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
-      document.getElementById('thumbsnail-path').value = imgPath;
-      console.log('Thumbnail uploaded successfully:', imgPath);
-
-      // Update the image preview
-      const img = document.getElementById('image-preview');
-      img.src = imgPath; // Use the path received from the server
-      img.style.display = 'block';
     });
-    
-    // fetch(CTFd.config.urlRoot + '/api/v1/files?admin=true&is_challenge_thumbnail=true', {
-    //     method: 'POST',
-    //     body: formData
-    // })
-    // .then(response => response.json())  // Ensure the response is parsed as JSON
-    // .then(response => {
-    //     const f = response.data[0];  // Access the first item in the data array
-    //     const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
-    //     document.getElementById('thumbsnail-path').value = imgPath;
-    //     console.log('Thumbnail uploaded successfully:', imgPath);
 
-    //     // Update the image preview
-    //     const img = document.getElementById('image-preview');
-    //     img.src = imgPath; // Use the path received from the server
-    //     img.style.display = 'block';
-    //     // if(f.location != ""){ Code gestion erreur a rajouter 
+  document
+    .getElementById("thumbsnail-get-path")
+    .addEventListener("change", function (event) {
+      const file = event.target.files[0];
+      // console.log("File selected:", file);
+      let form = document.getElementById("thumbsnail-upload-form");
+      // Upload the image to /files endpoint
+      const extra_data = { is_challenge_thumbnail: true };
 
-    //     // }
-    //     // } else {
-    //     //     alert('Error uploading image: ' + f.errors);
-    //     // }
-    // })
-    // .catch(error => {
-    //     console.error('Error uploading file:', error);
-    // });
+      const formData = new FormData(form);
+      formData.append("file", file);
+      // formData.append("nonce", CTFd.config.csrfNonce);
 
-    if (file) {
+      helpers.files.upload(formData, form, function (response) {
+        const f = response.data[0];
+        const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
+        document.getElementById("thumbsnail-path").value = imgPath;
+        console.log("Thumbnail uploaded successfully:", imgPath);
+
+        // Update the image preview
+        const img = document.getElementById("image-preview");
+        img.src = imgPath; // Use the path received from the server
+        img.style.display = "block";
+      });
+
+      // fetch(CTFd.config.urlRoot + '/api/v1/files?admin=true&is_challenge_thumbnail=true', {
+      //     method: 'POST',
+      //     body: formData
+      // })
+      // .then(response => response.json())  // Ensure the response is parsed as JSON
+      // .then(response => {
+      //     const f = response.data[0];  // Access the first item in the data array
+      //     const imgPath = CTFd.config.urlRoot + "/files/" + f.location;
+      //     document.getElementById('thumbsnail-path').value = imgPath;
+      //     console.log('Thumbnail uploaded successfully:', imgPath);
+
+      //     // Update the image preview
+      //     const img = document.getElementById('image-preview');
+      //     img.src = imgPath; // Use the path received from the server
+      //     img.style.display = 'block';
+      //     // if(f.location != ""){ Code gestion erreur a rajouter
+
+      //     // }
+      //     // } else {
+      //     //     alert('Error uploading image: ' + f.errors);
+      //     // }
+      // })
+      // .catch(error => {
+      //     console.error('Error uploading file:', error);
+      // });
+
+      if (file) {
         const reader = new FileReader();
-        reader.onload = function(event) {
-            const img = document.getElementById('image-preview');
-            img.src = event.target.result; // Show the selected image while it's being uploaded
-            img.style.display = 'block';
+        reader.onload = function (event) {
+          const img = document.getElementById("image-preview");
+          img.src = event.target.result; // Show the selected image while it's being uploaded
+          img.style.display = "block";
         };
         reader.readAsDataURL(file);
-    }
-  // });
-    // helpers.files.upload(form, extra_data, function (response) {
-    //   const f = response.data[0];
-    //   if (f.success) {
-    //     document.getElementById('thumbsnail-path').value = f.location;
-    //     console.log('Thumbnail uploaded successfully:', f);
-    //   } else {
-    //     alert('Error uploading image: ' + f.errors);
-    //   }
+      }
+      // });
+      // helpers.files.upload(form, extra_data, function (response) {
+      //   const f = response.data[0];
+      //   if (f.success) {
+      //     document.getElementById('thumbsnail-path').value = f.location;
+      //     console.log('Thumbnail uploaded successfully:', f);
+      //   } else {
+      //     alert('Error uploading image: ' + f.errors);
+      //   }
     });
-    
 
-        // if (file) {
-        //     const reader = new FileReader();
-        //     reader.onload = function(event) {
-        //         const img = document.getElementById('image-preview');
-        //         img.src = event.target;
-        //         img.style.display = 'block';
-        //     };
-        //     reader.readAsDataURL(file);
+  // if (file) {
+  //     const reader = new FileReader();
+  //     reader.onload = function(event) {
+  //         const img = document.getElementById('image-preview');
+  //         img.src = event.target;
+  //         img.style.display = 'block';
+  //     };
+  //     reader.readAsDataURL(file);
 
-    // };
-
-
+  // };
 
   // Add existing categories dynamically to the dropdown
   const categories = Object.keys(document.categories);
-  const categoriesSelector = document.getElementById('categories-selector');
-  categories.forEach(category => {
-      const option = document.createElement('option');
-      option.value = category;
-      option.textContent = category;
-      categoriesSelector.appendChild(option);
+  const categoriesSelector = document.getElementById("categories-selector");
+  categories.forEach((category) => {
+    const option = document.createElement("option");
+    option.value = category;
+    option.textContent = category;
+    categoriesSelector.appendChild(option);
   });
-  const option = document.createElement('option');
+  const option = document.createElement("option");
   option.value = "other";
   option.textContent = "Other (type below)";
   categoriesSelector.appendChild(option);
 
   // Show/hide the category input based on selection
-  const categoryInput = document.getElementById('categories-selector-input');
-  if (categoriesSelector.value == 'other' || categories.length == 0) {
-      categoryInput.style.display = 'block';
-      categoryInput.name = "category";
+  const categoryInput = document.getElementById("categories-selector-input");
+  if (categoriesSelector.value == "other" || categories.length == 0) {
+    categoryInput.style.display = "block";
+    categoryInput.name = "category";
   } else {
-      categoryInput.style.display = 'none';
-      categoryInput.value = ''; // Clear input if not used
-      categoryInput.name = '';
+    categoryInput.style.display = "none";
+    categoryInput.value = ""; // Clear input if not used
+    categoryInput.name = "";
   }
-  categoriesSelector.addEventListener('change', function() {
-      if (categoriesSelector.value == 'other' || categories.length == 0) {
-          categoryInput.style.display = 'block';
-          categoryInput.name = "category";
-      } else {
-          categoryInput.style.display = 'none';
-          categoryInput.value = ''; // Clear input if not used
-          categoryInput.name = '';
-      }
+  categoriesSelector.addEventListener("change", function () {
+    if (categoriesSelector.value == "other" || categories.length == 0) {
+      categoryInput.style.display = "block";
+      categoryInput.name = "category";
+    } else {
+      categoryInput.style.display = "none";
+      categoryInput.value = ""; // Clear input if not used
+      categoryInput.name = "";
+    }
   });
 
   // Find the highest current ID in the table
   let maxId = 0;
-  document.querySelectorAll('td.id').forEach(function(td) {
-      const id = parseInt(td.textContent);
-      if (!isNaN(id) && id > maxId) {
-          maxId = id;
-      }
+  document.querySelectorAll("td.id").forEach(function (td) {
+    const id = parseInt(td.textContent);
+    if (!isNaN(id) && id > maxId) {
+      maxId = id;
+    }
   });
 
   // Set the new ID
   const newId = maxId + 1;
-  document.getElementById('challenge_id_texte').textContent = newId;
-  document.getElementById('challenge_id').value = newId;
+  document.getElementById("challenge_id_texte").textContent = newId;
+  document.getElementById("challenge_id").value = newId;
 
   function loadAndhandleChallenge(event) {
-    console.log("hello");
     const params = $("#challenge-create-options-quick").serializeJSON();
     delete params.challenge_id;
     delete params.flag_type;
@@ -170,6 +169,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
       })
       .then(function (response) {
         if (response.success) {
+          console.log(response.data);
+          if (response.data.type == "manualRecursive") {
+            const params = {
+              value: "Recursif",
+              challenge: response.data.id,
+            };
+            CTFd.api.post_tag_list({}, params).then((response) => {});
+          }
           setTimeout(function () {
             window.location.reload(true);
           }, 500);
@@ -179,7 +186,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             body += response.errors[k].join("\n");
             body += "\n";
           }
-  
+
           ezAlert({
             title: "Error",
             body: body,
@@ -190,12 +197,12 @@ document.addEventListener('DOMContentLoaded', function(event) {
   }
 
   // Handle form submission
-  document.getElementById('submit-button').addEventListener('click', function(event) {
-    event.preventDefault();
-    loadAndhandleChallenge();
-  });
-
-  
+  document
+    .getElementById("submit-button")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      loadAndhandleChallenge();
+    });
 
   // Handle form submission
   // document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
@@ -211,25 +218,25 @@ document.addEventListener('DOMContentLoaded', function(event) {
   //   // Convert plain object to JSON
   //   const jsonFormData = JSON.stringify(formDataObject);
 
-    // Use fetch API to send the form data
-    // fetch(this.action, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: jsonFormData
-    // }).then(response => response.json()).then(data => {
-    //   // Handle the response data
-    //   if (data.success) {
-    //     alert('Challenge added successfully!');
-    //     // Optionally, redirect or update the UI
-    //   } else {
-    //     alert('Error adding challenge: ' + data.errors);
-    //   }
-    // }).catch(error => {
-    //   console.error('Error:', error);
-    // });
-//   });
+  // Use fetch API to send the form data
+  // fetch(this.action, {
+  //   method: 'POST',
+  //   headers: {
+  //     'Content-Type': 'application/json'
+  //   },
+  //   body: jsonFormData
+  // }).then(response => response.json()).then(data => {
+  //   // Handle the response data
+  //   if (data.success) {
+  //     alert('Challenge added successfully!');
+  //     // Optionally, redirect or update the UI
+  //   } else {
+  //     alert('Error adding challenge: ' + data.errors);
+  //   }
+  // }).catch(error => {
+  //   console.error('Error:', error);
+  // });
+  //   });
 });
 
 function deleteSelectedChallenges(_event) {
@@ -247,7 +254,7 @@ function deleteSelectedChallenges(_event) {
         reqs.push(
           CTFd.fetch(`/api/v1/challenges/${chalID}`, {
             method: "DELETE",
-          }),
+          })
         );
       }
       Promise.all(reqs).then((_responses) => {
@@ -293,7 +300,7 @@ function bulkEditChallenges(_event) {
           CTFd.fetch(`/api/v1/challenges/${chalID}`, {
             method: "PATCH",
             body: JSON.stringify(data),
-          }),
+          })
         );
       }
       Promise.all(reqs).then((_responses) => {

@@ -492,7 +492,7 @@ this.showLargeSubmissions = function(_event) {
     mediaContents = JSON.parse(_event.srcElement.parentElement.parentElement.parentElement.value);
     element = _event.srcElement.parentElement.parentElement.parentElement;
   }
-
+  console.log(mediaContents);
   let decalage = false;
   let images = mediaContents;
 

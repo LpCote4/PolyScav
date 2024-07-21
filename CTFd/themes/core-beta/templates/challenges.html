@@ -104,6 +104,17 @@
       font-size: 12px;
       z-index: 1;
     }
+    .challenge-inner .challenge-tag {
+      position: absolute;
+      bottom: 5px;
+      left: 5px;
+      background-color: #212529;
+      color: white;
+      padding: 2px 5px;
+      border-radius: 5px;
+      font-size: 12px;
+      z-index: 1;
+    }
     @media (min-width: 740px) {
       .challenge-box {
         height: 200px;
@@ -274,6 +285,14 @@
                       <div class="challenge-inner my-3">
                         <p x-text="c.name" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
                         <div class="challenge-value" x-text="`${c.value} pts`"></div>
+                        <template x-if="c.tags.length">
+                          <template x-for="(tag,i) in c.tags">
+                            <template x-if="i ==0"><div class="challenge-tag" x-text=`${tag.value}`></div></template>
+                            
+                          </template>
+                          
+                        </template>
+                        
                       </div>
                     </button>
                   </div>

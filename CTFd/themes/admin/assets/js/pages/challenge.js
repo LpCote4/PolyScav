@@ -19,7 +19,6 @@ import NextChallenge from "../components/next/NextChallenge.vue";
 
 //To create challenge in one click with one simple interface
 function loadAndhandleChallenge(event) {
-  console.log("hello");
   event.preventDefault();
   const params = $("#challenge-create-options-quick").serializeJSON();
   delete params.challenge_id;
@@ -40,13 +39,15 @@ function loadAndhandleChallenge(event) {
     body: JSON.stringify(params),
   })
     .then(function (response) {
-      console.log("hello2");
       return response.json();
     })
     .then(function (response) {
       if (response.success) {
+        alert(response.data);
         setTimeout(function () {
-          window.location = CTFd.config.urlRoot + "/admin/challenges#challenge-create-options-quick";
+          window.location =
+            CTFd.config.urlRoot +
+            "/admin/challenges#challenge-create-options-quick";
         }, 700);
       } else {
         let body = "";
@@ -126,7 +127,9 @@ function handleChallengeOptions(event) {
   // Define a save_challenge function
   let save_challenge = function () {
     setTimeout(function () {
-      window.location = CTFd.config.urlRoot + "/admin/challenges#challenge-create-options-quick";
+      window.location =
+        CTFd.config.urlRoot +
+        "/admin/challenges#challenge-create-options-quick";
     }, 700);
   };
   Promise.all([
