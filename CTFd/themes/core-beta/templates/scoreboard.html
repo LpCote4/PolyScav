@@ -5,11 +5,31 @@
     {% if Configs.ctf_banner %}
     <img class="mx-auto d-block" style="width: auto;padding-bottom: 25px;max-height: 20vw;" src="{{ url_for('views.files', path=Configs.ctf_banner) }}" />
     {% endif %}
-    <div class="container">
+    <div class="container" style="display: flex; justify-content: space-around;flex-direction: column;align-items: center;">
       <h1>
         {% trans %}Scoreboard{% endtrans %}
       </h1>
-      <p class="ctfd-event-countdown">&nbsp;</p>
+      <ul id="countdown" class="ctfd-event-countdown" style="width: 60%;overflow: hidden;font-family: Lato, sans-serif;font-weight: bold;display: flex;justify-content: space-around;list-style: none;padding-inline-start: 0px;">
+        <li class="countdown-days">
+          <div class="number">00</div>
+          <div class="label">Days</div>
+        </li>
+        <li>:</li>
+        <li class="countdown-hours">
+          <div class="number">00</div>
+          <div class="label">Hours</div>
+        </li>
+        <li>:</li>
+        <li class="countdown-minutes">
+          <div class="number">00</div>
+          <div class="label">Minutes</div>
+        </li>
+        <li>:</li>
+        <li class="countdown-seconds">
+          <div class="number">00</div>
+          <div class="label">Seconds</div>
+        </li>
+      </ul>
     </div>
     {% if Configs.ctf_description %}
     <div class="container" style="padding-top: 10px;">
