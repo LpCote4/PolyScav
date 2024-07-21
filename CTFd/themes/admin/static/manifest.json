@@ -5,7 +5,7 @@
     "isEntry": true
   },
   "assets/js/pages/challenge.js": {
-    "file": "assets/pages/challenge.19877440.js",
+    "file": "assets/pages/challenge.3249faf0.js",
     "src": "assets/js/pages/challenge.js",
     "isEntry": true,
     "imports": [
@@ -18,7 +18,7 @@
     ]
   },
   "assets/js/pages/challenges.js": {
-    "file": "assets/pages/challenges.e98c65fb.js",
+    "file": "assets/pages/challenges.e2cef79e.js",
     "src": "assets/js/pages/challenges.js",
     "isEntry": true,
     "imports": [

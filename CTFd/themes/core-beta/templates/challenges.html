@@ -276,7 +276,8 @@
                         :style="c.thumbsnail ? 'background-image: url(' + c.thumbsnail + ');' : 'background-color: rgba(33, 37, 41, 1)'"
                         class="challenge-button w-100 text-truncate"
                         :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : ''"
-                        :value="c.id" @click="loadChallenge(c.id)" 
+                        :value="c.id" @click="loadChallenge(c.id)"
+                        
                     >
                       <div style="position: absolute;">
                         <i class="float-end" :id="c.id+'a'" style="left: 75%; position: relative;"></i>

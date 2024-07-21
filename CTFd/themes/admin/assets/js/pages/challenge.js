@@ -284,6 +284,7 @@ $(() => {
   });
 
   $("#challenge-create-options").submit(handleChallengeOptions);
+  $("#challenge-create-options-quick").change(handleChallengeOptions);
   // $("#challenge-create-options-quick").submit(loadAndhandleChallenge);
   // Load FlagList component
   if (document.querySelector("#challenge-flags")) {

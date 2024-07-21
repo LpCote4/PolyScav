@@ -154,6 +154,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         "categories-selector-input"
       ).placeholder;
     }
+
     CTFd.fetch("/api/v1/challenges", {
       method: "POST",
       credentials: "same-origin",
@@ -202,6 +203,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
     .addEventListener("click", function (event) {
       event.preventDefault();
       loadAndhandleChallenge();
+    });
+  document
+    .getElementById("challenge-create-options-quick-selector")
+    .addEventListener("keypress", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault();
+        loadAndhandleChallenge();
+      }
     });
 
   // Handle form submission
