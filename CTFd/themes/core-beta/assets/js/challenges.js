@@ -286,6 +286,7 @@ Alpine.data("Challenge", () => ({
       }
       else{
         alert("You're currently trying to send nothing.");
+        document.getElementById("challenge-submit").disabled = false;
       }
      
     }
