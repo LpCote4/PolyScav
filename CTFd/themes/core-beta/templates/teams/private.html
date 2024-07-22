@@ -39,28 +39,18 @@
                 </small>
               </div>
 
-              <div class="mb-2">
-                <b>{{ form.website.label(clas="mb-2") }}</b>
-                {{ form.website(class="form-control") }}
-                <small class="form-text text-muted">
-                  {{ form.website.description }}
-                </small>
-              </div>
-
-              <div class="mb-2">
-                <b>{{ form.affiliation.label(clas="mb-2") }}</b>
-                {{ form.affiliation(class="form-control") }}
-                <small class="form-text text-muted">
-                  {{ form.affiliation.description }}
-                </small>
-              </div>
-
-              <div class="mb-2">
-                <b>{{ form.country.label(clas="mb-2") }}</b>
-                {{ form.country(class="form-select") }}
-                <small class="form-text text-muted">
-                  {{ form.country.description }}
-                </small>
+              <div class="form-group">
+                {{ form.color.label }}
+                <div class="row" style="padding: 15px;">
+                    <div class="d-inline-block">
+                      
+                      {{ form.color(id="config-color-input") }}
+                      <div class="btn-group">
+                      <input type="color" id="config-color-picker" class="pr-1" style="width: 100px; height: 30px;" value="{{ form.color.data }}" @input="setThemeColor">
+                  
+                      </div>
+                    </div>
+                </div>
               </div>
 
               <hr>
@@ -487,6 +477,28 @@
 {% endblock %}
 
 {% block scripts %}
+<script>
+  function setThemeColor(e){
+    document.querySelector("#config-color-input").value = e.target.value;
+    
+  };
+
+  function resetThemeColor(_e) {
+    document.querySelector("#config-color-input").value = "";
+    document.querySelector("#config-color-picker").value = "";
+  };
+  document.addEventListener('DOMContentLoaded', function () {
+    var colorPicker = document.getElementById('config-color-picker');
+    var colorInput = document.getElementById('config-color-input');
+    
+    colorPicker.addEventListener('input', function () {
+      colorInput.value = colorPicker.value;
+    });
+
+    // Initialize the color input with the value from the color picker
+    colorInput.value = colorPicker.value;
+  });
+</script>
   <script>
       window.stats_data = {{ {
         'type': 'team',

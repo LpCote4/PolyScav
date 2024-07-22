@@ -40,7 +40,7 @@ Alpine.data("TeamEditModal", () => ({
         delete data[property];
       }
     }
-
+    console.log(data);
     let response = await CTFd.pages.teams.updateTeamSettings(data);
     if (response.success) {
       this.success = true;

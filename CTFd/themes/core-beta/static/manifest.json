@@ -21,7 +21,7 @@
     ]
   },
   "assets/js/settings.js": {
-    "file": "assets/settings.9906c37d.js",
+    "file": "assets/settings.8fdd257c.js",
     "src": "assets/js/settings.js",
     "isEntry": true,
     "imports": [
@@ -69,7 +69,7 @@
     ]
   },
   "assets/js/teams/private.js": {
-    "file": "assets/teams_private.98597d22.js",
+    "file": "assets/teams_private.ae7e75d1.js",
     "src": "assets/js/teams/private.js",
     "isEntry": true,
     "imports": [

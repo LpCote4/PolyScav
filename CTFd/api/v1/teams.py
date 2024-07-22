@@ -270,6 +270,8 @@ class TeamPublic(Resource):
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 
+        print(data)
+        input()
         response = schema.dump(response.data)
         db.session.commit()
 
@@ -361,7 +363,7 @@ class TeamPrivate(Resource):
             )
 
         data = request.get_json()
-
+        print(data)
         response = TeamSchema(view="self", instance=team, partial=True).load(data)
 
         if response.errors:
@@ -369,7 +371,12 @@ class TeamPrivate(Resource):
 
         db.session.commit()
         clear_team_session(team_id=team.id)
+        
         response = TeamSchema("self").dump(response.data)
+        clear_team_session(team_id=team.id)
+        clear_standings()
+        clear_challenges()
+
         db.session.close()
 
         return {"success": True, "data": response.data}

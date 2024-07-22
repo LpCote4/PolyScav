@@ -36,7 +36,7 @@ Alpine.data("SettingsForm", () => ({
         delete data[property];
       }
     }
-
+    console.log(data);
     // Send API request
     const response = await CTFd.pages.settings.updateSettings(data);
     if (response.success) {

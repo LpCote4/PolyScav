@@ -366,6 +366,7 @@ class TeamSchema(ma.ModelSchema):
         "user": [
             "website",
             "name",
+            "color",
             "country",
             "affiliation",
             "bracket_id",
@@ -378,6 +379,7 @@ class TeamSchema(ma.ModelSchema):
         "self": [
             "website",
             "name",
+            "color",
             "email",
             "country",
             "affiliation",
