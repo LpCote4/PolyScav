@@ -239,6 +239,7 @@ class UserPublic(Resource):
 
         schema = UserSchema(view="admin", instance=user, partial=True)
         response = schema.load(data)
+        print(data)
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
 

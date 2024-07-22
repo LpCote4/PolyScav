@@ -17,11 +17,12 @@ from CTFd.cache import (
     clear_user_session,
 )
 from CTFd.constants import RawEnum
-from CTFd.models import Awards, Submissions, Teams, Unlocks, Users, db
+from CTFd.models import Awards, Submissions, Teams, Unlocks, Users, db, Fails
 from CTFd.schemas.awards import AwardSchema
 from CTFd.schemas.submissions import SubmissionSchema
 from CTFd.schemas.teams import TeamSchema
 from CTFd.utils import get_config
+from CTFd.schemas.users import UserSchema
 from CTFd.utils.decorators import admins_only, authed_only, require_team
 from CTFd.utils.decorators.modes import require_team_mode
 from CTFd.utils.decorators.visibility import (
@@ -29,7 +30,7 @@ from CTFd.utils.decorators.visibility import (
     check_score_visibility,
 )
 from CTFd.utils.helpers.models import build_model_filters
-from CTFd.utils.user import get_current_team, get_current_user_type, is_admin
+from CTFd.utils.user import get_current_team, get_current_user_type, is_admin, get_current_user
 import json
 teams_namespace = Namespace("teams", description="Endpoint to retrieve Teams")
 
@@ -193,6 +194,7 @@ class TeamList(Resource):
     def post(self):
         req = request.get_json()
         user_type = get_current_user_type()
+        
         view = TeamSchema.views.get(user_type)
         schema = TeamSchema(view=view)
         response = schema.load(req)
@@ -517,6 +519,7 @@ class TeamMembers(Resource):
         data = request.get_json()
         user_id = data.get("user_id")
         user = Users.query.filter_by(id=user_id).first_or_404()
+        print(user.team_id)
         if user.team_id is None:
             team.members.append(user)
             db.session.commit()
@@ -543,11 +546,14 @@ class TeamMembers(Resource):
     
     def delete(self, team_id):
         team = Teams.query.filter_by(id=team_id).first_or_404()
-        if is_admin() or team.captain_id == session["id"]:
+        
+        data = request.get_json()
+        user_id = data["user_id"]
+        if is_admin() or team.captain_id == session["id"] or session["id"] == user_id :
             team = Teams.query.filter_by(id=team_id).first_or_404()
 
-            data = request.get_json()
-            user_id = data["user_id"]
+            print(user_id)
+            print(team.captain_id)
             if team.captain_id != user_id or is_admin():
                 user = Users.query.filter_by(id=user_id).first_or_404()
 
@@ -558,8 +564,8 @@ class TeamMembers(Resource):
                     Submissions.query.filter_by(user_id=user.id).delete()
                     Awards.query.filter_by(user_id=user.id).delete()
                     Unlocks.query.filter_by(user_id=user.id).delete()
-
-                    db.session.commit()
+                    Fails.query.filter_by(user_id=user.id).delete()
+                    
                 else:
                     return (
                         {"success": False, "errors": {"id": ["User is not part of this team"]}},
@@ -569,7 +575,21 @@ class TeamMembers(Resource):
                 view = "admin" if is_admin() else "user"
                 schema = TeamSchema(view=view)
                 response = schema.dump(team)
-
+                schema2 = UserSchema(view="admin", instance=user, partial=True)
+                response2 = schema2.load({'team_id':None})
+                
+                print("first")
+                print(user.team_id)
+                user = Users.query.filter_by(id=user_id).first_or_404()
+                print(user.team_id)
+                db.session.commit()
+                db.session.close()
+                clear_user_session(user_id=user_id)
+                clear_standings()
+                clear_challenges()
+                user = Users.query.filter_by(id=user_id).first_or_404()
+                print(user.team_id)
+              
                 if response.errors:
                     return {"success": False, "errors": response.errors}, 400
 

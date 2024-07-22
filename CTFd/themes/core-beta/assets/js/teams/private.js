@@ -236,6 +236,7 @@ $(".delete-member").click(function (e) {
         .then(function (response) {
           if (response.success) {
             row.remove();
+            window.location.reload();
           }
         });
     },

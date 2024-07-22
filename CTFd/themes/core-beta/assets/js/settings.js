@@ -37,6 +37,7 @@ Alpine.data("SettingsForm", () => ({
       }
     }
     console.log(data);
+    
     // Send API request
     const response = await CTFd.pages.settings.updateSettings(data);
     if (response.success) {

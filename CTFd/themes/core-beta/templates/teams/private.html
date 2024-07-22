@@ -248,8 +248,9 @@
           <small>{% trans %}points{% endtrans %}</small>
         {% endif %}
       </h2>
-
+      
       <div x-data="CaptainMenu">
+        {% if team.captain_id == user.id %}
         <a class="edit-team text-white" @click="editTeam()">
           <i
               class="cursor-pointer fas fa-cogs fa-2x px-2 pt-3"
@@ -279,8 +280,17 @@
               title="Disband Team"
           ></i>
         </a>
+        {% else %}
+        <span class="delete-member cursor-pointer" member-id="{{ user.id }}"
+                      member-name="{{ user.name }}" team-name="{{ team.name }}" data-toggle="tooltip"
+                      data-placement="top" title="Remove {{ user.name }}">
+                    <i class="fas fas fa-door-open fa-2x px-2 pt-3"></i>
+                  </span>
+        {% endif %}
       </div>
+      
 
+      
       <div class="pt-3">{% if team.website and (team.website.startswith('http://') or team.website.startswith('https://')) %}
           <a href="{{ team.website }}" target="_blank" style="color: inherit;" rel="noopener">
             <i
