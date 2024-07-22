@@ -247,6 +247,7 @@
                       <div class="challenge-inner my-3">
                         <p x-text="c.name" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
                         <div class="challenge-value" x-text="`${c.value} pts`"></div>
+                        <span x-show="c.submited" class="en-validation-tag">En validation</span>
                       </div>
                     </button>
                   </div>

@@ -90,6 +90,7 @@
 					<a class="nav-item nav-link small" data-toggle="tab" href="#hints" role="tab">Hints</a>
 					<a class="nav-item nav-link small" data-toggle="tab" href="#requirements" role="tab">Requirements</a>
 					<a class="nav-item nav-link small" data-toggle="tab" href="#next" role="tab">Next</a>
+					<a class="nav-item nav-link small" data-toggle="tab" href="#thumbsnail" role="tab">Thumbsnail</a>
 				</nav>
 
 				<div class="tab-content" id="nav-tabContent">
@@ -149,8 +150,15 @@
 							</div>
 						</div>
 					</div>
+					<div class="tab-pane fade" id="thumbsnail" role="tabpanel">
+						<div class="row">
+							<div class="col-md-12">
+								<h3 class="text-center py-3 d-block">Thumbsnail</h3>
+								{% include "admin/modals/challenges/thumbsnail.html" %}
+							</div>
+						</div>
+					</div>
 				</div>
-
 			</div>
 			<div id="challenge-update-container" class="col-md-6">
 				{{ update_template | safe }}
@@ -164,6 +172,7 @@
 	<script>
         var CHALLENGE_ID = {{ challenge.id }};
         var CHALLENGE_NAME = {{ challenge.name | tojson }};
+		var CHALLENGE_THUMBSNAIL = {{ challenge.thumbsnail | tojson }};
 	</script>
 	<script defer src="{{ request.script_root }}{{ update_script }}"></script>
 {% endblock %}
