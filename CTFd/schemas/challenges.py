@@ -38,6 +38,11 @@ class ChallengeSchema(ma.ModelSchema):
                 min=0,
                 max=80,
                 error="Challenge could not be saved. Challenge name too long",
+            ),
+            validate.Length(
+                min=1,
+                max=10000,
+                error="Challenge name not deffined",
             )
         ],
     )

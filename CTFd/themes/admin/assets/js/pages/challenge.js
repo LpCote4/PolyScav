@@ -55,6 +55,43 @@ import NextChallenge from "../components/next/NextChallenge.vue";
 //           body += response.errors[k].join("\n");
 //           body += "\n";
 //         }
+// function loadAndhandleChallenge(event) {
+//   event.preventDefault();
+//   const params = $("#challenge-create-options-quick").serializeJSON();
+//   delete params.challenge_id;
+//   delete params.flag_type;
+//   params.description = "";
+//   if (params.category == "") {
+//     params.category = document.getElementById(
+//       "categories-selector-input"
+//     ).placeholder;
+//   }
+//   CTFd.fetch("/api/v1/challenges", {
+//     method: "POST",
+//     credentials: "same-origin",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(params),
+//   })
+//     .then(function (response) {
+//       return response.json();
+//     })
+//     .then(function (response) {
+//       if (response.success) {
+//         alert(response.data);
+//         setTimeout(function () {
+//           window.location =
+//             CTFd.config.urlRoot +
+//             "/admin/challenges#challenge-create-options-quick";
+//         }, 700);
+//       } else {
+//         let body = "";
+//         for (const k in response.errors) {
+//           body += response.errors[k].join("\n");
+//           body += "\n";
+//         }
 
 //         ezAlert({
 //           title: "Error",
@@ -127,7 +164,9 @@ function handleChallengeOptions(event) {
   // Define a save_challenge function
   let save_challenge = function () {
     setTimeout(function () {
-      window.location = CTFd.config.urlRoot + "/admin/challenges#challenge-create-options-quick";
+      window.location =
+        CTFd.config.urlRoot +
+        "/admin/challenges#challenge-create-options-quick";
     }, 700);
   };
   Promise.all([
@@ -282,6 +321,7 @@ $(() => {
   });
 
   $("#challenge-create-options").submit(handleChallengeOptions);
+  $("#challenge-create-options-quick").change(handleChallengeOptions);
   // $("#challenge-create-options-quick").submit(loadAndhandleChallenge);
   // Load FlagList component
   if (document.querySelector("#challenge-flags")) {

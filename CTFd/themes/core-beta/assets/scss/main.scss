@@ -165,7 +165,22 @@ body {
 
 
 
-
+#countdown li{
+  margin: 0 -3px 0 0;
+  padding: 0;
+  display: inline-block;
+  width: 25%;
+  font-size: 72px;
+  font-size: 6vw;
+  text-align: center;
+  
+  .label {
+    color: #adafb2;
+    font-size: 18px;
+    font-size: 1.5vw;
+    text-transform: uppercase;
+  }
+}
 
 .loader {
   border: 16px solid #f3f3f3;

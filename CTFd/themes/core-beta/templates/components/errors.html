@@ -1,6 +1,6 @@
-<div>
+<div style="display: flex; justify-content: space-around;flex-direction: column;">
   {% for info in infos %}
-    <div class="alert alert-info alert-dismissible text-center" role="alert">
+    <div class="alert alert-info alert-dismissible text-center" style="margin-bottom:0px !important" role="alert">
       <span>{{ info }}</span>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         <span aria-hidden="true"></span>
@@ -9,7 +9,7 @@
   {% endfor %}
 
   {% for error in errors %}
-    <div class="alert alert-danger alert-dismissible text-center" role="alert">
+    <div class="alert alert-danger alert-dismissible text-center" style="margin-bottom:0px !important" role="alert">
       <span>{{ error }}</span>
       <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close">
         <span aria-hidden="true"></span>

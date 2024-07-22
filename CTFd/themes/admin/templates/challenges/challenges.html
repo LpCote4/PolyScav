@@ -110,9 +110,8 @@
 								{% set badge_state = 'badge-danger' if challenge.state == 'hidden' else 'badge-success' %}
 								<span class="badge {{ badge_state }}">{{ challenge.state }}</span>
 							</td>
-							{% if challenge.thumbsnail %}
-							<td><img src="{{ challenge.thumbsnail }}" alt="thumbsnail" class="img-thumbnail" style="width: 100px; height: 100px;"></td>
-							{% endif %}
+							<td>{% if challenge.thumbsnail %}<img src="{{ challenge.thumbsnail }}" alt="thumbsnail" class="img-thumbnail" style="width: 100px; height: 100px;">{% endif %}</td>
+							
 						</tr>
 					{% endfor %}
 						<style>
@@ -141,7 +140,7 @@
 								width: auto; /* Allow the cell to adapt dynamically to content size */
 							}
 						</style>
-							<tr data-href="">
+							<tr data-href="" id="challenge-create-options-quick-selector">
 								<form id="challenge-create-options-quick" method="POST">
 									<td class="d-block border-right text-center" data-checkbox>
 										<div class="form-check">
@@ -149,8 +148,9 @@
 										</div>
 									</td>
 									<td class="text-center" id="challenge_id_texte">ID</td>
+									
 									<td class="editable" data-editable="name">
-										<input class="form-text-input" name="name"></input>
+										<input class="form-text-input" name="name" required></input>
 									</td>
 									<td class="editable text-center" data-editable="category">
 										<select class="form-control custom-select" id="categories-selector" name="category">
@@ -159,7 +159,7 @@
 										<input type="text" class="form-control mt-2" id="categories-selector-input" placeholder="Type new category"></input>
 									</td>
 									<td class="editable text-center" data-editable="value">
-										<input class="form-text-input" name="value"></input>
+										<input class="form-text-input" name="value" required></input>
 									</td>
 									<td class="editable text-center" data-editable="type">
 										<select class="form-control custom-select" name="type" id="challenge-type">
@@ -204,7 +204,7 @@
 				</table>
 			</div>
 		</div>
-		<button class="btn btn-primary float-right create-challenge-submit" id="submit-button" style="margin-top: -15px; margin-left: 15px;">Add challenge</button>
+		<div class="w-100" style="display: flex;justify-content: space-around;"><button class="btn btn-primary float-right create-challenge-submit" id="submit-button" style="margin-top: 5px;align-self: center;">Add challenge</button></div>
 	</div>
 </div>
 {% endblock %}

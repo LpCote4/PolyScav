@@ -534,7 +534,7 @@ class ChallengeList(Resource):
             resized_thumbsnail_b64 = base64.b64encode(resized_thumbsnail_data).decode('utf-8')
             # Create a data URL
             data['thumbsnail'] = f"data:image/png;base64,{resized_thumbsnail_b64}"
-
+        
         # Load data through schema for validation but not for insertion
         schema = ChallengeSchema()
         response = schema.load(data)
@@ -544,6 +544,7 @@ class ChallengeList(Resource):
         challenge_type = data["type"]
         challenge_class = get_chal_class(challenge_type)
         challenge = challenge_class.create(request)
+       
         response = challenge_class.read(challenge)
 
         clear_challenges()

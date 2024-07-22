@@ -5,7 +5,7 @@
     "isEntry": true
   },
   "assets/js/pages/challenge.js": {
-    "file": "assets/pages/challenge.871b8814.js",
+    "file": "assets/pages/challenge.862dfc6e.js",
     "src": "assets/js/pages/challenge.js",
     "isEntry": true,
     "imports": [
@@ -18,7 +18,7 @@
     ]
   },
   "assets/js/pages/challenges.js": {
-    "file": "assets/pages/challenges.8c098e3d.js",
+    "file": "assets/pages/challenges.e6d7e3b9.js",
     "src": "assets/js/pages/challenges.js",
     "isEntry": true,
     "imports": [
@@ -138,79 +138,6 @@
   "_echarts.7b83cee2.js": {
     "file": "assets/echarts.7b83cee2.js"
   },
-  "_tab.c25d0aaf.js": {
-    "file": "assets/tab.c25d0aaf.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_CommentBox.6173853d.js": {
-    "file": "assets/CommentBox.6173853d.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ],
-    "css": [
-      "assets/CommentBox.9f8f1323.css"
-    ]
-  },
-  "_htmlmixed.40f9dcb4.js": {
-    "file": "assets/htmlmixed.40f9dcb4.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_echarts.common.a9b181c7.js": {
-    "file": "assets/echarts.common.a9b181c7.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_visual.0cd33878.js": {
-    "file": "assets/visual.0cd33878.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
-  },
-  "_graphs.799cbe70.js": {
-    "file": "assets/graphs.799cbe70.js",
-    "imports": [
-      "assets/js/pages/main.js",
-      "_echarts.common.a9b181c7.js"
-    ]
-  },
-  "assets/js/pages/challenge.css": {
-    "file": "assets/challenge.6aa9b454.css",
-    "src": "assets/js/pages/challenge.css"
-  },
-  "CommentBox.css": {
-    "file": "assets/CommentBox.9f8f1323.css",
-    "src": "CommentBox.css"
-  },
-  "assets/css/challenge-board.scss": {
-    "file": "assets/challenge-board.44e07e05.css",
-    "src": "assets/css/challenge-board.scss",
-    "isEntry": true
-  },
-  "assets/css/admin.scss": {
-    "file": "assets/admin.7ec792cd.css",
-    "src": "assets/css/admin.scss",
-    "isEntry": true
-  },
-  "assets/css/fonts.scss": {
-    "file": "assets/fonts.ffb05726.css",
-    "src": "assets/css/fonts.scss",
-    "isEntry": true
-  },
-  "assets/css/codemirror.scss": {
-    "file": "assets/codemirror.d74a88bc.css",
-    "src": "assets/css/codemirror.scss",
-    "isEntry": true
-  },
-  "assets/css/main.scss": {
-    "file": "assets/main.088f55c6.css",
-    "src": "assets/css/main.scss",
-    "isEntry": true
-  },
   "_tab.40fd59aa.js": {
     "file": "assets/tab.40fd59aa.js",
     "imports": [
@@ -251,44 +178,37 @@
       "_echarts.common.6ed11889.js"
     ]
   },
-  "_tab.731c1ef0.js": {
-    "file": "assets/tab.731c1ef0.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
+  "CommentBox.css": {
+    "file": "assets/CommentBox.9f8f1323.css",
+    "src": "CommentBox.css"
   },
-  "_CommentBox.1edcc113.js": {
-    "file": "assets/CommentBox.1edcc113.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ],
-    "css": [
-      "assets/CommentBox.9f8f1323.css"
-    ]
+  "assets/js/pages/challenge.css": {
+    "file": "assets/challenge.6aa9b454.css",
+    "src": "assets/js/pages/challenge.css"
   },
-  "_htmlmixed.bade08ef.js": {
-    "file": "assets/htmlmixed.bade08ef.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
+  "assets/css/admin.scss": {
+    "file": "assets/admin.7ec792cd.css",
+    "src": "assets/css/admin.scss",
+    "isEntry": true
   },
-  "_echarts.common.b42ab124.js": {
-    "file": "assets/echarts.common.b42ab124.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
+  "assets/css/challenge-board.scss": {
+    "file": "assets/challenge-board.44e07e05.css",
+    "src": "assets/css/challenge-board.scss",
+    "isEntry": true
   },
-  "_visual.fef17b43.js": {
-    "file": "assets/visual.fef17b43.js",
-    "imports": [
-      "assets/js/pages/main.js"
-    ]
+  "assets/css/codemirror.scss": {
+    "file": "assets/codemirror.d74a88bc.css",
+    "src": "assets/css/codemirror.scss",
+    "isEntry": true
   },
-  "_graphs.933eb667.js": {
-    "file": "assets/graphs.933eb667.js",
-    "imports": [
-      "assets/js/pages/main.js",
-      "_echarts.common.b42ab124.js"
-    ]
+  "assets/css/fonts.scss": {
+    "file": "assets/fonts.ffb05726.css",
+    "src": "assets/css/fonts.scss",
+    "isEntry": true
+  },
+  "assets/css/main.scss": {
+    "file": "assets/main.088f55c6.css",
+    "src": "assets/css/main.scss",
+    "isEntry": true
   }
 }

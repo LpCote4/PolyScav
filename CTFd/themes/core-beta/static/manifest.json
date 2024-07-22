@@ -21,7 +21,7 @@
     ]
   },
   "assets/js/settings.js": {
-    "file": "assets/settings.9906c37d.js",
+    "file": "assets/settings.c81b8305.js",
     "src": "assets/js/settings.js",
     "isEntry": true,
     "imports": [
@@ -30,7 +30,7 @@
     ]
   },
   "assets/js/challenges.js": {
-    "file": "assets/challenges.27f7c45b.js",
+    "file": "assets/challenges.7c9d5656.js",
     "src": "assets/js/challenges.js",
     "isEntry": true,
     "imports": [
@@ -39,7 +39,7 @@
     ]
   },
   "assets/js/scoreboard.js": {
-    "file": "assets/scoreboard.e0e8465a.js",
+    "file": "assets/scoreboard.4b4e0177.js",
     "src": "assets/js/scoreboard.js",
     "isEntry": true,
     "imports": [
@@ -69,7 +69,7 @@
     ]
   },
   "assets/js/teams/private.js": {
-    "file": "assets/teams_private.98597d22.js",
+    "file": "assets/teams_private.f8635d35.js",
     "src": "assets/js/teams/private.js",
     "isEntry": true,
     "imports": [
@@ -156,7 +156,7 @@
     "src": "CommentBox.css"
   },
   "assets/scss/main.scss": {
-    "file": "assets/main.c6d93741.css",
+    "file": "assets/main.58f9a202.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
   }

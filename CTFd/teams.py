@@ -207,6 +207,7 @@ def new():
         )
 
     user = get_current_user_attrs()
+    
     if user.team_id:
         errors.append("You are already in a team. You cannot join another.")
 
