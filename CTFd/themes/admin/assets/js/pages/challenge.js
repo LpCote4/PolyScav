@@ -14,55 +14,56 @@ import Requirements from "../components/requirements/Requirements.vue";
 import TopicsList from "../components/topics/TopicsList.vue";
 import TagsList from "../components/tags/TagsList.vue";
 import ChallengeFilesList from "../components/files/ChallengeFilesList.vue";
+import ChallengeThumbsnail from "../components/thumbsnail/ChallengeThumbsnail.vue";
 import HintsList from "../components/hints/HintsList.vue";
 import NextChallenge from "../components/next/NextChallenge.vue";
 
 //To create challenge in one click with one simple interface
-function loadAndhandleChallenge(event) {
-  console.log("hello");
-  event.preventDefault();
-  const params = $("#challenge-create-options-quick").serializeJSON();
-  delete params.challenge_id;
-  delete params.flag_type;
-  params.description = "";
-  if (params.category == "") {
-    params.category = document.getElementById(
-      "categories-selector-input"
-    ).placeholder;
-  }
-  CTFd.fetch("/api/v1/challenges", {
-    method: "POST",
-    credentials: "same-origin",
-    headers: {
-      Accept: "application/json",
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(params),
-  })
-    .then(function (response) {
-      console.log("hello2");
-      return response.json();
-    })
-    .then(function (response) {
-      if (response.success) {
-        setTimeout(function () {
-          window.location = CTFd.config.urlRoot + "/admin/challenges#challenge-create-options-quick";
-        }, 700);
-      } else {
-        let body = "";
-        for (const k in response.errors) {
-          body += response.errors[k].join("\n");
-          body += "\n";
-        }
+// function loadAndhandleChallenge(event) {
+//   console.log("hello");
+//   event.preventDefault();
+//   const params = $("#challenge-create-options-quick").serializeJSON();
+//   delete params.challenge_id;
+//   delete params.flag_type;
+//   params.description = "";
+//   if (params.category == "") {
+//     params.category = document.getElementById(
+//       "categories-selector-input"
+//     ).placeholder;
+//   }
+//   CTFd.fetch("/api/v1/challenges", {
+//     method: "POST",
+//     credentials: "same-origin",
+//     headers: {
+//       Accept: "application/json",
+//       "Content-Type": "application/json",
+//     },
+//     body: JSON.stringify(params),
+//   })
+//     .then(function (response) {
+//       console.log("hello2");
+//       return response.json();
+//     })
+//     .then(function (response) {
+//       if (response.success) {
+//         setTimeout(function () {
+//           window.location = CTFd.config.urlRoot + "/admin/challenges#challenge-create-options-quick";
+//         }, 700);
+//       } else {
+//         let body = "";
+//         for (const k in response.errors) {
+//           body += response.errors[k].join("\n");
+//           body += "\n";
+//         }
 
-        ezAlert({
-          title: "Error",
-          body: body,
-          button: "OK",
-        });
-      }
-    });
-}
+//         ezAlert({
+//           title: "Error",
+//           body: body,
+//           button: "OK",
+//         });
+//       }
+//     });
+// }
 
 function loadChalTemplate(challenge) {
   CTFd._internal.challenge = {};
@@ -361,6 +362,16 @@ $(() => {
     document.querySelector("#comment-box").appendChild(vueContainer);
     new commentBox({
       propsData: { type: "challenge", id: window.CHALLENGE_ID },
+    }).$mount(vueContainer);
+  }
+
+  // Load ChallengeFilesList component
+  if (document.querySelector("#challenge-thumbsnail")) {
+    const challengeThumbsnail = Vue.extend(ChallengeThumbsnail);
+    let vueContainer = document.createElement("div");
+    document.querySelector("#challenge-thumbsnail").appendChild(vueContainer);
+    new challengeThumbsnail({
+      propsData: { challenge_id: window.CHALLENGE_ID, CHALLENGE_THUMBSNAIL: window.CHALLENGE_THUMBSNAIL },
     }).$mount(vueContainer);
   }
 

@@ -790,6 +790,23 @@ class Challenge(Resource):
         return {"success": True}
 
 
+@challenges_namespace.route("/<challenge_id>/thumbsnail")
+class ChallengeThumbsnail(Resource):
+    @admins_only
+    def patch(self, challenge_id):
+        data = request.get_json()
+        challenge = Challenges.query.filter_by(id=challenge_id).first_or_404()
+        
+        thumbsnail_url = data["thumbsnail"]
+        try:
+            challenge.thumbsnail = thumbsnail_url
+            db.session.commit()
+            clear_challenges()
+            return {"success": True, "data": {"thumbsnail": thumbsnail_url}}
+        except:
+            return {"success": False, "message": "No thumbnail file provided"}, 400
+
+
 @challenges_namespace.route("/attempt")
 class ChallengeAttempt(Resource):
     @check_challenge_visibility
