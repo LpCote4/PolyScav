@@ -1,1 +1,0 @@
-import{C as t,m as a}from"./index.5095421b.js";window.CTFd=t;window.Alpine=a;a.data("TeamShowDown",()=>({teams:[],show:!0,async init(){this.teams=await t.pages.scoreboard.getScoreboard(),this.show=!0}}));a.start();

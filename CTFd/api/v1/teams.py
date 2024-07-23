@@ -16,6 +16,7 @@ from CTFd.cache import (
     clear_team_session,
     clear_user_session,
 )
+
 from CTFd.constants import RawEnum
 from CTFd.models import Awards, Submissions, Teams, Unlocks, Users, db, Fails
 from CTFd.schemas.awards import AwardSchema
@@ -29,8 +30,9 @@ from CTFd.utils.decorators.visibility import (
     check_account_visibility,
     check_score_visibility,
 )
+from CTFd.constants.users import UserAttrs
 from CTFd.utils.helpers.models import build_model_filters
-from CTFd.utils.user import get_current_team, get_current_user_type, is_admin, get_current_user
+from CTFd.utils.user import get_current_team, get_current_user_type, is_admin, get_current_user, get_user_attrs
 import json
 teams_namespace = Namespace("teams", description="Endpoint to retrieve Teams")
 
@@ -549,7 +551,9 @@ class TeamMembers(Resource):
         
         data = request.get_json()
         user_id = data["user_id"]
-        if is_admin() or team.captain_id == session["id"] or session["id"] == user_id :
+    
+        if is_admin() or team.captain_id == session["id"] or int(session["id"]) == int(user_id) :
+           
             team = Teams.query.filter_by(id=team_id).first_or_404()
 
             print(user_id)
@@ -575,21 +579,25 @@ class TeamMembers(Resource):
                 view = "admin" if is_admin() else "user"
                 schema = TeamSchema(view=view)
                 response = schema.dump(team)
-                schema2 = UserSchema(view="admin", instance=user, partial=True)
-                response2 = schema2.load({'team_id':None})
-                
-                print("first")
+             
+              
+                user = Users.query.filter_by(id=int(user_id)).first_or_404()
+                user.team_id = None
                 print(user.team_id)
-                user = Users.query.filter_by(id=user_id).first_or_404()
-                print(user.team_id)
+
+                clear_user_session(user_id=session["id"])
+              
                 db.session.commit()
-                db.session.close()
+                
+
                 clear_user_session(user_id=user_id)
                 clear_standings()
                 clear_challenges()
-                user = Users.query.filter_by(id=user_id).first_or_404()
-                print(user.team_id)
-              
+                db.session.close()
+
+                
+                
+               
                 if response.errors:
                     return {"success": False, "errors": response.errors}, 400
 
