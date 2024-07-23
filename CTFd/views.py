@@ -200,7 +200,7 @@ def setup():
             admin = Admins(
                 name=name, email=email, password=password, type="admin", hidden=admin_visible=="false"
             )
-
+            login_user(admin)
             # Create an empty index page
             page = Pages(title=ctf_name, route="index", content="aa", draft=False)
 
