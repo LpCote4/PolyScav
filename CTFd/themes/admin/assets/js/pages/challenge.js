@@ -307,16 +307,18 @@ $(() => {
               }
             });
         };
+        update_challenge();
         // Check if the challenge doesn't have any flags before marking visible
-        if (response.data.length === 0 && params.state === "visible") {
-          ezQuery({
-            title: "Missing Flags",
-            body: "This challenge does not have any flags meaning it may be unsolveable. Are you sure you'd like to update this challenge?",
-            success: update_challenge,
-          });
-        } else {
-          update_challenge();
-        }
+        // alsmose every challenge type do not have flAG ANYMORE SO WE DONT NEED THEM
+        //if (response.data.length === 0 && params.state === "visible") {
+        //  ezQuery({
+        //    title: "Missing Flags",
+        //    body: "This challenge does not have any flags meaning it may be unsolveable. Are you sure you'd like to update this challenge?",
+        //    success: update_challenge,
+        //  });
+        //} else {
+        //  update_challenge();
+        //}
       });
   });
 
@@ -411,7 +413,10 @@ $(() => {
     let vueContainer = document.createElement("div");
     document.querySelector("#challenge-thumbsnail").appendChild(vueContainer);
     new challengeThumbsnail({
-      propsData: { challenge_id: window.CHALLENGE_ID, CHALLENGE_THUMBSNAIL: window.CHALLENGE_THUMBSNAIL },
+      propsData: {
+        challenge_id: window.CHALLENGE_ID,
+        CHALLENGE_THUMBSNAIL: window.CHALLENGE_THUMBSNAIL,
+      },
     }).$mount(vueContainer);
   }
 
