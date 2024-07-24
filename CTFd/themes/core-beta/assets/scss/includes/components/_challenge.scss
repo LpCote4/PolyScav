@@ -14,13 +14,11 @@
 }
 
 .challenge-solved {
-  background-color: #37d63e !important;
   opacity: 0.6;
   border: none;
 }
 
 .challenge-submited {
-  background-color: #788300 !important;
   opacity: 0.6;
   border: none;
 }
@@ -29,6 +27,15 @@
   display: block;
   color: #fff;
   background-color: #f39c12;
+  padding: 0.2em 0.5em;
+  border-radius: 3px;
+  margin-top: 0.5em;
+  text-align: center;
+}
+.solved-tag{
+  display: block;
+  color: #fff;
+  background-color: #37d63e;
   padding: 0.2em 0.5em;
   border-radius: 3px;
   margin-top: 0.5em;

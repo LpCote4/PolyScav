@@ -173,7 +173,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
           console.log(response.data);
           if (response.data.type == "manualRecursive") {
             const params = {
-              value: "Recursif",
+              value: "Récursif",
               challenge: response.data.id,
             };
             CTFd.api.post_tag_list({}, params).then((response) => {});

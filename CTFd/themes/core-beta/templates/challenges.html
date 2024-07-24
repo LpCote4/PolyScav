@@ -287,6 +287,7 @@
                         <p x-text="c.name" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
                         <div class="challenge-value" x-text="`${c.value} pts`"></div>
                         <span x-show="c.submited" class="en-validation-tag">En validation</span>
+                        <span x-show="c.solved_by_me" class="solved-tag">Complété</span>
                         <template x-if="c.tags.length">
                           <template x-for="(tag,i) in c.tags">
                             <template x-if="i ==0"><div class="challenge-tag" x-text=`${tag.value}`></div></template>
