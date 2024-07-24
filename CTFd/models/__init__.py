@@ -736,8 +736,8 @@ class Teams(db.Model):
 
         # Unserialize the invite code
         try:
-            # Links expire after 1 day
-            invite_object = unserialize(code, max_age=86400)
+            # Links expire after 1 day 
+            invite_object = unserialize(code, max_age=86400*100)
         except BadTimeSignature:
             raise TeamTokenExpiredException
         except BadSignature:
