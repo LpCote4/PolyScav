@@ -572,18 +572,18 @@ this.changeLabel = function(event){
   
     totalSize += event.target.files[i].size;
     if (!formats_video.includes(extension.toLowerCase()) && !formats_image.includes(extension.toLowerCase())){
-      alert("We cannot guarantee ." + extension + " will be supported")
+      alert("Nous ne supportons pas l'extension ." + extension)
     }
 
   }
-  if (totalSize > 100000000 && totalSize < 200000000){
-    alert("The files you're trying to upload are bigger than 100MB and will be compressed to reduce their size. This will impact the quality and the upload time!. FolderSize: "+totalSize/1000000 + "MB" );
+  if (totalSize > 100000000 && totalSize < 200000000){ 
+    alert("Les fichiers que vous envoyez sont au dessus de 100MB. Ils seront compressés. [" + totalSize/1000000 + "/100MB]");
   }
   else if (totalSize > 200000000){
-    alert("File can't be bigger than 200MB, even with compression. Please use external tools and share it with a link");
+    alert("Les fichiers envoyés dépassent 200MB. Veuillez utiliser un outil externe et partager un lien. [" + totalSize/1000000 + "/100MB]");
   }
   if (event.target.files.length > 20){
-    alert("We know you have a lot to flex, but you cannot upload more than 20 files at a time.");
+    alert("Vous ne pouvez pas envoyer plus de 20 médias à la fois.");
     output = "";
     event.target.value = '' ;
     document.getElementById("file-input").textContent = output;

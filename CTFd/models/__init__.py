@@ -371,7 +371,7 @@ class Users(db.Model):
     name = db.Column(db.String(128))
     password = db.Column(db.String(128))
     email = db.Column(db.String(128), unique=True)
-    color = db.Column(db.String(6))
+    color = db.Column(db.String(7))
     type = db.Column(db.String(80))
     secret = db.Column(db.String(128))
 
@@ -598,7 +598,7 @@ class Teams(db.Model):
     name = db.Column(db.String(25))
     email = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
-    color = db.Column(db.String(6))
+    color = db.Column(db.String(7))
     secret = db.Column(db.String(128))
 
     members = db.relationship(
