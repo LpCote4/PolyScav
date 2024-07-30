@@ -2,7 +2,7 @@ from flask import Blueprint, abort, redirect, render_template, request, url_for
 
 from CTFd.cache import clear_team_session, clear_user_session
 from CTFd.exceptions import TeamTokenExpiredException, TeamTokenInvalidException
-from CTFd.models import Brackets, TeamFieldEntries, TeamFields, Teams, db
+from CTFd.models import Brackets, TeamFieldEntries, TeamFields, Teams, db, Challenges
 from CTFd.utils import config, get_config, validators
 from CTFd.utils.crypto import verify_password
 from CTFd.utils.decorators import authed_only, ratelimit, registered_only
@@ -352,13 +352,19 @@ def private():
     team = Teams.query.filter_by(id=team_id).first_or_404()
     solves = team.get_solves()
     awards = team.get_awards()
+    fails = team.get_fails()
+    
 
+    team.members.sort(key=get_member_score, reverse=True)
+    potentialScore = {}
+    for  member in team.members:
+        potentialScore[member.id] = get_member_score(member)
     place = team.place
     score = team.get_score(admin=True)
 
     if config.is_scoreboard_frozen():
         infos.append("Scoreboard has been frozen")
-
+    
     return render_template(
         "teams/private.html",
         solves=solves,
@@ -370,8 +376,21 @@ def private():
         score_frozen=config.is_scoreboard_frozen(),
         infos=infos,
         errors=errors,
+        potentialScore = potentialScore,
     )
 
+def get_member_score(member):
+    total_score = 0
+    for solve in member.solves:
+        challenge = Challenges.query.filter_by(id=solve.challenge_id).first_or_404()
+        
+        total_score += int(challenge.value)
+    for fail in member.fails:
+        challenge = Challenges.query.filter_by(id=fail.challenge_id).first_or_404()
+        total_score += int(challenge.value)
+  
+    
+    return total_score
 
 @teams.route("/teams/<int:team_id>")
 @check_account_visibility
@@ -383,10 +402,10 @@ def public(team_id):
     team = Teams.query.filter_by(id=team_id, banned=False, hidden=False).first_or_404()
     solves = team.get_solves()
     awards = team.get_awards()
-
+    
     place = team.place
     score = team.score
-
+    
     if errors:
         return render_template("teams/public.html", team=team, errors=errors)
 

@@ -9,6 +9,7 @@ import { embed } from "../utils/graphs/echarts";
 import $ from "jquery";
 import {ezQuery} from "../compat/ezq";
 import "../compat/format";
+import { computeStyles } from "@popperjs/core";
 
 window.Alpine = Alpine;
 window.CTFd = CTFd;
@@ -27,7 +28,7 @@ Alpine.data("TeamEditModal", () => ({
 
   async updateProfile() {
     let data = serializeJSON(this.$el, this.initial, true);
-
+    
     data.fields = [];
 
     for (const property in data) {
@@ -40,8 +41,9 @@ Alpine.data("TeamEditModal", () => ({
         delete data[property];
       }
     }
-    console.log(data);
+    
     let response = await CTFd.pages.teams.updateTeamSettings(data);
+    
     if (response.success) {
       this.success = true;
       this.error = false;
@@ -193,7 +195,7 @@ Alpine.data("TeamGraphs", () => ({
     this.solveCount = this.solves.meta.count;
     this.failCount = this.fails.meta.count;
     this.awardCount = this.awards.meta.count;
-
+   
     embed(
       this.$refs.scoregraph,
       getUserScoreOption(
@@ -206,8 +208,21 @@ Alpine.data("TeamGraphs", () => ({
   },
 }));
 
-Alpine.start();
 
+Alpine.data("UserScore", () => ({
+  members: [],
+
+ 
+
+  async init() {
+    let responseBrackets = await CTFd.fetch(`/api/v1/teams/${CTFd.team.id}/members`, {
+      method: "GET",
+    });
+    const bodyBrackets = await responseBrackets.json();
+    console.log(bodyBrackets);
+  },
+}));
+Alpine.start();
 
 
 $(".delete-member").click(function (e) {

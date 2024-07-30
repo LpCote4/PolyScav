@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
+  
   <div id="team-edit-modal" class="modal fade">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -201,7 +202,7 @@
   </div>
 
   <div class="jumbotron">
-    <div class="container">
+    <div class="container" x-data="UserScore">
       <h1 id="team-id" team-id="{{ team.id }}">{{ team.name }}</h1>
       {% if team.oauth_id %}
         <a href="https://majorleaguecyber.org/t/{{ team.name }}">
@@ -316,23 +317,33 @@
         <table class="table table-striped">
           <thead>
           <tr>
-            <td><b>{% trans %}User Name{% endtrans %}</b></td>
+            <td style="text-align: center !important;"><b>{% trans %}#{% endtrans %}</b></td>
+            <td style="text-align: start !important;"><b>{% trans %}User Name{% endtrans %}</b></td>
             <td><b>{% trans %}Score{% endtrans %}</b></td>
+            
           </tr>
           </thead>
           <tbody>
 
           {% for member in team.members %}
             <tr>
-              <td>
-                <a href="{{ url_for('users.public', user_id=member.id) }}">
+              <td style="text-align: center !important;">{{loop.index}}</td>
+              <td style="text-align: start !important;">
+                <a style="text-align: start !important; width:100%;" href="{{ url_for('users.public', user_id=member.id) }}">
                   {{ member.name }}
                 </a>
                 {% if team.captain_id == member.id %}
                   <span class="badge bg-primary ms-2">{% trans %}Captain{% endtrans %}</span>
                 {% endif %}
               </td>
-              <td>{{ member.score }}</td>
+             
+              <td class="points" style="flex-direction: row;display: flex;justify-content: center;">
+                <p>{{ member.score }}</p>
+                <p class="potentialscore">&nbsp;(+{{ potentialScore[member.id]-member.score }})</p>
+                
+              </td>
+           
+              
               {% if team.captain_id == user.id %}
                 
                 <td class="text-center">
