@@ -327,7 +327,13 @@
 
           {% for member in team.members %}
             <tr>
-              <td style="text-align: center !important;">{{loop.index}}</td>
+              <td style="text-align: center !important;">
+              {% if loop.index == 1%}
+                <img  class="gold-medal" style="width: 25px;" src="/themes/core/static/img/medal.png" alt="gold medal"/>
+              {% else %}
+                {{loop.index}}
+              {% endif %}
+              </td>
               <td style="text-align: start !important;">
                 <a style="text-align: start !important; width:100%;" href="{{ url_for('users.public', user_id=member.id) }}">
                   {{ member.name }}
@@ -398,7 +404,7 @@
             <thead>
             <tr>
               <td><b>{% trans %}Challenge{% endtrans %}</b></td>
-              <td class="d-none d-md-block d-lg-block"><b>{% trans %}Category{% endtrans %}</b></td>
+              <td class="d-md-block d-lg-block"><b>{% trans %}Category{% endtrans %}</b></td>
               <td><b>{% trans %}Value{% endtrans %}</b></td>
               <td><b>{% trans %}Time{% endtrans %}</b></td>
             </tr>
@@ -412,7 +418,7 @@
                     {{ solve.challenge.name }}
                   </a>
                 </td>
-                <td class="d-none d-md-block d-lg-block">{{ solve.challenge.category }}</td>
+                <td class="d-md-block d-lg-block">{{ solve.challenge.category }}</td>
                 <td>{{ solve.challenge.value }}</td>
                 <td class="solve-time">
                   <span data-time="{{ solve.date | isoformat }}">{{ solve.date }}</span>
@@ -428,7 +434,7 @@
       <div class="clearfix"></div>
 
       <div class="row" x-data="TeamGraphs">
-        <div class="col-md-6 d-none d-md-block d-lg-block py-4">
+        <div class="col-md-6 d-md-block d-lg-block py-4">
           <div class="progress">
             <div 
               class="progress-bar" 
@@ -456,7 +462,7 @@
             <small x-text="`Fails (${getFailPercentage()}%)`"></small>
           </div>
         </div>
-        <div class="col-md-6 d-none d-md-block d-lg-block py-4">
+        <div class="col-md-6 d-md-block d-lg-block py-4">
           <div class="progress">
             <template x-for="category in getCategoryBreakdown()" :key="category.name">
               <div 
@@ -479,7 +485,7 @@
 
         <br class="clearfix">
 
-        <div class="col-md-12 d-none d-md-block d-lg-block">
+        <div class="col-md-12 d-md-block d-lg-block">
           <div id="score-graph" x-ref="scoregraph" class="w-100 d-flex align-items-center">
             <div class="text-center w-100">
               <i class="fas fa-circle-notch fa-spin fa-3x fa-fw spinner"></i>

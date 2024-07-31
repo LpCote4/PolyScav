@@ -195,7 +195,7 @@ Alpine.data("TeamGraphs", () => ({
     this.solveCount = this.solves.meta.count;
     this.failCount = this.fails.meta.count;
     this.awardCount = this.awards.meta.count;
-   
+    console.log()
     embed(
       this.$refs.scoregraph,
       getUserScoreOption(
@@ -211,7 +211,7 @@ Alpine.data("TeamGraphs", () => ({
 
 Alpine.data("UserScore", () => ({
   members: [],
-
+  
  
 
   async init() {
@@ -223,7 +223,6 @@ Alpine.data("UserScore", () => ({
   },
 }));
 Alpine.start();
-
 
 $(".delete-member").click(function (e) {
   e.preventDefault();

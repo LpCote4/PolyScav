@@ -55,7 +55,7 @@
             <td class="points">
               <p  x-text="`${ranking.score}&nbsp`"></p>
               <p class="potentialscore"x-text="`(+${ranking.potential_score})`"></p>
-              <template x-if="index == 0"><img  class="gold-medal" src="https://github.com/malunaridev/Challenges-iCodeThis/blob/master/4-leaderboard/assets/gold-medal.png?raw=true" alt="gold medal"/></template>
+              <template x-if="index == 0"><img  class="gold-medal" src="/themes/core/static/img/medal.png" alt="gold medal"/></template>
               <div class="splash" style="position: absolute;z-index: 10;"><img  value="allo" :onload="`loserSplash(this, ${index})`"  src="/themes/core/static/img/splash1.png"></div>
             </td>
             
