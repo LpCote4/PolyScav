@@ -28,6 +28,8 @@ body {
   
 }
 
+
+
 .inSubmission{
   opacity: 0.7;
 
@@ -132,6 +134,9 @@ body {
   -webkit-box-shadow: 0px 15px 11px -6px #7a7a7d;
   box-shadow: 0px 15px 11px -6px #7a7a7d;
 }
+.showOnMobile{
+  display: none;
+}
 @media only screen and (max-device-width: 767px){
   
   #leaderboard .ribbon::before {
@@ -158,6 +163,9 @@ body {
     position: absolute;
     z-index: -1;
   
+  }
+  .showOnMobile{
+    display: block;
   }
 }
 

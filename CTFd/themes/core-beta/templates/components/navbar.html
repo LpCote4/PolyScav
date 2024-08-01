@@ -14,15 +14,15 @@
       <img class="img-responsive ctf_logo" src="{{ url_for('views.themes', theme='core', path='img/favicon.ico') }}" height="25" alt="{{ Configs.ctf_name }}"> {{ Configs.ctf_name }}
       {% endif %} -->
     </a>
-    <a class="nav-link challenges-link" href="/">
+    <a class="nav-link challenges-link showOnMobile" href="/">
       Classement
     </a>
-    <a class="nav-link challenges-link" href="{{ url_for('challenges.listing') }}">
+    <a class="nav-link challenges-link showOnMobile" href="{{ url_for('challenges.listing') }}">
       {% trans %}Défis{% endtrans %}
     </a>
 
     <button
-        class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#base-navbars"
+        class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#base-navbars"
         aria-controls="base-navbars" aria-expanded="false" aria-label="Toggle navigation"
     >
       <span class="navbar-toggler-icon"></span>
@@ -43,7 +43,7 @@
             Classement
           </a>
         </li>
-        <li class="nav-item">
+         <li class="nav-item">
           <a class="nav-link " href="{{ url_for('challenges.listing') }}">
             {% trans %}Défis{% endtrans %}
           </a>
