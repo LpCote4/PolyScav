@@ -348,12 +348,17 @@ class FilesList(Resource):
                     width))
                     
                     clip_resized = clip_resized.set_fps(fps) 
-                    clip_resized.write_videofile(path.split('.')[0]+".webm", codec="libvpx")
+                    try:
+                        print(path.split('.')[0]+".webm")
+                        clip_resized.write_videofile(path.split('.')[0]+".webm", codec="libvpx", temp_audiofile=path.split('.')[0]+".ogg")
+                    except Exception as e:
+                        current_app.logger.error(f"Error processing video: {e}")
+                        return {"success": False, "errors": str(e)}, 500
                     
                     
                     response.data[i]["type"] = "video/webm"
                     response.data[i]["location"] = response.data[i]["location"].split('.')[0]+".webm"
-                
+                #  clip_resized.write_audiofile(path.split('.')[0]+".ogg", codec="libvpx", temp_audiofile=/tmp/random_name.mp3)
                 elif response.data[i]["type"].find("image") != -1:
                     
                     image = Image.open(path)

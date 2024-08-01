@@ -1,4 +1,5 @@
 Flask==2.0.3
+ffmpeg==1.4
 moviepy==1.0.3
 pyOpenSSL
 Werkzeug==2.0.3
