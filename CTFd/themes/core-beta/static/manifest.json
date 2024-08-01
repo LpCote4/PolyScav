@@ -144,8 +144,8 @@
       "_echarts.54e741c1.js"
     ]
   },
-  "_userscore.180eee80.js": {
-    "file": "assets/userscore.180eee80.js",
+  "_userscore.a1e1165f.js": {
+    "file": "assets/userscore.a1e1165f.js",
     "imports": [
       "assets/js/index.js",
       "_index.9dc8c57c.js"
@@ -159,19 +159,5 @@
     "file": "assets/main.c8fa9aff.css",
     "src": "assets/scss/main.scss",
     "isEntry": true
-  },
-  "_userscore.47459f2a.js": {
-    "file": "assets/userscore.47459f2a.js",
-    "imports": [
-      "assets/js/index.js",
-      "_index.9dc8c57c.js"
-    ]
-  },
-  "_userscore.a1e1165f.js": {
-    "file": "assets/userscore.a1e1165f.js",
-    "imports": [
-      "assets/js/index.js",
-      "_index.9dc8c57c.js"
-    ]
   }
 }

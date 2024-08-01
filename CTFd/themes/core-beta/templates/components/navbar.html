@@ -14,9 +14,11 @@
       <img class="img-responsive ctf_logo" src="{{ url_for('views.themes', theme='core', path='img/favicon.ico') }}" height="25" alt="{{ Configs.ctf_name }}"> {{ Configs.ctf_name }}
       {% endif %} -->
     </a>
-
+    <a class="nav-link challenges-link" href="/">
+      Classement
+    </a>
     <a class="nav-link challenges-link" href="{{ url_for('challenges.listing') }}">
-      {% trans %}Challenges{% endtrans %}
+      {% trans %}Défis{% endtrans %}
     </a>
 
     <button
@@ -34,10 +36,16 @@
               {{ page.title }}
             </a>
           </li>
+          
         {% endfor %}
         <li class="nav-item">
           <a class="nav-link" href="/">
-            Accueil
+            Classement
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{{ url_for('challenges.listing') }}">
+            {% trans %}Défis{% endtrans %}
           </a>
         </li>
         {% if Configs.account_visibility != 'public' %}
@@ -75,7 +83,7 @@
               </a>
             </li>
           {% endif %}
-
+         
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('views.notifications') }}">
               <span data-bs-toggle="tooltip" data-bs-placement="bottom" title="{% trans %}Notifications{% endtrans %}">
