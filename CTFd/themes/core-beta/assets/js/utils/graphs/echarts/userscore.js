@@ -34,11 +34,13 @@ export function getOption(id, name, solves, awards) {
         type: "category",
         boundaryGap: false,
         data: [],
+        axisLabel: "",
       },
     ],
     yAxis: [
       {
         type: "value",
+        axisLabel: "",
       },
     ],
     dataZoom: [

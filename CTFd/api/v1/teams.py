@@ -493,7 +493,7 @@ class TeamPrivateMembers(Resource):
 class TeamMembers(Resource):
     method_decorators = [require_team_mode]
 
-    @admins_only
+    
     def get(self, team_id):
         team = Teams.query.filter_by(id=team_id).first_or_404()
 
