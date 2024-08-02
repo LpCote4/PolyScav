@@ -51,7 +51,7 @@
 					<img id="ctf_banner_preview" class="img-responsive ctf_banner"
 						 src="{{ url_for('views.files', path=ctf_banner) }}"
 						 height="80">
-					<button type="button" id="remove-small-icon" class="btn-sm btn-danger">
+					<button type="button" id="remove-banner" class="btn-sm btn-danger">
 						Remove Icon
 					</button>
 				</div>
@@ -60,6 +60,74 @@
 			<div class="row">
 				<div class="col-md-9">
 					<input class="form-control-file" id="ctf_banner_file" name='file' accept="image/*" type='file' placeholder="CTF Banner">
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<div class="d-inline-block float-right">
+							<button type="submit" class="btn-sm btn-primary float-right">Upload</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<form id="Sponsord1-upload" class="form-upload" method="POST" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="ctf_Sponsord1">
+				Sponsord1
+				<small class="form-text text-muted">
+					Logo to use for Sponsord #1.
+				</small>
+			</label>
+
+			{% if ctf_Sponsord1 %}
+				<div class="d-block py-3">
+					<img id="ctf_logo_preview" class="img-responsive ctf_logo"
+						 src="{{ url_for('views.files', path=ctf_Sponsord1) }}"
+						 height="80">
+					<button type="button" id="remove-Sponsord1" class="btn-sm btn-danger">
+						Remove Sponsord1
+					</button>
+				</div>
+			{% endif %}
+
+			<div class="row">
+				<div class="col-md-9">
+					<input class="form-control-file" id="ctf_logo_file" name='file' type='file' accept="image/*" placeholder="CTF Logo">
+				</div>
+				<div class="col-md-3">
+					<div class="form-group">
+						<div class="d-inline-block float-right">
+							<button type="submit" class="btn-sm btn-primary float-right">Upload</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</form>
+	<form id="Sponsord2-upload" class="form-upload" method="POST" enctype="multipart/form-data">
+		<div class="form-group">
+			<label for="ctf_Sponsord2">
+				Sponsord2
+				<small class="form-text text-muted">
+					Logo to use for Sponsord #2.
+				</small>
+			</label>
+
+			{% if ctf_Sponsord2 %}
+				<div class="d-block py-3">
+					<img id="ctf_logo_preview" class="img-responsive ctf_logo"
+						 src="{{ url_for('views.files', path=ctf_Sponsord2) }}"
+						 height="80">
+					<button type="button" id="remove-Sponsord2" class="btn-sm btn-danger">
+						Remove Sponsord2
+					</button>
+				</div>
+			{% endif %}
+
+			<div class="row">
+				<div class="col-md-9">
+					<input class="form-control-file" id="ctf_logo_file" name='file' type='file' accept="image/*" placeholder="CTF Logo">
 				</div>
 				<div class="col-md-3">
 					<div class="form-group">

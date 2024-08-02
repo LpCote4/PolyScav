@@ -14,14 +14,27 @@ const utils = {
 const files = {
   upload: (formData, extra_data, cb) => {
     const CTFd = window.CTFd;
-    // if (form instanceof jQuery) {
-    //   form = form[0];
-    // }
-    // var formData = new FormData(form);
-    let form = extra_data;
-    formData.append("nonce", CTFd.config.csrfNonce);
-    for (let [key, value] of Object.entries(extra_data)) {
-      formData.append(key, value);
+    try {
+      if (formData instanceof jQuery) {
+        form = form[0];
+      }
+
+      var formData = new FormData(formData);
+
+      formData.append("nonce", CTFd.config.csrfNonce);
+      for (let [key, value] of Object.entries(extra_data)) {
+        formData.append(key, value);
+      }
+    } catch (e) {
+      // if (form instanceof jQuery) {
+      //   form = form[0];
+      // }
+      // var formData = new FormData(form);
+      let form = extra_data;
+      formData.append("nonce", CTFd.config.csrfNonce);
+      for (let [key, value] of Object.entries(extra_data)) {
+        formData.append(key, value);
+      }
     }
 
     var pg = ezq.ezProgressBar({
@@ -49,7 +62,7 @@ const files = {
         return xhr;
       },
       success: function (data) {
-        form.reset();
+        //form.reset();
         pg = ezq.ezProgressBar({
           target: pg,
           width: 100,

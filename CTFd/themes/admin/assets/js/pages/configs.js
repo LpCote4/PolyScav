@@ -134,8 +134,14 @@ function updateConfigs(event) {
   });
 }
 
-function uploadLogo(event) {
-  alert(event.target);
+function uploadSponsord1(event) {
+  uploadSponsord(event, 1);
+}
+function uploadSponsord2(event) {
+  uploadSponsord(event, 2);
+}
+
+function uploadSponsord(event, index) {
   event.preventDefault();
   let form = event.target;
   // console.log(form);
@@ -144,7 +150,7 @@ function uploadLogo(event) {
     const params = {
       value: f.location,
     };
-    CTFd.fetch("/api/v1/configs/ctf_logo", {
+    CTFd.fetch("/api/v1/configs/ctf_Sponsord" + index, {
       method: "PATCH",
       body: JSON.stringify(params),
     })
@@ -189,16 +195,23 @@ function switchUserMode(event) {
   }
 }
 
-function removeLogo() {
+function removeSponsord1() {
+  removeSponsord(1);
+}
+function removeSponsord2() {
+  removeSponsord(2);
+}
+
+function removeSponsord(index) {
   ezQuery({
-    title: "Remove logo",
-    body: "Are you sure you'd like to remove the PolyScav logo?",
+    title: "Remove Sponsord" + index,
+    body: "Are you sure you'd like to remove the PolyScav Sponsord?",
     success: function () {
       const params = {
         value: null,
       };
       CTFd.api
-        .patch_config({ configKey: "ctf_logo" }, params)
+        .patch_config({ configKey: "ctf_Sponsord" + index }, params)
         .then((_response) => {
           window.location.reload();
         });
@@ -524,9 +537,11 @@ $(() => {
   $(".config-section > form:not(.form-upload, .custom-config-form)").submit(
     updateConfigs
   );
-  $("#logo-upload").submit(uploadLogo);
+  $("#Sponsord1-upload").submit(uploadSponsord1);
+  $("#Sponsord2-upload").submit(uploadSponsord2);
   $("#user-mode-form").submit(switchUserMode);
-  $("#remove-logo").click(removeLogo);
+  $("#remove-Sponsord1").click(removeSponsord1);
+  $("#remove-Sponsord2").click(removeSponsord2);
   $("#banner-upload").submit(uploadBanner);
   $("#remove-banner").click(removeBanner);
   $("#ctf-small-icon-upload").submit(smallIconUpload);

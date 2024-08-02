@@ -110,7 +110,7 @@ class FilesList(Resource):
         },
         location="query",
     )
-    @admins_only
+    
     def get(self, query_args):
         q = query_args.pop("q", None)
         field = str(query_args.pop("field", None))
@@ -137,54 +137,9 @@ class FilesList(Resource):
         },
     )
 
-    def create_image_thumbnail(self, file_path):
-        try:
-            image = Image.open(file_path)
-            thumbnail_path = file_path.rsplit('.', 1)[0] + ".thumbnail.png"
-            image.thumbnail((100, 100))
-            image.save(thumbnail_path)
-            return thumbnail_path
-        except Exception as e:
-            current_app.logger.error(f"Error creating image thumbnail: {e}")
-            return None
-
 
     def post(self):
-        print("File treatment")
-        is_challenge_thumbnail = request.args.get('is_challenge_thumbnail', 'false').lower() == 'true'
-        print(request.files)
-        
-
-        # if is_challenge_thumbnail:
-        #     print("Challenge thumbnail")
-        #     if 'file' not in request.files:
-        #         return {"success": False, "errors": "No file part"}, 400
-
-        #     file = request.files['file']
-        #     if file.filename == '':
-        #         return {"success": False, "errors": "No selected file"}, 400
-
-        #     filename = secure_filename(file.filename)
-        #     file_path = os.path.join(current_app.config['UPLOAD_FOLDER'], filename)
-        #     file.save(file_path)
-
-        #     thumbnail_path = self.create_image_thumbnail(file_path)
-        #     # Save file details in the database
-        #     file_data = {
-        #         "location": thumbnail_path,
-        #         "type": file.content_type,
-        #     }
-        #     new_file = Files(**file_data)
-        #     db.session.add(new_file)
-        #     db.session.commit()
-
-        #     schema = FileSchema()
-        #     response = schema.dump(new_file)
-
-        #     if response.errors:
-        #         return {"success": False, "errors": response.errors}, 400
-
-        #     return {"success": True, "data": response.data}
+       
 
         submission_id = -1
         heavyData = False
