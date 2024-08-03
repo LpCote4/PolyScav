@@ -148,6 +148,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const params = $("#challenge-create-options-quick").serializeJSON();
     delete params.challenge_id;
     delete params.flag_type;
+    if (params.type != "flash") {
+      delete params.startTime;
+      delete params.endTime;
+    }
     params.description = "";
     if (params.category == "") {
       params.category = document.getElementById(

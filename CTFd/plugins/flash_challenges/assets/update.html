@@ -1,0 +1,92 @@
+{% extends "admin/challenges/update.html" %}
+{% block time %}
+
+<div class="tab-pane" id="datetime" role="tabpanel">
+    <div class="mb-3">
+        
+        <div class="row">
+            <div class="col-md-4">
+                <label>{% trans %}Date{% endtrans %}</label>
+                <input required class="form-control" id="start-date" type="date" placeholder="yyyy-mm-dd"  onchange="processDateTime('start')" />
+            </div>
+            <div class="col-md-4">
+                <label>{% trans %}Time{% endtrans %}</label>
+                <input required class="form-control" id="start-time" type="time" placeholder="hh:mm" data-preview="#start" onchange="processDateTime('start')"/>
+            </div>
+            <div class="col-md-4">
+                <label>UTC Preview</label>
+
+                <input type="number" class="form-control" name="startTime" id="start-preview" placeholder="0" value="{{ challenge.startTime}}">
+            </div>
+        </div>
+        <small class="form-text text-muted">
+           
+        </small>
+    </div>
+
+    <div class="mb-3">
+   
+        <div class="row">
+            <div class="col-md-4">
+                <label>{% trans %}Date{% endtrans %}</label>
+                <input required class="form-control" id="end-date" type="date" placeholder="yyyy-mm-dd" data-preview="#end" onchange="processDateTime('end')"/>
+            </div>
+            <div class="col-md-4">
+                <label>{% trans %}Time{% endtrans %}</label>
+                <input required class="form-control" id="end-time" type="time" placeholder="hh:mm" data-preview="#end" onchange="processDateTime('end')"/>
+            </div>
+            <div class="col-md-4">
+                <label>UTC Preview</label>
+
+                <input type="number" class="form-control" name="endTime" id="end-preview" placeholder="0" value="{{ challenge.endTime}}" >
+            </div>
+        </div>
+    
+    </div>
+
+</div>
+<script>
+    let processDateTime = function(datetime) {
+        
+     
+      let date_picker = document.querySelector(`#${datetime}-date`);
+      let time_picker = document.querySelector(`#${datetime}-time`);
+      let unix_time = dayjs(
+        `${date_picker.value} ${time_picker.value}`,
+        "YYYY-MM-DD HH:mm",
+      ).unix();
+
+      if (isNaN(unix_time)) {
+        document.querySelector(`#${datetime}-preview`).value = "";
+      } else {
+        document.querySelector(`#${datetime}-preview`).value = unix_time;
+      }
+      console.log("hit");
+    
+  }
+ 
+  const endDate = new Date(document.getElementById("end-preview").value * 1000);
+  const startDate = new Date(document.getElementById("start-preview").value * 1000);
+
+  //faut remodeler le time formater pour avoir YYYY-MM-JJ
+  const timeFormatterYMD = new Intl.DateTimeFormat("en-US");
+  const endDateYMDNotformated = timeFormatterYMD .format(endDate);
+  const endDateYMD = endDateYMDNotformated.split("/")[2]+"-"+(endDateYMDNotformated.split("/")[0].length < 2 ? "0"+endDateYMDNotformated.split("/")[0]: endDateYMDNotformated.split("/")[0])
+  +"-"+(endDateYMDNotformated.split("/")[1].length < 2 ? "0"+endDateYMDNotformated.split("/")[1]: endDateYMDNotformated.split("/")[1]);
+  document.getElementById("end-date").value = endDateYMD ;
+
+  const startDateYMDNotformated = timeFormatterYMD .format(startDate);
+  const startDateYMD = startDateYMDNotformated.split("/")[2]+"-"+(startDateYMDNotformated.split("/")[0].length < 2 ? "0"+startDateYMDNotformated.split("/")[0]: startDateYMDNotformated.split("/")[0])
+  +"-"+(startDateYMDNotformated.split("/")[1].length < 2 ? "0"+startDateYMDNotformated.split("/")[1]: startDateYMDNotformated.split("/")[1]);
+  document.getElementById("start-date").value = startDateYMD ;
+
+  const timeFormatterHS = new Intl.DateTimeFormat(undefined, { timeStyle: 'medium' });
+  console.log(timeFormatterHS.format(endDate))
+  const endDateHS = timeFormatterHS.format(endDate).split(":")[0]+":"+timeFormatterHS.format(endDate).split(":")[1]
+  document.getElementById("end-time").value = endDateHS ;
+
+  const startDateHS  = timeFormatterHS.format(startDate).split(":")[0]+":"+timeFormatterHS.format(startDate).split(":")[1]
+  document.getElementById("start-time").value = startDateHS  ;
+
+</script>
+{% endblock %}

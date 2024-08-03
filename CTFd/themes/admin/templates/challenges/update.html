@@ -1,7 +1,7 @@
 {% block header %}
 {% endblock %}
 
-<form method="POST">
+<form method="POST"  >
 	{% block name %}
 	<div class="form-group">
 		<label>
@@ -82,7 +82,10 @@
 		</select>
 	</div>
 	{% endblock %}
-
+	{% block time %}
+	<input type="hidden" name="type" value="standard">
+	{% endblock %}
+	
 	{% block submit %}
 	<div>
 		<button class="btn btn-success btn-outlined float-right" type="submit">

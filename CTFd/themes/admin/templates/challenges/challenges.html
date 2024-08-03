@@ -162,6 +162,7 @@
 											<option value="manual" selected="">manual</option>
 											<option value="manualRecursive">manualRecursive</option>
 											<option value="standard">standard</option>
+											<option value="flash">flash</option>
 										</select>
 									</td>
 									<td class="text-center" data-editable="visibility">
@@ -178,6 +179,8 @@
 									<!-- <div class="form-group"> -->
 									
 									<!-- </div> -->
+									<input type="number" class="form-control" name="startTime" id="start-preview" hidden >
+									<input type="number" class="form-control" name="endTime" id="end-preview"  hidden>
 								</form>
 								<form id="thumbsnail-upload-form" class="form-upload" method="POST" enctype="multipart/form-data">
 									<td class="editable" data-editable="thumbsnail" style="display: flex; justify-content: center; flex-wrap: wrap; align-items: center;">
@@ -203,6 +206,11 @@
 		<div class="w-100" style="display: flex;justify-content: space-around;"><button class="btn btn-primary float-right create-challenge-submit" id="submit-button" style="margin-top: 5px;align-self: center;">Add challenge</button></div>
 	</div>
 </div>
+<script>
+	let timestamp = Date.now();
+	document.getElementById("start-preview").value = timestamp/1000;
+	document.getElementById("end-preview").value = timestamp/1000;
+</script>
 {% endblock %}
 
 {% block entrypoint %}
