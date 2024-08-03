@@ -290,8 +290,10 @@
                         <p style="left: -45%; top: -4px; position: relative; color: white;" :id="c.id"></p>
                       </div>
                       <div class="challenge-inner my-3">
+                        <p x-text="c.startTime" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
                         <p x-text="c.name" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
                         <div class="challenge-value" x-text="`${c.value} pts`"></div>
+                        
                         <span x-show="c.submited" class="en-validation-tag">En validation</span>
                         <span x-show="c.solved_by_me" class="solved-tag">Complété</span>
                         <template x-if="c.tags.length">

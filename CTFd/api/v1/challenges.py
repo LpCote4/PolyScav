@@ -17,6 +17,7 @@ from CTFd.models import Challenges, Teams
 from CTFd.models import ChallengeTopics as ChallengeTopicsModel
 from CTFd.models import Fails, Flags, Hints, HintUnlocks, Solves, Submissions, Tags, db
 from CTFd.plugins.challenges import CHALLENGE_CLASSES, get_chal_class
+from CTFd.plugins.flash_challenges import FlashChallenge
 from CTFd.schemas.challenges import ChallengeSchema
 from CTFd.schemas.flags import FlagSchema
 from CTFd.schemas.hints import HintSchema
@@ -481,7 +482,7 @@ class ChallengeList(Resource):
                         is_submited = False
 
 
-          
+            
             #check if we have some specified ids to returned
 
             response.append(
@@ -500,8 +501,12 @@ class ChallengeList(Resource):
                     "tags": tag_schema.dump(challenge.tags).data,
                     "template": challenge_type.templates["view"],
                     "script": challenge_type.scripts["view"],
+                   
                 }
             )
+            if challenge_type.name == "flash":
+                response[-1]["startTime"] = FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime
+                response[-1]["endTime"] = FlashChallenge.query.filter_by(id=challenge.id).first_or_404().endTime
             
             
 

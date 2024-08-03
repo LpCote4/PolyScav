@@ -18,43 +18,45 @@ from CTFd.utils.user import get_ip
 from CTFd.plugins.migrations import upgrade
 
 
-class ManualChallenge(Challenges):
-    __mapper_args__ = {"polymorphic_identity": "manual"}
+class FlashChallenge(Challenges):
+    __mapper_args__ = {"polymorphic_identity": "flash"}
     id = db.Column(
         db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE"), primary_key=True
     )
+    startTime = db.Column(db.Integer, default=datetime.datetime.utcnow)
+    endTime = db.Column(db.Integer, default=datetime.datetime.utcnow)
 
     def __init__(self, *args, **kwargs):
-        super(ManualChallenge, self).__init__(**kwargs)
+        super(FlashChallenge, self).__init__(**kwargs)
         
 
 
-class ManualValueChallenge(BaseChallenge):
-    id = "manual"  # Unique identifier used to register challenges
-    name = "manual"  # Name of a challenge type
+class FlashValueChallenge(BaseChallenge):
+    id = "flash"  # Unique identifier used to register challenges
+    name = "flash"  # Name of a challenge type
 
     templates = (
         {  # Handlebars templates used for each aspect of challenge editing & viewing
-            "create": "/plugins/manual_challenges/assets/create.html",
-            "update": "/plugins/manual_challenges/assets/update.html",
-            "view": "/plugins/manual_challenges/assets/view.html",
+            "create": "/plugins/flash_challenges/assets/create.html",
+            "update": "/plugins/flash_challenges/assets/update.html",
+            "view": "/plugins/flash_challenges/assets/view.html",
         }
     )
     scripts = {  # Scripts that are loaded when a template is loaded
-        "create": "/plugins/manual_challenges/assets/create.js",
-        "update": "/plugins/manual_challenges/assets/update.js",
-        "view": "/plugins/manual_challenges/assets/view.js",
+        "create": "/plugins/flash_challenges/assets/create.js",
+        "update": "/plugins/flash_challenges/assets/update.js",
+        "view": "/plugins/flash_challenges/assets/view.js",
     }
     # Route at which files are accessible. This must be registered using register_plugin_assets_directory()
-    route = "/plugins/manual_challenges/assets/"
+    route = "/plugins/flash_challenges/assets/"
     # Blueprint used to access the static_folder directory.
     blueprint = Blueprint(
-        "manual_challenges",
+        "flash_challenges",
         __name__,
         template_folder="templates",
         static_folder="assets",
     )
-    challenge_model = ManualChallenge
+    challenge_model = FlashChallenge
 
     @classmethod
     def read(cls, challenge):
@@ -64,11 +66,13 @@ class ManualValueChallenge(BaseChallenge):
         :param challenge:
         :return: Challenge object, data dictionary to be returned to the user
         """
-        challenge = ManualChallenge.query.filter_by(id=challenge.id).first()
+        challenge = FlashChallenge.query.filter_by(id=challenge.id).first()
         data = {
             "id": challenge.id,
             "name": challenge.name,
             "value": challenge.value,
+            "startTime" : challenge.startTime,
+            "endTime" : challenge.endTime,
             "description": challenge.description,
             "connection_info": challenge.connection_info,
             "next_id": challenge.next_id,
@@ -111,8 +115,8 @@ class ManualValueChallenge(BaseChallenge):
 
 
 def load(app):
-    upgrade(plugin_name="manual_challenges")
-    CHALLENGE_CLASSES["manual"] = ManualValueChallenge
+    upgrade(plugin_name="flash_challenges")
+    CHALLENGE_CLASSES["flash"] = FlashValueChallenge
     register_plugin_assets_directory(
-        app, base_path="/plugins/manual_challenges/assets/"
+        app, base_path="/plugins/flash_challenges/assets/"
     )

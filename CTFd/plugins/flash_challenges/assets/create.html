@@ -1,0 +1,68 @@
+{% extends "admin/challenges/create.html" %}
+{% block type %}
+<input type="hidden" value="flash" name="type" id="chaltype">
+<div class="tab-pane" id="datetime" role="tabpanel">
+    <div class="mb-3">
+        
+        <div class="row">
+            <div class="col-md-4">
+                <label>{% trans %}Date{% endtrans %}</label>
+                <input required class="form-control" id="start-date" type="date" placeholder="yyyy-mm-dd" data-preview="#start" onchange="processDateTime('start')"/>
+            </div>
+            <div class="col-md-4">
+                <label>{% trans %}Time{% endtrans %}</label>
+                <input required class="form-control" id="start-time" type="time" placeholder="hh:mm" data-preview="#start" onchange="processDateTime('start')"/>
+            </div>
+            <div class="col-md-4" hidden>
+                <label>UTC Preview</label>
+
+                <input type="number" class="form-control" name="startTime" id="start-preview" placeholder="0">
+            </div>
+        </div>
+        <small class="form-text text-muted">
+           
+        </small>
+    </div>
+
+    <div class="mb-3">
+   
+        <div class="row">
+            <div class="col-md-4">
+                <label>{% trans %}Date{% endtrans %}</label>
+                <input required class="form-control" id="end-date" type="date" placeholder="yyyy-mm-dd" data-preview="#end" onchange="processDateTime('end')"/>
+            </div>
+            <div class="col-md-4">
+                <label>{% trans %}Time{% endtrans %}</label>
+                <input required class="form-control" id="end-time" type="time" placeholder="hh:mm" data-preview="#end" onchange="processDateTime('end')"/>
+            </div>
+            <div class="col-md-4" hidden>
+                <label>UTC Preview</label>
+
+                <input type="number" class="form-control" name="endTime" id="end-preview" placeholder="0" >
+            </div>
+        </div>
+    
+    </div>
+
+</div>
+<script>
+    let processDateTime = function(datetime) {
+        
+     
+      let date_picker = document.querySelector(`#${datetime}-date`);
+      let time_picker = document.querySelector(`#${datetime}-time`);
+      let unix_time = dayjs(
+        `${date_picker.value} ${time_picker.value}`,
+        "YYYY-MM-DD HH:mm",
+      ).unix();
+
+      if (isNaN(unix_time)) {
+        document.querySelector(`#${datetime}-preview`).value = "";
+      } else {
+        document.querySelector(`#${datetime}-preview`).value = unix_time;
+      }
+      console.log("hit");
+    
+  }
+</script>
+{% endblock %}
