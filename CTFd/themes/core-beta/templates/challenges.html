@@ -208,6 +208,74 @@
     .challenge-no-thumbsnail{
       color: white;
     }
+
+    .flash-content{
+
+    }
+    .flash-effect {
+
+      position: relative;
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+      z-index: 0;
+     
+
+    }
+    .flash-effect {
+
+      position: relative;
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+      z-index: 0;
+
+
+      }
+      .flash-image {
+
+      position: absolute;
+      z-index: 10;
+      top: 0%;
+      left: -0.5%;
+      width: 100%;
+      height: 100%;
+      opacity: 0.2;
+      pointer-events: none
+
+
+      }
+
+    .flash-effect::before,
+    .flash-effect:after {
+      content: '';
+      position: absolute;
+      top: -102%;
+      left: -2%;
+      background: linear-gradient(45deg,yellow,#343a40,#ffff00,#343a40,#ffff00, #343a40);
+      background-size: 400%;
+      width: 104%;
+      height: 104%;
+      z-index: 0;
+      animation: animate 25s linear infinite;
+      opacity: 1;
+      border-radius: 15px;
+    }
+
+
+    @keyframes animate {
+      0% {
+        background-position: 0 0;
+      }
+
+      50% {
+        background-position: 400% 0;
+      }
+
+      100% {
+        background-position: 0 0;
+      }
+    }
   </style>
 
   <div class="container">
@@ -273,9 +341,9 @@
                 <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
                   <div class="challenge-box">
                     <button
-                        :style="c.thumbsnail ? 'background-image: url(' + c.thumbsnail + ');' : 'background-color: rgba(33, 37, 41, 1)'"
-                        class="challenge-button w-100 text-truncate"
-                        :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : ''"
+                        :style="c.thumbsnail ? 'background-image: url(' + c.thumbsnail + ');' : 'background-color: rgba(33, 37, 41, 1); z-index:1'"
+                        class="challenge-button w-100 text-truncate "
+                        :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : 'flash-effect'"
                         :value="c.id" @click="loadChallenge(c.id)"
                         
                     >
@@ -284,7 +352,7 @@
                         <p style="left: -45%; top: -4px; position: relative; color: white;" :id="c.id"></p>
                       </div>
                       <div class="challenge-inner my-3">
-                        <p x-text="c.startTime" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
+                        
                         <p x-text="c.name" :class="c.thumbsnail ? 'challenge-title' : 'challenge-no-thumbsnail'"></p>
                         <div class="challenge-value" x-text="`${c.value} pts`"></div>
                         
@@ -299,6 +367,8 @@
                         </template>
                       </div>
                     </button>
+                    <div :class="c.startTime ? 'flash-effect' : ''"></div>
+                    <img :class="c.startTime ? 'flash-image' : ''"src="/themes/core-beta/static/img/flash.gif">
                   </div>
                 </template>
               </div>
