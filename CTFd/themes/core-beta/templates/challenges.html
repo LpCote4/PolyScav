@@ -21,7 +21,7 @@
       background-color: #3357FF; /* Blue */
     }
     .category-color-1 {
-      background-color: #33FF57; /* Green */
+      background-color: #8CC83C; /* Green */
     }
     .category-color-2 {
       background-color: #FFA500; /* Orange */
@@ -33,7 +33,7 @@
       background-color: rgba(51, 87, 255, 0.5); /* Blue with 50% opacity */
     }
     .category-bg-1 {
-      background-color: rgba(51, 255, 87, 0.5); /* Green with 50% opacity */
+      background-color: rgba(140, 200, 60, 0.5); /* Green with 50% opacity */
     }
     .category-bg-2 {
       background-color: rgba(255, 165, 0, 0.5); /* Orange with 50% opacity */
@@ -76,6 +76,7 @@
       border-radius: 15px;
       overflow: hidden;
     }
+    
     .challenge-title {
       position: absolute;
       top: 0;
@@ -88,11 +89,12 @@
       color: white;
       background-color: rgba(0, 0, 0, 0.7);
       z-index: 1;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       display: block;
+      white-space: normal; /* Allow text to wrap */
+      overflow: visible;   /* Ensure the entire text is shown */
+      word-wrap: break-word; /* Break long words to avoid overflow */
     }
+
     .challenge-value {
       position: absolute;
       bottom: 5px;
@@ -205,8 +207,12 @@
       padding-bottom: 15px;
     }
 
-    .challenge-no-thumbsnail{
+    .challenge-no-thumbsnail {
       color: white;
+      white-space: normal; /* Allow text to wrap */
+      overflow: visible;   /* Ensure the entire text is shown */
+      word-wrap: break-word; /* Break long words to avoid overflow */
+      text-align: center; /* Center-align the text if needed */
     }
 
     .flash-content{
