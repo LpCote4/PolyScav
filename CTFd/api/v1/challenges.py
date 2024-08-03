@@ -56,7 +56,8 @@ from CTFd.utils.user import (
     get_current_user_attrs,
     is_admin,
 )
-
+import datetime
+import time
 def resize_image(image_data, size=(100, 100)):
     # Open the image
     image = Image.open(BytesIO(image_data))
@@ -209,7 +210,7 @@ def outgoingPost(request):
                 )
            
             status, message = chal_class.attempt(challenge, request)
-            
+            print(status)
             if status:  # The challenge plugin says the input is right
                
 
@@ -236,11 +237,25 @@ def outgoingPost(request):
             else:  # The challenge plugin says the input is wrong
              
                 if ctftime() or current_user.is_admin():
-                    submission_id = chal_class.fail(
-                        user=user, team=team, challenge=challenge, request=request
-                    )
-                    clear_standings()
-                    clear_challenges()
+                    if chal_class.name != "flash":
+                        submission_id = chal_class.fail(
+                            user=user, team=team, challenge=challenge, request=request
+                        )
+                        clear_standings()
+                        clear_challenges()
+                    else:
+                        if FlashChallenge.query.filter_by(id=challenge.id).first_or_404().endTime > time.time():
+                            submission_id = chal_class.fail(
+                            user=user, team=team, challenge=challenge, request=request
+                            )
+                            clear_standings()
+                            clear_challenges()
+                        
+                        else:
+                            return {
+                                    "success": False,
+                                    "data": {"status": "incorrect", "message": message, "submission_id":submission_id},
+                                }
               
 
                 log(
@@ -507,6 +522,7 @@ class ChallengeList(Resource):
             if challenge_type.name == "flash":
                 response[-1]["startTime"] = FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime
                 response[-1]["endTime"] = FlashChallenge.query.filter_by(id=challenge.id).first_or_404().endTime
+             
             
             
 

@@ -174,10 +174,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
       })
       .then(function (response) {
         if (response.success) {
-          console.log(response.data);
           if (response.data.type == "manualRecursive") {
             const params = {
               value: "Récursif",
+              challenge: response.data.id,
+            };
+            CTFd.api.post_tag_list({}, params).then((response) => {});
+          }
+          if (response.data.type == "flash") {
+            const params = {
+              value: "Flash",
               challenge: response.data.id,
             };
             CTFd.api.post_tag_list({}, params).then((response) => {});

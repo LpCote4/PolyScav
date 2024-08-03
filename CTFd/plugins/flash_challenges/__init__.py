@@ -1,5 +1,5 @@
 from flask import Blueprint
-import datetime
+import time
 from CTFd.models import (
     ChallengeFiles,
     Challenges,
@@ -23,8 +23,8 @@ class FlashChallenge(Challenges):
     id = db.Column(
         db.Integer, db.ForeignKey("challenges.id", ondelete="CASCADE"), primary_key=True
     )
-    startTime = db.Column(db.Integer, default=datetime.datetime.utcnow)
-    endTime = db.Column(db.Integer, default=datetime.datetime.utcnow)
+    startTime = db.Column(db.Integer, default=time.time())
+    endTime = db.Column(db.Integer, default=time.time())
 
     def __init__(self, *args, **kwargs):
         super(FlashChallenge, self).__init__(**kwargs)
@@ -111,7 +111,41 @@ class FlashValueChallenge(BaseChallenge):
     def solve(cls, user, team, challenge, request):
         super().solve(user, team, challenge, request)
 
+    @classmethod
+    def attempt(cls, challenge, request):
+        """
+        This method is used to check whether a given input is right or wrong. It does not make any changes and should
+        return a boolean for correctness and a string to be shown to the user. It is also in charge of parsing the
+        user's input from the request itself.
+
+        :param challenge: The Challenge object from the database
+        :param request: The request the user submitted
+        :return: (boolean, string)
+        """
+        data = request.get_json() or request.form
+        isJson = False
+        try:
+            submission = data["submission"].strip()
+            isJson = True
+        except (AttributeError):
+            submission = data["submission"]
         
+        flags = Flags.query.filter_by(challenge_id=challenge.id).all()
+        print(FlashChallenge.query.filter_by(id=challenge.id).first().endTime)
+        print(time.time())
+        if FlashChallenge.query.filter_by(id=challenge.id).first().endTime < time.time():
+            print("false")
+            return False, "You cannot submit a challenge outside of its time period."
+        for flag in flags:
+            
+            try:
+                if get_flag_class(flag.type).compare(flag, submission if isJson else  json.dumps(submission, indent = 4)):
+
+                    return True, "Correct"
+            except FlagException as e:
+                return False, str(e)
+        
+        return False, "Incorrect"
 
 
 def load(app):
@@ -120,3 +154,6 @@ def load(app):
     register_plugin_assets_directory(
         app, base_path="/plugins/flash_challenges/assets/"
     )
+
+
+

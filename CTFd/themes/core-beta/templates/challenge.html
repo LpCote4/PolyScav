@@ -20,7 +20,7 @@
           {% endblock %}
             <li class="nav-item">
               <button class="nav-link challenge-solves" data-bs-target="#comment" @click="showComments()" style="padding-left:8px !important;padding-right:8px !important;">
-                Commentaire
+                Discussion D'équipe
               </button>
             </li>
         </ul>
@@ -43,7 +43,11 @@
               <div class="challenge-tags text-center pt-2 pb-3">
                 {% block tags %}
                   {% for tag in tags %}
+                    {% if tag != 'Flash' %}
                     <span class="challenge-tag badge bg-info">{{ tag }}</span>
+                    {% else %}
+                    <span class="challenge-tag badge bg-info time" id="{{ challenge.endTime }}">{{ challenge.endTime }}</span>
+                    {% endif %}
                   {% endfor %}
                 {% endblock %}
               </div>

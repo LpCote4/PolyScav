@@ -74,7 +74,12 @@
       background-size: cover;
       background-position: center;
       border-radius: 15px;
+      top: 0;
       overflow: hidden;
+    }
+
+    .disabled {
+      opacity: 0.5;
     }
     
     .challenge-title {
@@ -82,7 +87,7 @@
       top: 0;
       left: 0;
       right: 0;
-      padding: 5px;
+      
       font-size: 14px;
       font-weight: bold;
       text-align: center;
@@ -223,7 +228,7 @@
       position: relative;
       width: 100%;
       height: 100%;
-      opacity: 1;
+    
       z-index: 0;
      
 
@@ -233,8 +238,8 @@
       position: relative;
       width: 100%;
       height: 100%;
-      opacity: 1;
-      z-index: 0;
+
+      z-index: -10;
 
 
       }
@@ -242,11 +247,11 @@
 
       position: absolute;
       z-index: 10;
-      top: 0%;
+      top: 1vw;
       left: -0.5%;
       width: 100%;
       height: 100%;
-      opacity: 0.2;
+      opacity: 0.3;
       pointer-events: none
 
 
@@ -256,12 +261,12 @@
     .flash-effect:after {
       content: '';
       position: absolute;
-      top: -102%;
+      top: -104%;
       left: -2%;
       background: linear-gradient(45deg,yellow,#343a40,#ffff00,#343a40,#ffff00, #343a40);
       background-size: 400%;
-      width: 104%;
-      height: 104%;
+      width: 105%;
+      height: 105%;
       z-index: 0;
       animation: animate 25s linear infinite;
       opacity: 1;
@@ -345,11 +350,11 @@
               </div>
               <div class="challenge-div">
                 <template x-for="(c, idx) in getChallenges(category)" :key="c.id">
-                  <div class="challenge-box">
+                  <div class="challenge-box" style="z-index: 12;">
                     <button
-                        :style="c.thumbsnail ? 'background-image: url(' + c.thumbsnail + ');' : 'background-color: rgba(33, 37, 41, 1); z-index:1'"
-                        class="challenge-button w-100 text-truncate "
-                        :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : 'flash-effect'"
+                        :style="c.thumbsnail ? 'background-image: url(' + c.thumbsnail + ');' : 'background-color: rgba(33, 37, 41, 1); z-index:10;'"
+                        class="challenge-button text-truncate "
+                        :class="c.solved_by_me ? 'challenge-solved' : c.submited ? 'challenge-submited' : ''"
                         :value="c.id" @click="loadChallenge(c.id)"
                         
                     >
@@ -364,12 +369,13 @@
                         
                         <span x-show="c.submited" class="en-validation-tag">En validation</span>
                         <span x-show="c.solved_by_me" class="solved-tag">Complété</span>
+                        
                         <template x-if="c.tags.length">
                           <template x-for="(tag,i) in c.tags">
-                            <template x-if="i ==0"><div class="challenge-tag" x-text=`${tag.value}`></div></template>
-                            
+                            <template x-if="i==0">
+                              <div class="challenge-tag" :class="tag.value=='Flash' ? 'time' : ''" x-text=`${tag.value}` :id="c.endTime"></div>
+                            </template>
                           </template>
-                          
                         </template>
                       </div>
                     </button>

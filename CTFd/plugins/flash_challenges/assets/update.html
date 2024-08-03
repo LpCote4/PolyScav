@@ -54,12 +54,13 @@
       let unix_time = dayjs(
         `${date_picker.value} ${time_picker.value}`,
         "YYYY-MM-DD HH:mm",
-      ).unix();
+      ).unix() | 0;
 
       if (isNaN(unix_time)) {
         document.querySelector(`#${datetime}-preview`).value = "";
       } else {
         document.querySelector(`#${datetime}-preview`).value = unix_time;
+        
       }
       console.log("hit");
     

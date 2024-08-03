@@ -208,8 +208,9 @@
 </div>
 <script>
 	let timestamp = Date.now();
-	document.getElementById("start-preview").value = timestamp/1000;
-	document.getElementById("end-preview").value = timestamp/1000;
+
+	document.getElementById("start-preview").value = (timestamp/1000) | 0;
+	document.getElementById("end-preview").value = (timestamp/1000) | 0;
 </script>
 {% endblock %}
 

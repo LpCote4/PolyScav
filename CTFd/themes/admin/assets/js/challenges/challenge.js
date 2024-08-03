@@ -93,6 +93,7 @@ $(() => {
       CTFd.config.urlRoot + "/api/v1/challenges/" + window.CHALLENGE_ID,
       function (response) {
         const challenge_data = response.data;
+
         challenge_data["solves"] = null;
 
         $.getScript(

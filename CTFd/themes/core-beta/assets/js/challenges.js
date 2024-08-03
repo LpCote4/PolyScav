@@ -515,7 +515,46 @@ Alpine.data("ChallengeBoard", () => ({
 }));
 
 Alpine.start();
+(() => {
+  var now = Date.now();
 
+  var f = (element, seconds) => {
+    if (seconds <= 0) {
+      element.innerHTML = "&nbsp;";
+   
+      element.parentElement.parentElement.disabled = true;
+      element.parentElement.parentElement.className += " disabled"
+      element.className = element.className.split(" time")[0]
+      element.parentElement.parentElement.parentElement.getElementsByClassName("flash-effect")[0].className = "";
+      element.parentElement.parentElement.parentElement.getElementsByClassName("flash-image")[0].src = "/themes/core-beta/static/img/flashStable.png";
+    
+      return;
+    }
+    var days = (seconds / 86400) | 0;
+    var hours = ((seconds % 86400) / 3600) | 0;
+    var minutes = ((seconds % 3600) / 60) | 0;
+    var seconds = (seconds % 60) | 0;
+
+    element.textContent = days + ":" + hours + ":" + minutes + ":" + seconds;
+
+    
+  };
+
+  setInterval(() => {
+  
+    var elapsed = (Date.now() / 1000) | 0;
+    var elements = document.getElementsByClassName("time");
+   
+    for (var i = 0; i < elements.length; i++) {
+      var element = elements[i];
+      var seconds = element.id - elapsed;
+  
+      f(element, seconds);
+
+    }
+
+  }, 1000);
+})();
 this.hit = function(){
   let fileInput = document.getElementById("file-input");
   let textInput = document.getElementById("text-input");
@@ -590,3 +629,5 @@ this.changeLabel = function(event){
   }
   document.getElementById("file-input").textContent = output;
 }
+
+
