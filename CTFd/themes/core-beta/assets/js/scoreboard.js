@@ -172,7 +172,7 @@ Alpine.data("LogImage", () => ({
     if (window.allSubmited.length > window.maxCount){
       
       let obj = document.getElementById(this.id);
-      if (this.type == "manual" || this.type == "manualRecursive"){
+      if (this.type == "manual" || this.type == "manualRecursive"|| this.type == "flash"){
         obj.className += "inSubmission";
       }
       if (!notAMedia){
