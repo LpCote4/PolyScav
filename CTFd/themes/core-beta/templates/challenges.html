@@ -2,17 +2,38 @@
 
 {% block content %}
   <div class="jumbotron" style="margin-bottom: 0.5rem !important;">
-    <div class="container">
-      <h1>
+    <div class="container" style="display: flex; justify-content: space-around;flex-direction: row;align-items: center;">
+      {% if Configs.ctf_sponsord1 %}
+      <img
+            class="img-responsive ctf_logo"
+            src="{{ url_for('views.files', path=Configs.ctf_sponsord1) }}"
+            alt="{{ Configs.ctf_name }}"
+            style="height: 15vw;width: 15vw;"
+        >
+        {% else %}
+        <div style="height: 15vw;width: 15vw;display: block;"></div>
+        {% endif %}
+      <div><h1>
         {% trans %}Challenges{% endtrans %}
       </h1>
-      <div>
+      
+      <div class="container">
         <progress id="scoreProgressBar" value="0" max="100" style="background: green;"></progress>
         <p id="scoreProgressText">0 / 0</p>
       </div>
       <h3 id="scoreProgressTitle">
         0 points
-      </h3>
+      </h3></div>
+      {% if Configs.ctf_sponsord2 %}
+      <img
+            class="img-responsive ctf_logo"
+            src="{{ url_for('views.files', path=Configs.ctf_sponsord2) }}"
+            alt="{{ Configs.ctf_name }}"
+            style="height: 15vw;width: 15vw;"
+        >
+        {% else %}
+        <div style="height: 15vw;width: 15vw;display: block;"></div>
+        {% endif %}
     </div>
   </div>
 

@@ -39,6 +39,7 @@ class SetupForm(BaseForm):
             "Controls whether users join together in teams to play (Team Mode) or play as themselves (User Mode)"
         ),
     )
+    
 
     name = StringField(
         _l("Admin Username"),
@@ -77,6 +78,18 @@ class SetupForm(BaseForm):
             "favicon used in user's browsers. Only PNGs accepted. Must be 32x32px. Optional."
         ),
     )
+    ctf_sponsord1 = FileField(
+        _l("Sponsord1 Icon"),
+        description=_l(
+            "favicon used in user's browsers. Only PNGs accepted. Must be 100x100px. Optional."
+        ),
+    )
+    ctf_sponsord2 = FileField(
+        _l("Sponsord2 Icon"),
+        description=_l(
+            "favicon used in user's browsers. Only PNGs accepted. Must be 100x100px. Optional."
+        ),
+    )
     ctf_theme = SelectField(
         _l("Theme"),
         description=_l("PolyScav Theme to use. Can be changed later."),
@@ -100,6 +113,12 @@ class SetupForm(BaseForm):
     team_size = IntegerField(
         widget=NumberInput(min=0),
         description="Amount of users per team (Teams mode only) Optional.",
+    )
+    team_creation = SelectField(
+        _l("team creation"),
+        description="Control whether users can create their own teams (Teams mode only)",
+        choices=[("true", "Enabled"), ("false", "Disabled")],
+        default="true",
     )
     challenge_visibility = SelectField(
         "Challenge Visibility",

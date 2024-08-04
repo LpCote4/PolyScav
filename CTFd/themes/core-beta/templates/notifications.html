@@ -2,10 +2,30 @@
 
 {% block content %}
 	<div class="jumbotron">
-		<div class="container">
+		<div class="container" style="display: flex; justify-content: space-around;flex-direction: row;align-items: center;">
+			{% if Configs.ctf_sponsord1 %}
+      <img
+            class="img-responsive ctf_logo"
+            src="{{ url_for('views.files', path=Configs.ctf_sponsord1) }}"
+            alt="{{ Configs.ctf_name }}"
+            style="height: 15vw;width: 15vw;"
+        >
+        {% else %}
+        <div style="height: 15vw;width: 15vw;display: block;"></div>
+        {% endif %}
 			<h1>
 				{% trans %}Notifications{% endtrans %}
 			</h1>
+			{% if Configs.ctf_sponsord2 %}
+      <img
+            class="img-responsive ctf_logo"
+            src="{{ url_for('views.files', path=Configs.ctf_sponsord2) }}"
+            alt="{{ Configs.ctf_name }}"
+            style="height: 15vw;width: 15vw;"
+        >
+        {% else %}
+        <div style="height: 15vw;width: 15vw;display: block;"></div>
+        {% endif %}
 		</div>
 	</div>
 	<div class="container">
@@ -16,7 +36,9 @@
 		{% endif %}
 		{% for notification in notifications %}
 		<div class="card bg-body-tertiary mb-4">
+			<p>aaa</p>
 			<div class="card-body">
+				
 				<h3 class="card-title">{{ notification.title }}</h3>
 				<blockquote class="blockquote mb-0">
 					<p>{{ notification.html }}</p>

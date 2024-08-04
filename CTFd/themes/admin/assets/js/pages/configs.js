@@ -150,7 +150,7 @@ function uploadSponsord(event, index) {
     const params = {
       value: f.location,
     };
-    CTFd.fetch("/api/v1/configs/ctf_Sponsord" + index, {
+    CTFd.fetch("/api/v1/configs/ctf_sponsord" + index, {
       method: "PATCH",
       body: JSON.stringify(params),
     })
@@ -211,7 +211,7 @@ function removeSponsord(index) {
         value: null,
       };
       CTFd.api
-        .patch_config({ configKey: "ctf_Sponsord" + index }, params)
+        .patch_config({ configKey: "ctf_sponsord" + index }, params)
         .then((_response) => {
           window.location.reload();
         });

@@ -6,10 +6,10 @@
     <img class="mx-auto d-block" style="width: auto;padding-bottom: 25px;max-height: 20vw;" src="{{ url_for('views.files', path=Configs.ctf_banner) }}" />
     {% endif %}
     <div class="container" style="display: flex; justify-content: space-around;flex-direction: row;align-items: center;">
-      {% if Configs.ctf_Sponsord1 %}
+      {% if Configs.ctf_sponsord1 %}
       <img
             class="img-responsive ctf_logo"
-            src="{{ url_for('views.files', path=Configs.ctf_Sponsord1) }}"
+            src="{{ url_for('views.files', path=Configs.ctf_sponsord1) }}"
             alt="{{ Configs.ctf_name }}"
             style="height: 15vw;width: 15vw;"
         >
@@ -40,10 +40,10 @@
         </li>
       </ul>
       </div>
-      {% if Configs.ctf_Sponsord2 %}
+      {% if Configs.ctf_sponsord2 %}
       <img
             class="img-responsive ctf_logo"
-            src="{{ url_for('views.files', path=Configs.ctf_Sponsord2) }}"
+            src="{{ url_for('views.files', path=Configs.ctf_sponsord2) }}"
             alt="{{ Configs.ctf_name }}"
             style="height: 15vw;width: 15vw;"
         >

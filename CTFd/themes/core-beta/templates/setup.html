@@ -186,6 +186,14 @@
 							</small>
 						</div>
 
+						<div class="mb-3">
+							<b>{{ form.team_creation.label }}</b>
+							{{ form.team_creation(class="form-control custom-select") }}
+							<small class="form-text text-muted">
+								{{ form.team_creation.description }}
+							</small>
+						</div>
+
 						<div class="text-right float-end">
 							<button type="button" class="btn btn-primary btn-outlined tab-next" data-href="#administration" @click="switchTab">
 								{% trans %}Next{% endtrans %}
@@ -264,6 +272,26 @@
 								</small>
 							</div>
 						</div>
+						<div class="mb-3">
+							<b>{{ form.ctf_sponsord1.label }}</b>
+							<div class="row">
+								{{ form.ctf_sponsord1(class="form-control-file", accept=".png", **{'@change': 'validateFileSize($event, 512000)'}) }}
+								<small class="form-text text-muted">
+									{{ form.ctf_sponsord1.description }}
+								</small>
+							</div>
+						</div>
+						<div class="mb-3">
+							<b>{{ form.ctf_sponsord2.label }}</b>
+							<div class="row">
+								{{ form.ctf_sponsord2(class="form-control-file", accept=".png", **{'@change': 'validateFileSize($event, 512000)'}) }}
+								<small class="form-text text-muted">
+									{{ form.ctf_sponsord2.description }}
+								</small>
+							</div>
+						</div>
+						
+						
 						<div class="mb-3">
 							<b>{{ form.theme_color.label }}</b>
 							<div class="row">

@@ -111,6 +111,7 @@ def setup():
             )
             verify_emails = request.form.get("verify_emails")
             team_size = request.form.get("team_size")
+            team_creation = request.form.get("team_creation")
             admin_visible = request.form.get("admin_visible")
 
             # Style
@@ -128,6 +129,16 @@ def setup():
             if ctf_banner:
                 f = upload_file(file=ctf_banner)
                 set_config("ctf_banner", f.location)
+
+            ctf_sponsord1 = request.files.get("ctf_sponsord1")
+            if ctf_sponsord1:
+                f = upload_file(file=ctf_sponsord1)
+                set_config("ctf_sponsord1", f.location)
+            
+            ctf_sponsord2 = request.files.get("ctf_sponsord2")
+            if ctf_sponsord2:
+                f = upload_file(file=ctf_sponsord2)
+                set_config("ctf_sponsord2", f.location)
 
             theme = request.form.get("ctf_theme", DEFAULT_THEME)
             set_config("ctf_theme", theme)
@@ -238,7 +249,8 @@ def setup():
 
             # Team Size
             set_config("team_size", team_size)
-
+            set_config("team_creation", team_creation)
+            
             set_config("mail_server", None)
             set_config("mail_port", None)
             set_config("mail_tls", None)
