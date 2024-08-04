@@ -280,17 +280,9 @@ def setup():
             set_config("password_reset_subject", DEFAULT_PASSWORD_RESET_SUBJECT)
             set_config("password_reset_body", DEFAULT_PASSWORD_RESET_BODY)
 
-            set_config(
-                "password_change_alert_subject",
-                "Password Change Confirmation for {ctf_name}",
-            )
-            set_config(
-                "password_change_alert_body",
-                (
-                    "Your password for {ctf_name} has been changed.\n\n"
-                    "If you didn't request a password change you can reset your password here: {url}"
-                ),
-            )
+            set_config("password_change_alert_subject", DEFAULT_PASSWORD_CHANGE_ALERT_SUBJECT)
+            
+            set_config("password_change_alert_body", DEFAULT_PASSWORD_CHANGE_ALERT_BODY)
 
             set_config("setup", True)
 

@@ -80,6 +80,3 @@ node_modules/
 
 # Flask Profiler files
 flask_profiler.sql
-
-# Config
-CTFd/config.ini

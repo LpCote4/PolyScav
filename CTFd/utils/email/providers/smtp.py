@@ -10,6 +10,7 @@ from CTFd.utils.email.providers import EmailProvider
 class SMTPEmailProvider(EmailProvider):
     @staticmethod
     def sendmail(addr, text, subject):
+        print("Sending email")
         ctf_name = get_config("ctf_name")
         mailfrom_addr = get_config("mailfrom_addr") or get_app_config("MAILFROM_ADDR")
         mailfrom_addr = formataddr((ctf_name, mailfrom_addr))
@@ -34,7 +35,6 @@ class SMTPEmailProvider(EmailProvider):
             data["SSL"] = SSL
         if auth:
             data["auth"] = auth
-
         try:
             smtp = get_smtp(**data)
 

@@ -80,11 +80,11 @@ def confirm(data=None):
             email.verify_email_address(user.email)
             log(
                 "registrations",
-                format="[{date}] {ip} - {name} initiated a confirmation email resend",
+                format="[{date}] {ip} - {name} validated an email confirmation",
                 name=user.name,
             )
             return render_template(
-                "confirm.html", infos=[f"Confirmation email sent to {user.email}!"]
+                "confirm.html", infos=[f"Courriel de confirmation envoyé à {user.email}!"]
             )
         elif request.method == "GET":
             # User has been directed to the confirm page
@@ -100,7 +100,7 @@ def reset_password(data=None):
             "reset_password.html",
             errors=[
                 markup(
-                    "This CTF is not configured to send email.<br> Please contact an organizer to have your password reset."
+                    "Ce serveur PolyScav n'est pas encore configuré pour envoyer des courriels.<br> Veuillez contacter un organisateur pour réinitialiser votre mot de passe."
                 )
             ],
         )
@@ -126,14 +126,14 @@ def reset_password(data=None):
                 return render_template(
                     "reset_password.html",
                     infos=[
-                        "Your account was registered via an authentication provider and does not have an associated password. Please login via your authentication provider."
+                        "Votre compte a été enregistré via un fournisseur d'authentification et n'a pas de mot de passe associé. Veuillez vous connecter via votre fournisseur d'authentification."
                     ],
                 )
 
             pass_short = len(password) == 0
             if pass_short:
                 return render_template(
-                    "reset_password.html", errors=["Please pick a longer password"]
+                    "reset_password.html", errors=["Veuillez prendre un mot de passe plus long."]
                 )
 
             user.password = password
@@ -158,7 +158,7 @@ def reset_password(data=None):
             return render_template(
                 "reset_password.html",
                 infos=[
-                    "If that account exists you will receive an email, please check your inbox"
+                    "Si ce compte existe, vous recevrez un e-mail, veuillez vérifier votre boîte de réception"
                 ],
             )
 
@@ -166,7 +166,7 @@ def reset_password(data=None):
             return render_template(
                 "reset_password.html",
                 infos=[
-                    "The email address associated with this account was registered via an authentication provider and does not have an associated password. Please login via your authentication provider."
+                    "L'adresse e-mail associée à ce compte a été enregistrée via un fournisseur d'authentification et n'a pas de mot de passe associé. Veuillez vous connecter via votre fournisseur d'authentification."
                 ],
             )
 
@@ -175,7 +175,7 @@ def reset_password(data=None):
         return render_template(
             "reset_password.html",
             infos=[
-                "If that account exists you will receive an email, please check your inbox"
+                "Si ce compte existe, vous recevrez un e-mail, veuillez vérifier votre boîte de réception"
             ],
         )
     return render_template("reset_password.html")

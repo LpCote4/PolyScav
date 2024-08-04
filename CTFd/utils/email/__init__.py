@@ -9,45 +9,45 @@ from CTFd.utils.security.signing import serialize
 
 PROVIDERS = {"smtp": SMTPEmailProvider, "mailgun": MailgunEmailProvider}
 
-DEFAULT_VERIFICATION_EMAIL_SUBJECT = "Confirm your account for {ctf_name}"
+DEFAULT_VERIFICATION_EMAIL_SUBJECT = "Confirmez votre compte pour {ctf_name}"
 DEFAULT_VERIFICATION_EMAIL_BODY = (
-    "Welcome to {ctf_name}!\n\n"
-    "Click the following link to confirm and activate your account:\n"
+    "Bienvenue à {ctf_name}!\n\n"
+    "Clique sur le lien suivant pour confirmer ton compte:\n"
     "{url}"
     "\n\n"
-    "If the link is not clickable, try copying and pasting it into your browser."
+    "Si le lien n'est pas cliquable, essayez de le copier et de le coller dans votre navigateur."
 )
-DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_SUBJECT = "Successfully registered for {ctf_name}"
+DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_SUBJECT = "Inscrit avec succès pour {ctf_name}"
 DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_BODY = (
-    "You've successfully registered for {ctf_name}!"
+    "Vous vous êtes inscrit avec succès pour {ctf_name}!"
 )
-DEFAULT_USER_CREATION_EMAIL_SUBJECT = "Message from {ctf_name}"
+DEFAULT_USER_CREATION_EMAIL_SUBJECT = "Message de {ctf_name}"
 DEFAULT_USER_CREATION_EMAIL_BODY = (
-    "A new account has been created for you for {ctf_name} at {url}. \n\n"
-    "Username: {name}\n"
-    "Password: {password}"
+    "Un nouveau compte a été créé pour vous pour {ctf_name} à {url}. \n\n"
+    "Nom d'utilisateur: {name}\n"
+    "Mot de passe: {password}"
 )
-DEFAULT_PASSWORD_RESET_SUBJECT = "Password Reset Request from {ctf_name}"
+DEFAULT_PASSWORD_RESET_SUBJECT = "Demande de réinitialisation de mot de passe de {ctf_name}"
 DEFAULT_PASSWORD_RESET_BODY = (
-    "Did you initiate a password reset on {ctf_name}? "
-    "If you didn't initiate this request you can ignore this email. \n\n"
-    "Click the following link to reset your password:\n{url}\n\n"
-    "If the link is not clickable, try copying and pasting it into your browser."
+    "Avez-vous fait une demande de réinitialisation du mot de passe sur {ctf_name}? "
+    "Si vous n'avez pas fait cette demande, vous pouvez ignorer ce courriel. \n\n"
+    "Cliquez sur le lien suivant pour réinitialiser votre mot de passe:\n{url}\n\n"
+    "Si le lien n'est pas cliquable, essayez de le copier et de le coller dans votre navigateur."
 )
 DEFAULT_PASSWORD_CHANGE_ALERT_SUBJECT = "Password Change Confirmation for {ctf_name}"
 DEFAULT_PASSWORD_CHANGE_ALERT_BODY = (
-    "Your password for {ctf_name} has been changed.\n\n"
-    "If you didn't request a password change you can reset your password here:\n{url}\n\n"
-    "If the link is not clickable, try copying and pasting it into your browser."
+    "Votre mot de passe pour {ctf_name} a été modifié.\n\n"
+    "Si vous n'avez pas fait de demande de changement de mot de passe, vous pouvez le modifier ici:\n{url}\n\n"
+    "Si le lien n'est pas cliquable, essayez de le copier et de le coller dans votre navigateur."
 )
 
 
-def sendmail(addr, text, subject="Message from {ctf_name}"):
+def sendmail(addr, text, subject="Message de {ctf_name}"):
     subject = safe_format(subject, ctf_name=get_config("ctf_name"))
     provider = get_mail_provider()
     EmailProvider = PROVIDERS.get(provider)
     if EmailProvider is None:
-        return False, "No mail settings configured"
+        return False, "Aucun paramètre mail configuré"
     return EmailProvider.sendmail(addr, text, subject)
 
 

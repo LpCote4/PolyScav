@@ -59,6 +59,7 @@ from CTFd.utils.exports import export_ctf as export_ctf_util
 from CTFd.utils.security.auth import logout_user
 from CTFd.utils.uploads import delete_file, rmdir
 from CTFd.utils.user import is_admin
+from CTFd.utils.email import DEFAULT_VERIFICATION_EMAIL_SUBJECT, DEFAULT_VERIFICATION_EMAIL_BODY, DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_SUBJECT, DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_BODY, DEFAULT_USER_CREATION_EMAIL_SUBJECT, DEFAULT_USER_CREATION_EMAIL_BODY, DEFAULT_PASSWORD_RESET_SUBJECT, DEFAULT_PASSWORD_RESET_BODY, DEFAULT_PASSWORD_CHANGE_ALERT_SUBJECT, DEFAULT_PASSWORD_CHANGE_ALERT_BODY
 
 
 @admin.route("/admin", methods=["GET"])
@@ -67,6 +68,25 @@ def view():
         return redirect(url_for("admin.statistics"))
     return redirect(url_for("auth.login"))
 
+@admin.route('/admin/reset_email_messages', methods=['POST'])
+@admins_only
+def reset_email_messages():
+    if request.method == 'POST':
+        # Reset email messages to default values
+        set_config('verification_email_subject', DEFAULT_VERIFICATION_EMAIL_SUBJECT)
+        set_config('verification_email_body', DEFAULT_VERIFICATION_EMAIL_BODY)
+        set_config('successful_registration_email_subject', DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_SUBJECT)
+        set_config('successful_registration_email_body', DEFAULT_SUCCESSFUL_REGISTRATION_EMAIL_BODY)
+        set_config('user_creation_email_subject', DEFAULT_USER_CREATION_EMAIL_SUBJECT)
+        set_config('user_creation_email_body', DEFAULT_USER_CREATION_EMAIL_BODY)
+        set_config('password_reset_subject', DEFAULT_PASSWORD_RESET_SUBJECT)
+        set_config('password_reset_body', DEFAULT_PASSWORD_RESET_BODY)
+        set_config('password_change_alert_subject', DEFAULT_PASSWORD_CHANGE_ALERT_SUBJECT)
+        set_config('password_change_alert_body', DEFAULT_PASSWORD_CHANGE_ALERT_BODY)
+
+        return jsonify(success=True)
+
+    return jsonify(success=False), 400
 
 @admin.route("/admin/plugins/<plugin>", methods=["GET", "POST"])
 @admins_only
