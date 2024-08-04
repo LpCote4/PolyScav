@@ -148,11 +148,31 @@
 									<td class="editable" data-editable="name">
 										<input class="form-text-input" name="name" required></input>
 									</td>
-									<td class="editable text-center" data-editable="category">
+									<td class="d-block editable text-center" data-checkbox>
 										<select class="form-control custom-select" id="categories-selector" name="category">
 											<!-- Existing categories will be dynamically added here by JavaScript -->
 										</select>
-										<input type="text" class="form-control mt-2" id="categories-selector-input" placeholder="Type new category"></input>
+										<input type="text" class="form-control mt-2" id="categories-selector-input" placeholder="Type new category" hidden></input>
+										<div class="mb-3" id="time-selector-input" hidden>
+   
+											<div class="collumn">
+												<label>Temps de Fin</label>
+												<div class="">
+												
+													<input required class="form-control" id="end-date" type="date" placeholder="yyyy-mm-dd" onchange="processDateTime('end')"/>
+												</div>
+												<div class="">
+												
+													<input required class="form-control" id="end-time" type="time" placeholder="hh:mm"  onchange="processDateTime('end')"/>
+												</div>
+												<div class="">
+													
+									
+													<input type="number" class="form-control" name="endTime" id="end-preview" placeholder="0" value="" hidden>
+												</div>
+											</div>
+										
+										</div>
 									</td>
 									<td class="editable text-center" data-editable="value">
 										<input class="form-text-input" name="value" required></input>
@@ -164,6 +184,7 @@
 											<option value="standard">standard</option>
 											<option value="flash">flash</option>
 										</select>
+										
 									</td>
 									<td class="text-center" data-editable="visibility">
 										<select class="form-control custom-select" name="state">
@@ -180,7 +201,7 @@
 									
 									<!-- </div> -->
 									<input type="number" class="form-control" name="startTime" id="start-preview" hidden >
-									<input type="number" class="form-control" name="endTime" id="end-preview"  hidden>
+								
 								</form>
 								<form id="thumbsnail-upload-form" class="form-upload" method="POST" enctype="multipart/form-data">
 									<td class="editable" data-editable="thumbsnail" style="display: flex; justify-content: center; flex-wrap: wrap; align-items: center;">
@@ -211,6 +232,25 @@
 
 	document.getElementById("start-preview").value = (timestamp/1000) | 0;
 	document.getElementById("end-preview").value = (timestamp/1000) | 0;
+	let processDateTime = function(datetime) {
+        
+     
+		let date_picker = document.querySelector(`#${datetime}-date`);
+		let time_picker = document.querySelector(`#${datetime}-time`);
+		let unix_time = dayjs(
+		  `${date_picker.value} ${time_picker.value}`,
+		  "YYYY-MM-DD HH:mm",
+		).unix() | 0;
+  
+		if (isNaN(unix_time)) {
+		  document.querySelector(`#${datetime}-preview`).value = "";
+		} else {
+		  document.querySelector(`#${datetime}-preview`).value = unix_time;
+		  
+		}
+		console.log("hit");
+	  
+	}
 </script>
 {% endblock %}
 

@@ -7,6 +7,7 @@ import CTFd from "../compat/CTFd";
 import nunjucks from "nunjucks";
 
 function renderSubmissionResponse(response, cb) {
+  print("h");
   const result = response.data;
 
   const result_message = $("#result-message");
@@ -88,6 +89,7 @@ function renderSubmissionResponse(response, cb) {
 
 $(() => {
   $(".preview-challenge").click(function (_event) {
+    print("h");
     window.challenge = new Object();
     $.get(
       CTFd.config.urlRoot + "/api/v1/challenges/" + window.CHALLENGE_ID,
@@ -178,6 +180,7 @@ $(() => {
   });
 
   $("#challenge-update-container > form").submit(function (event) {
+    print("h");
     event.preventDefault();
     const params = $(event.target).serializeJSON(true);
 

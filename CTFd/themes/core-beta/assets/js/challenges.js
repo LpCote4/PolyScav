@@ -516,6 +516,7 @@ Alpine.data("ChallengeBoard", () => ({
 
 Alpine.start();
 (() => {
+  
   var now = Date.now();
 
   var f = (element, seconds) => {
@@ -548,6 +549,7 @@ Alpine.start();
     for (var i = 0; i < elements.length; i++) {
       var element = elements[i];
       var seconds = element.id - elapsed;
+  
   
       f(element, seconds);
 

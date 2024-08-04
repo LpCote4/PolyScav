@@ -152,6 +152,7 @@ function loadChalTemplate(challenge) {
 }
 
 function handleChallengeOptions(event) {
+  print("hit");
   event.preventDefault();
   var params = $(event.target).serializeJSON(true);
 

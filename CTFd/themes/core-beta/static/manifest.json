@@ -30,7 +30,7 @@
     ]
   },
   "assets/js/challenges.js": {
-    "file": "assets/challenges.52d0f1c9.js",
+    "file": "assets/challenges.a34b40d3.js",
     "src": "assets/js/challenges.js",
     "isEntry": true,
     "imports": [
@@ -137,29 +137,6 @@
       "assets/CommentBox.10bc69fd.css"
     ]
   },
-  "_index.9dc8c57c.js": {
-    "file": "assets/index.9dc8c57c.js",
-    "imports": [
-      "assets/js/index.js",
-      "_echarts.54e741c1.js"
-    ]
-  },
-  "_userscore.a1e1165f.js": {
-    "file": "assets/userscore.a1e1165f.js",
-    "imports": [
-      "assets/js/index.js",
-      "_index.9dc8c57c.js"
-    ]
-  },
-  "CommentBox.css": {
-    "file": "assets/CommentBox.10bc69fd.css",
-    "src": "CommentBox.css"
-  },
-  "assets/scss/main.scss": {
-    "file": "assets/main.8b353ad1.css",
-    "src": "assets/scss/main.scss",
-    "isEntry": true
-  },
   "_index.abc18a45.js": {
     "file": "assets/index.abc18a45.js",
     "imports": [
@@ -173,5 +150,14 @@
       "assets/js/index.js",
       "_index.abc18a45.js"
     ]
+  },
+  "CommentBox.css": {
+    "file": "assets/CommentBox.10bc69fd.css",
+    "src": "CommentBox.css"
+  },
+  "assets/scss/main.scss": {
+    "file": "assets/main.8b353ad1.css",
+    "src": "assets/scss/main.scss",
+    "isEntry": true
   }
 }

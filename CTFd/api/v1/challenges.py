@@ -15,7 +15,7 @@ from CTFd.constants import RawEnum
 from CTFd.models import ChallengeFiles as ChallengeFilesModel
 from CTFd.models import Challenges, Teams
 from CTFd.models import ChallengeTopics as ChallengeTopicsModel
-from CTFd.models import Fails, Flags, Hints, HintUnlocks, Solves, Submissions, Tags, db
+from CTFd.models import Fails, Flags, Hints, HintUnlocks, Solves, Submissions, Tags, db, Users
 from CTFd.plugins.challenges import CHALLENGE_CLASSES, get_chal_class
 from CTFd.plugins.flash_challenges import FlashChallenge
 from CTFd.schemas.challenges import ChallengeSchema
@@ -210,7 +210,7 @@ def outgoingPost(request):
                 )
            
             status, message = chal_class.attempt(challenge, request)
-            print(status)
+   
             if status:  # The challenge plugin says the input is right
                
 
@@ -244,7 +244,7 @@ def outgoingPost(request):
                         clear_standings()
                         clear_challenges()
                     else:
-                        if FlashChallenge.query.filter_by(id=challenge.id).first_or_404().endTime > time.time():
+                        if FlashChallenge.query.filter_by(id=challenge.id).first_or_404().endTime > time.time() and FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime < time.time():
                             submission_id = chal_class.fail(
                             user=user, team=team, challenge=challenge, request=request
                             )
@@ -489,17 +489,17 @@ class ChallengeList(Resource):
             if team != None:
                 team_id = team.id
                 for fail in team.fails:
-                    if (challenge_type.name == "manual" or challenge_type.name == "manualRecursive") and fail.challenge_id == challenge.id:
+                    if (challenge_type.name == "manual" or challenge_type.name == "manualRecursive"or challenge_type.name == "flash") and fail.challenge_id == challenge.id:
                     
                         is_submited = True
                         break
                     else:
                         is_submited = False
 
-
             
+                            
             #check if we have some specified ids to returned
-
+        
             response.append(
                 {
                     "id": challenge.id,
@@ -522,9 +522,25 @@ class ChallengeList(Resource):
             if challenge_type.name == "flash":
                 response[-1]["startTime"] = FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime
                 response[-1]["endTime"] = FlashChallenge.query.filter_by(id=challenge.id).first_or_404().endTime
+
+                if FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime > time.time():
+                    response.pop()
              
             
             
+        for i in range(len(response)):
+            if response[i]["type"]== "flash":
+                
+                for e in range(len(response)):
+                    if response[e]["type"]== "flash":
+                        if response[e]["endTime"] > response[i]["endTime"] or response[e]["endTime"] < time.time():
+                            response.insert(e,response[i])
+                            response.pop(i+1)
+                            break
+                    else:
+                        response.insert(e,response[i])
+                        response.pop(i+1)
+                        break
 
         db.session.close()
         return {"success": True, "data": response}

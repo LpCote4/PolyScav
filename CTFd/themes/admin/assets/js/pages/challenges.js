@@ -102,7 +102,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     const option = document.createElement("option");
     option.value = category;
     option.textContent = category;
-    categoriesSelector.appendChild(option);
+    if (option.textContent != "Défi Flash") {
+      categoriesSelector.appendChild(option);
+    }
   });
   const option = document.createElement("option");
   option.value = "other";
@@ -144,20 +146,35 @@ document.addEventListener("DOMContentLoaded", function (event) {
   document.getElementById("challenge_id_texte").textContent = newId;
   document.getElementById("challenge_id").value = newId;
 
+  function swapCategoryWithEndTimeInput() {
+    const params = $("#challenge-create-options-quick").serializeJSON();
+    let category = document.getElementById("categories-selector");
+    let categoryType = document.getElementById("categories-selector-input");
+    let time = document.getElementById("time-selector-input");
+
+    if (category.hidden && params.type != "flash") {
+      time.hidden = true;
+      categoryType.hidden = false;
+      category.hidden = false;
+    } else if (!category.hidden && params.type == "flash") {
+      time.hidden = false;
+      categoryType.hidden = true;
+      category.hidden = true;
+    }
+  }
+
   function loadAndhandleChallenge(event) {
     const params = $("#challenge-create-options-quick").serializeJSON();
     delete params.challenge_id;
     delete params.flag_type;
+
     if (params.type != "flash") {
       delete params.startTime;
       delete params.endTime;
+    } else {
+      params.category = "Défi Flash";
     }
     params.description = "";
-    if (params.category == "") {
-      params.category = document.getElementById(
-        "categories-selector-input"
-      ).placeholder;
-    }
 
     CTFd.fetch("/api/v1/challenges", {
       method: "POST",
@@ -223,6 +240,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
       }
     });
 
+  document
+    .getElementById("challenge-type")
+    .addEventListener("change", function (event) {
+      swapCategoryWithEndTimeInput();
+    });
   // Handle form submission
   // document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
   //   console.log("New challenge form!")
