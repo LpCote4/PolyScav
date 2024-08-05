@@ -52,6 +52,8 @@ from CTFd.utils.email import (
     DEFAULT_USER_CREATION_EMAIL_SUBJECT,
     DEFAULT_VERIFICATION_EMAIL_BODY,
     DEFAULT_VERIFICATION_EMAIL_SUBJECT,
+    DEFAULT_PASSWORD_CHANGE_ALERT_SUBJECT,
+    DEFAULT_PASSWORD_CHANGE_ALERT_BODY,
 )
 from CTFd.utils.health import check_config, check_database
 from CTFd.utils.helpers import get_errors, get_infos, markup
