@@ -35,7 +35,7 @@ notifications_namespace.schema_model(
 notifications_namespace.schema_model(
     "NotificationListSuccessResponse", NotificationListSuccessResponse.apidoc()
 )
-@admins_only
+
 def outgoingNotificationPost(req):
     schema = NotificationSchema()
     result = schema.load(req)
@@ -56,6 +56,7 @@ def outgoingNotificationPost(req):
 
     current_app.events_manager.publish(data=response.data, type="notification")
     return True, response
+
 
 
 @notifications_namespace.route("")

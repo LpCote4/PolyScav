@@ -1,6 +1,6 @@
 from typing import List  # noqa: I001
 import logging
-from flask import abort, render_template, request, url_for
+from flask import abort, render_template, request, url_for, current_app as app
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
 import json
@@ -59,6 +59,51 @@ from CTFd.utils.user import (
 )
 import datetime
 import time
+from threading import Timer
+from datetime import datetime, timedelta
+
+
+
+def flashTimerFonction(challenge_id, time, app_):
+        print(challenge_id)
+        print(app_)
+        with app_:
+            
+            challenge = FlashChallenge.query.filter_by(id=challenge_id).first_or_404()
+            #checker si le defi a deja ete shout
+            # le cas ou le timer aurais ete reduit et que on a une autre instance qui roulait quand meme
+
+            #checker si le challenge existe encore
+
+            #checker si le temps est toujours le bon
+
+            #checker si le defi est encore visible
+            
+            req = {'title': 'Nouveau défi Flash disponible !', 'content': challenge.name + " : " + str(challenge.value) +" points", 'type': 'toast', 'sound': True}
+            outgoingNotificationPost(req)
+    
+
+
+def announceFlashChallenge(challenge, time=-1):
+        
+    
+    challengeFlash = FlashChallenge.query.filter_by(id=challenge.id).first_or_404()
+    x= datetime.fromtimestamp(time if not time == -1 else challengeFlash.startTime)
+    y = datetime.now()
+    delta_t=x-y
+    print(delta_t)
+    secs=delta_t.total_seconds()
+   
+    with app.app_context() as w:
+        with w:
+            t = Timer(secs, (lambda : flashTimerFonction(challenge.id, time, w)))
+            t.start()
+
+    return True
+
+
+
+
 def resize_image(image_data, size=(100, 100)):
     # Open the image
     image = Image.open(BytesIO(image_data))
@@ -560,10 +605,10 @@ class ChallengeList(Resource):
     def post(self):
         data = request.form or request.get_json()
         # logging.info(f"Received form data: {data}")
-        print(data)
+       
 
         thumbsnail_file = request.files.get('thumbsnail')
-        print(f"Thumbsnail file: {thumbsnail_file}")  # Debugging
+      
     
         if thumbsnail_file:
             thumbsnail_data = thumbsnail_file.read()
@@ -583,13 +628,8 @@ class ChallengeList(Resource):
         challenge_class = get_chal_class(challenge_type)
         challenge = challenge_class.create(request)
         
-        if challenge.type == flash:
-            challengeFlash = FlashChallenge.query.filter_by(id=challenge.id).first_or_404()
-            if not challengeFlash.shout and challengeFlash.startTime <= time.time():
-                notifications.NotificantionList.post
-                req = {'title': 'Nouveau défi Flash disponible !', 'content': challenge.name + " : " + challenge.value +" points", 'type': 'toast', 'sound': True}
-                outgoingNotificationPost(req)
-                challengeFlash.shout = True
+        if challenge.type == "flash":
+            announceFlashChallenge(challenge)
 
         response = challenge_class.read(challenge)
 
@@ -813,11 +853,32 @@ class Challenge(Resource):
 
         challenge = Challenges.query.filter_by(id=challenge_id).first_or_404()
         challenge_class = get_chal_class(challenge.type)
+        startTime = 0
+        if challenge.type == "flash":
+            challengeFlash = FlashChallenge.query.filter_by(id=challenge_id).first_or_404()
+            startTime = challengeFlash.startTime
+            if int(data["startTime"]) > startTime:
+                    challengeFlash.shout = False
+
         challenge = challenge_class.update(challenge, request)
         response = challenge_class.read(challenge)
-
         clear_standings()
         clear_challenges()
+
+        if challenge.type == "flash":
+            challengeFlash = FlashChallenge.query.filter_by(id=challenge_id).first_or_404()
+            if int(data["startTime"]) != startTime:
+                
+                    
+                announceFlashChallenge(challenge, int(data["startTime"]))
+                
+       
+        
+        
+
+        
+
+        
 
         return {"success": True, "data": response}
 

@@ -77,3 +77,4 @@ CTFd_API_v1.add_namespace(tokens_namespace, "/tokens")
 CTFd_API_v1.add_namespace(comments_namespace, "/comments")
 CTFd_API_v1.add_namespace(shares_namespace, "/shares")
 CTFd_API_v1.add_namespace(brackets_namespace, "/brackets")
+

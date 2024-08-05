@@ -18,7 +18,12 @@
 			Category<br>
 			<small class="form-text text-muted">Challenge Category</small>
 		</label>
-		<input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}">
+		{% if challenge.category == 'Défi Flash'%}
+		<input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}" disabled>
+		<input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}" hidden>
+		{% else %}
+		<input type="text" class="form-control chal-category" name="category" value="{{ challenge.category }}" >
+		{% endif %}
 	</div>
 	{% endblock %}
 
