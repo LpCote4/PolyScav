@@ -25,6 +25,7 @@ class FlashChallenge(Challenges):
     )
     startTime = db.Column(db.Integer, default=time.time())
     endTime = db.Column(db.Integer, default=time.time())
+    shout = db.Column(db.Boolean, default=False)
 
     def __init__(self, *args, **kwargs):
         super(FlashChallenge, self).__init__(**kwargs)

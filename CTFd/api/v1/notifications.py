@@ -35,6 +35,27 @@ notifications_namespace.schema_model(
 notifications_namespace.schema_model(
     "NotificationListSuccessResponse", NotificationListSuccessResponse.apidoc()
 )
+@admins_only
+def outgoingNotificationPost(req):
+    schema = NotificationSchema()
+    result = schema.load(req)
+
+    if result.errors:
+        return {"success": False, "errors": result.errors}, 400
+
+    db.session.add(result.data)
+    db.session.commit()
+
+    response = schema.dump(result.data)
+
+    # Grab additional settings
+    notif_type = req.get("type", "alert")
+    notif_sound = req.get("sound", True)
+    response.data["type"] = notif_type
+    response.data["sound"] = notif_sound
+
+    current_app.events_manager.publish(data=response.data, type="notification")
+    return True, response
 
 
 @notifications_namespace.route("")
@@ -131,24 +152,7 @@ class NotificantionList(Resource):
     def post(self):
         req = request.get_json()
 
-        schema = NotificationSchema()
-        result = schema.load(req)
-
-        if result.errors:
-            return {"success": False, "errors": result.errors}, 400
-
-        db.session.add(result.data)
-        db.session.commit()
-
-        response = schema.dump(result.data)
-
-        # Grab additional settings
-        notif_type = req.get("type", "alert")
-        notif_sound = req.get("sound", True)
-        response.data["type"] = notif_type
-        response.data["sound"] = notif_sound
-
-        current_app.events_manager.publish(data=response.data, type="notification")
+        success, response = outgoingNotificationPost(req)
 
         return {"success": True, "data": response.data}
 

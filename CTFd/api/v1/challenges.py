@@ -8,6 +8,7 @@ from PIL import Image
 from io import BytesIO
 import base64
 from CTFd.api.v1.helpers.request import validate_args
+from CTFd.api.v1.notifications import outgoingNotificationPost
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
 from CTFd.api.v1.schemas import APIDetailedSuccessResponse, APIListSuccessResponse
 from CTFd.cache import clear_challenges, clear_standings
@@ -581,7 +582,15 @@ class ChallengeList(Resource):
         challenge_type = data["type"]
         challenge_class = get_chal_class(challenge_type)
         challenge = challenge_class.create(request)
-       
+        
+        if challenge.type == flash:
+            challengeFlash = FlashChallenge.query.filter_by(id=challenge.id).first_or_404()
+            if not challengeFlash.shout and challengeFlash.startTime <= time.time():
+                notifications.NotificantionList.post
+                req = {'title': 'Nouveau défi Flash disponible !', 'content': challenge.name + " : " + challenge.value +" points", 'type': 'toast', 'sound': True}
+                outgoingNotificationPost(req)
+                challengeFlash.shout = True
+
         response = challenge_class.read(challenge)
 
         clear_challenges()
