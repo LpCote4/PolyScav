@@ -193,12 +193,6 @@ def init_events(app):
     app.events_manager.listen()
 
 
-    with app.app_context():
-
-        for challenge in FlashChallenge.query.filter_by(shout=False).all():
-            announceFlashChallenge(challenge)
-
-
 def init_request_processors(app):
     @app.url_defaults
     def inject_theme(endpoint, values):

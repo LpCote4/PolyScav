@@ -7,6 +7,7 @@ import json
 from PIL import Image
 from io import BytesIO
 import base64
+from CTFd.utils.events import EventManager
 from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.notifications import outgoingNotificationPost
 from CTFd.api.v1.helpers.schemas import sqlalchemy_to_pydantic
@@ -80,6 +81,7 @@ def flashTimerFonction(challenge_id, time, app_):
             #checker si le defi est encore visible
             
             req = {'title': 'Nouveau défi Flash disponible !', 'content': challenge.name + " : " + str(challenge.value) +" points", 'type': 'toast', 'sound': True}
+            challenge.shout = True
             outgoingNotificationPost(req)
     
 
@@ -91,7 +93,7 @@ def announceFlashChallenge(challenge, time=-1):
     x= datetime.fromtimestamp(time if not time == -1 else challengeFlash.startTime)
     y = datetime.now()
     delta_t=x-y
-    print(delta_t)
+    
     secs=delta_t.total_seconds()
    
     with app.app_context() as w:
@@ -101,8 +103,11 @@ def announceFlashChallenge(challenge, time=-1):
 
     return True
 
-
-
+app.events_manager = EventManager()
+with app.app_context():
+    
+    for challenge in FlashChallenge.query.filter_by(shout=False).all():
+        announceFlashChallenge(challenge)
 
 def resize_image(image_data, size=(100, 100)):
     # Open the image
