@@ -192,7 +192,7 @@ def new():
     infos = get_infos()
     errors = get_errors()
 
-    if bool(get_config("team_creation", default=True)) is False:
+    if bool(get_config("team_creation", default=False)) is False:
         abort(
             403,
             description="Team creation is currently disabled. Please join an existing team.",

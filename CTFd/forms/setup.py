@@ -118,7 +118,7 @@ class SetupForm(BaseForm):
         _l("team creation"),
         description="Control whether users can create their own teams (Teams mode only)",
         choices=[("true", "Enabled"), ("false", "Disabled")],
-        default="true",
+        default="false",
     )
     challenge_visibility = SelectField(
         "Challenge Visibility",

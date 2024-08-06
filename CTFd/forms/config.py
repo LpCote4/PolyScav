@@ -43,7 +43,7 @@ class AccountSettingsForm(BaseForm):
         "Team Creation",
         description="Control whether users can create their own teams (Teams mode only)",
         choices=[("true", "Enabled"), ("false", "Disabled")],
-        default="true",
+        default="false",
     )
     team_size = IntegerField(
         widget=NumberInput(min=0),
