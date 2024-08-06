@@ -34,10 +34,10 @@
       var element = elements[i];
       var seconds = document.getElementsByName("start_in")[0].content - elapsed;
       if (seconds > 0) {
-        f(element, seconds, "Event starts in ");
+        f(element, seconds, "L'évènement débute dans ");
       } else {
         seconds = document.getElementsByName("ends_in")[0].content - elapsed;
-        f(element, seconds, "Event ends in ");
+        f(element, seconds, "L'évènement se termine dans ");
       }
     }
   }, 1000);
