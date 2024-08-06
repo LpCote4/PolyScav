@@ -72,17 +72,21 @@ def flashTimerFonction(challenge_id, time, app_):
             
             challenge = FlashChallenge.query.filter_by(id=challenge_id).first_or_404()
             #checker si le defi a deja ete shout
-            # le cas ou le timer aurais ete reduit et que on a une autre instance qui roulait quand meme
+            if not challenge.shout:
 
-            #checker si le challenge existe encore
+                # le cas ou le timer aurais ete reduit et que on a une autre instance qui roulait quand meme
 
-            #checker si le temps est toujours le bon
+                #checker si le challenge existe encore
 
-            #checker si le defi est encore visible
-            
-            req = {'title': 'Nouveau défi Flash disponible !', 'content': challenge.name + " : " + str(challenge.value) +" points", 'type': 'toast', 'sound': True}
-            challenge.shout = True
-            outgoingNotificationPost(req)
+                #checker si le temps est toujours le bon
+
+                if time - 3 < challenge.startTime and  time + 3 > challenge.startTime and challenge.state ==  "visible":
+
+                    #checker si le defi est encore visible
+                   
+                    req = {'title': 'Nouveau défi Flash disponible !', 'content': challenge.name + " : " + str(challenge.value) +" points", 'type': 'toast', 'sound': True}
+                    challenge.shout = True
+                    outgoingNotificationPost(req)
     
 
 
@@ -849,7 +853,8 @@ class Challenge(Resource):
     )
     def patch(self, challenge_id):
         data = request.get_json()
-
+        
+        print(data)
         # Load data through schema for validation but not for insertion
         schema = ChallengeSchema()
         response = schema.load(data)
