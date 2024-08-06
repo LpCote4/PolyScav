@@ -14,6 +14,7 @@ def subscribe():
     @stream_with_context
     def gen():
         for event in current_app.events_manager.subscribe():
+            
             yield str(event)
 
     enabled = get_app_config("SERVER_SENT_EVENTS")

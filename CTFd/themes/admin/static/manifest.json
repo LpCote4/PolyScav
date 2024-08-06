@@ -18,7 +18,7 @@
     ]
   },
   "assets/js/pages/challenges.js": {
-    "file": "assets/pages/challenges.5fa871b6.js",
+    "file": "assets/pages/challenges.fb84bca9.js",
     "src": "assets/js/pages/challenges.js",
     "isEntry": true,
     "imports": [
@@ -182,9 +182,13 @@
     "file": "assets/challenge.6aa9b454.css",
     "src": "assets/js/pages/challenge.css"
   },
-  "assets/css/challenge-board.scss": {
-    "file": "assets/challenge-board.44e07e05.css",
-    "src": "assets/css/challenge-board.scss",
+  "CommentBox.css": {
+    "file": "assets/CommentBox.9f8f1323.css",
+    "src": "CommentBox.css"
+  },
+  "assets/css/codemirror.scss": {
+    "file": "assets/codemirror.d74a88bc.css",
+    "src": "assets/css/codemirror.scss",
     "isEntry": true
   },
   "assets/css/admin.scss": {
@@ -192,23 +196,19 @@
     "src": "assets/css/admin.scss",
     "isEntry": true
   },
-  "assets/css/codemirror.scss": {
-    "file": "assets/codemirror.d74a88bc.css",
-    "src": "assets/css/codemirror.scss",
+  "assets/css/challenge-board.scss": {
+    "file": "assets/challenge-board.44e07e05.css",
+    "src": "assets/css/challenge-board.scss",
+    "isEntry": true
+  },
+  "assets/css/main.scss": {
+    "file": "assets/main.088f55c6.css",
+    "src": "assets/css/main.scss",
     "isEntry": true
   },
   "assets/css/fonts.scss": {
     "file": "assets/fonts.ffb05726.css",
     "src": "assets/css/fonts.scss",
-    "isEntry": true
-  },
-  "CommentBox.css": {
-    "file": "assets/CommentBox.9f8f1323.css",
-    "src": "CommentBox.css"
-  },
-  "assets/css/main.scss": {
-    "file": "assets/main.088f55c6.css",
-    "src": "assets/css/main.scss",
     "isEntry": true
   }
 }

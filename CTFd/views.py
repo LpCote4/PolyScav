@@ -282,9 +282,16 @@ def setup():
             set_config("password_reset_subject", DEFAULT_PASSWORD_RESET_SUBJECT)
             set_config("password_reset_body", DEFAULT_PASSWORD_RESET_BODY)
 
-            set_config("password_change_alert_subject", DEFAULT_PASSWORD_CHANGE_ALERT_SUBJECT)
-            
-            set_config("password_change_alert_body", DEFAULT_PASSWORD_CHANGE_ALERT_BODY)
+            try:
+                set_config("password_change_alert_subject", DEFAULT_PASSWORD_CHANGE_ALERT_SUBJECT)
+            except NameError:
+                pass
+
+            try:
+                 set_config("password_change_alert_body", DEFAULT_PASSWORD_CHANGE_ALERT_BODY)
+            except NameError:
+                pass
+           
 
             set_config("setup", True)
 
