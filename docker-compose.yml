@@ -32,8 +32,10 @@ services:
     restart: always
     volumes:
       - ./conf/nginx/http.conf:/etc/nginx/nginx.conf
+      - ./certbot/conf:/etc/letsencrypt
     ports:
       - 80:80
+      - 443:443
     depends_on:
       - ctfd
 
@@ -57,9 +59,15 @@ services:
     image: redis:4
     restart: always
     volumes:
-    - .data/redis:/data
+      - .data/redis:/data
     networks:
         internal:
+
+  certbot:
+    image: certbot/certbot
+    volumes:
+       - ./certbot/www:/var/www/certbot
+       - ./certbot/conf:/etc/letsencrypt
 
 networks:
     default:
