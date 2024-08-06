@@ -153,26 +153,7 @@
 											<!-- Existing categories will be dynamically added here by JavaScript -->
 										</select>
 										<input type="text" class="form-control mt-2" id="categories-selector-input" placeholder="Type new category" ></input>
-										<div class="mb-3" id="time-selector-input" hidden>
-   
-											<div class="collumn">
-												<label>Temps de Fin</label>
-												<div class="">
-												
-													<input required class="form-control" id="end-date" type="date" placeholder="yyyy-mm-dd" onchange="processDateTime('end')"/>
-												</div>
-												<div class="">
-												
-													<input required class="form-control" id="end-time" type="time" placeholder="hh:mm"  onchange="processDateTime('end')"/>
-												</div>
-												<div class="">
-													
-									
-													<input type="number" class="form-control" name="endTime" id="end-preview" placeholder="0" value="" hidden>
-												</div>
-											</div>
-										
-										</div>
+										<button class="btn btn-secondary" id="time-selector-input" hidden>Config Periode</button>
 									</td>
 									<td class="editable text-center" data-editable="value">
 										<input class="form-text-input" name="value" required></input>
@@ -200,8 +181,8 @@
 									<!-- <div class="form-group"> -->
 									
 									<!-- </div> -->
-									<input type="number" class="form-control" name="startTime" id="start-preview" hidden >
-								
+									<input type="number" class="form-control" name="startTime" id="start-preview"  required>
+									<input type="number" class="form-control" name="endTime" id="end-preview" required>
 								</form>
 								<form id="thumbsnail-upload-form" class="form-upload" method="POST" enctype="multipart/form-data">
 									<td class="editable" data-editable="thumbsnail" style="display: flex; justify-content: center; flex-wrap: wrap; align-items: center;">
@@ -232,25 +213,65 @@
 
 	document.getElementById("start-preview").value = (timestamp/1000) | 0;
 	document.getElementById("end-preview").value = (timestamp/1000) | 0;
-	let processDateTime = function(datetime) {
-        
-     
-		let date_picker = document.querySelector(`#${datetime}-date`);
-		let time_picker = document.querySelector(`#${datetime}-time`);
-		let unix_time = dayjs(
-		  `${date_picker.value} ${time_picker.value}`,
-		  "YYYY-MM-DD HH:mm",
-		).unix() | 0;
-  
-		if (isNaN(unix_time)) {
-		  document.querySelector(`#${datetime}-preview`).value = "";
-		} else {
-		  document.querySelector(`#${datetime}-preview`).value = unix_time;
-		  
-		}
-		console.log("hit");
-	  
-	}
+	function processDateTime(datetime) {
+    let date_picker = document.querySelector(`#${datetime}-date`);
+    let time_picker = document.querySelector(`#${datetime}-time`);
+    let unix_time =
+      dayjs(
+        `${date_picker.value} ${time_picker.value}`,
+        "YYYY-MM-DD HH:mm"
+      ).unix() | 0;
+
+    if (isNaN(unix_time)) {
+      document.querySelector(`#${datetime}-preview`).value = "";
+    } else {
+      document.querySelector(`#${datetime}-preview`).value = unix_time;
+    }
+    
+  }
+
+  let endDate = 0;
+  let startDate = 0;
+
+  //faut remodeler le time formater pour avoir YYYY-MM-JJ
+  let timeFormatterYMD = 0;
+  let endDateYMDNotformated = 0;
+  let endDateYMD = 0;
+
+  let startDateYMDNotformated = 0;
+  let startDateYMD = 0;
+
+  let timeFormatterHS = 0;
+
+  let endDateHS = 0;
+
+  let startDateHS  = 0;
+  function updateTime(datetime) {
+			console.log("hit");
+          endDate = new Date(document.getElementById("end-preview").value * 1000);
+          startDate = new Date(document.getElementById("start-preview").value * 1000);
+
+          //faut remodeler le time formater pour avoir YYYY-MM-JJ
+          timeFormatterYMD = new Intl.DateTimeFormat("en-US");
+          endDateYMDNotformated = timeFormatterYMD .format(endDate);
+          endDateYMD = endDateYMDNotformated.split("/")[2]+"-"+(endDateYMDNotformated.split("/")[0].length < 2 ? "0"+endDateYMDNotformated.split("/")[0]: endDateYMDNotformated.split("/")[0])
+          +"-"+(endDateYMDNotformated.split("/")[1].length < 2 ? "0"+endDateYMDNotformated.split("/")[1]: endDateYMDNotformated.split("/")[1]);
+          document.getElementById("end-date").value = endDateYMD ;
+
+          startDateYMDNotformated = timeFormatterYMD .format(startDate);
+          startDateYMD = startDateYMDNotformated.split("/")[2]+"-"+(startDateYMDNotformated.split("/")[0].length < 2 ? "0"+startDateYMDNotformated.split("/")[0]: startDateYMDNotformated.split("/")[0])
+          +"-"+(startDateYMDNotformated.split("/")[1].length < 2 ? "0"+startDateYMDNotformated.split("/")[1]: startDateYMDNotformated.split("/")[1]);
+          document.getElementById("start-date").value = startDateYMD ;
+
+          timeFormatterHS = new Intl.DateTimeFormat(undefined, { timeStyle: 'medium' });
+          console.log(timeFormatterHS.format(endDate))
+          endDateHS = timeFormatterHS.format(endDate).split(":")[0]+":"+timeFormatterHS.format(endDate).split(":")[1]
+          document.getElementById("end-time").value = endDateHS ;
+
+          startDateHS  = timeFormatterHS.format(startDate).split(":")[0]+":"+timeFormatterHS.format(startDate).split(":")[1]
+          document.getElementById("start-time").value = startDateHS;
+          
+          }
 </script>
 {% endblock %}
 

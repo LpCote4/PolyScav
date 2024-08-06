@@ -162,6 +162,106 @@ document.addEventListener("DOMContentLoaded", function (event) {
       category.hidden = true;
     }
   }
+  function processDateTime(datetime) {
+    let date_picker = document.querySelector(`#${datetime}-date`);
+    let time_picker = document.querySelector(`#${datetime}-time`);
+    let unix_time =
+      dayjs(
+        `${date_picker.value} ${time_picker.value}`,
+        "YYYY-MM-DD HH:mm"
+      ).unix() | 0;
+
+    if (isNaN(unix_time)) {
+      document.querySelector(`#${datetime}-preview`).value = "";
+    } else {
+      document.querySelector(`#${datetime}-preview`).value = unix_time;
+    }
+    console.log("hit");
+  }
+
+  function changeTimePeriode(event) {
+    ezAlert({
+      title: "Choisir Période",
+      body: `<div class="mb-3" style="text-align: center;">
+              <label>Début</label>
+              <div class="row" style="justify-content: space-around;">
+              
+                  <div class="col-md-4" >
+                      <label>Date</label>
+                      <input required class="form-control start-date" id="start-date" type="date" placeholder="yyyy-mm-dd"  onchange="processDateTime('start')" />
+                  </div>
+                  <div class="col-md-4">
+                      <label>Temps</label>
+                      <input required class="form-control start-time" id="start-time" type="time" placeholder="hh:mm" data-preview="#start" onchange="processDateTime('start')"/>
+                  </div>
+                
+              </div>
+              <small class="form-text text-muted">
+                
+              </small>
+          </div>
+
+          <div class="mb-3" style="text-align: center;">
+              <label>Fin</label>
+              <div class="row" style="justify-content: space-around;">
+                  
+                  <div class="col-md-4">
+                      <label>Date</label>
+                      <input required class="form-control end-date" id="end-date" type="date" placeholder="yyyy-mm-dd" data-preview="#end" onchange="processDateTime('end')"/>
+                  </div>
+                  <div class="col-md-4">
+                      <label>Time</label>
+                      <input required class="form-control end-time" id="end-time" type="time" placeholder="hh:mm" data-preview="#end" onchange="processDateTime('end')"/>
+                  </div>
+                  
+              </div>
+          
+          </div>
+          <script>
+          endDate = new Date(document.getElementById("end-preview").value * 1000);
+          startDate = new Date(document.getElementById("start-preview").value * 1000);
+
+          //faut remodeler le time formater pour avoir YYYY-MM-JJ
+          timeFormatterYMD = new Intl.DateTimeFormat("en-US");
+          endDateYMDNotformated = timeFormatterYMD .format(endDate);
+          endDateYMD = endDateYMDNotformated.split("/")[2]+"-"+(endDateYMDNotformated.split("/")[0].length < 2 ? "0"+endDateYMDNotformated.split("/")[0]: endDateYMDNotformated.split("/")[0])
+          +"-"+(endDateYMDNotformated.split("/")[1].length < 2 ? "0"+endDateYMDNotformated.split("/")[1]: endDateYMDNotformated.split("/")[1]);
+          timeDateEnd = document.getElementsByClassName("end-date");
+          for (let i = 0; i < timeDateEnd.length; i++) {
+            timeDateEnd.item(i).value = endDateYMD;
+          }
+
+
+          startDateYMDNotformated = timeFormatterYMD .format(startDate);
+          startDateYMD = startDateYMDNotformated.split("/")[2]+"-"+(startDateYMDNotformated.split("/")[0].length < 2 ? "0"+startDateYMDNotformated.split("/")[0]: startDateYMDNotformated.split("/")[0])
+          +"-"+(startDateYMDNotformated.split("/")[1].length < 2 ? "0"+startDateYMDNotformated.split("/")[1]: startDateYMDNotformated.split("/")[1]);
+          timeDateStart = document.getElementsByClassName("start-date");
+          for (let i = 0; i < timeDateStart.length; i++) {
+            timeDateStart.item(i).value = startDateYMD;
+          }
+
+          timeFormatterHS = new Intl.DateTimeFormat(undefined, { timeStyle: 'medium' });
+          console.log(timeFormatterHS.format(endDate))
+          endDateHS = timeFormatterHS.format(endDate).split(":")[0]+":"+timeFormatterHS.format(endDate).split(":")[1]
+          timeHSEnd = document.getElementsByClassName("end-time");
+          for (let i = 0; i < timeHSEnd.length; i++) {
+            timeHSEnd.item(i).value = endDateHS;
+          }
+
+          startDateHS  = timeFormatterHS.format(startDate).split(":")[0]+":"+timeFormatterHS.format(startDate).split(":")[1]
+          timeHSStart = document.getElementsByClassName("start-time");
+          for (let i = 0; i < timeHSStart.length; i++) {
+            timeHSStart.item(i).value = startDateHS;
+          }
+          
+
+          </script>`,
+      button: "OK",
+      success: function () {
+        console.log("done");
+      },
+    });
+  }
 
   function loadAndhandleChallenge(event) {
     const params = $("#challenge-create-options-quick").serializeJSON();
@@ -173,7 +273,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
       delete params.endTime;
     } else {
       params.category = "Défi Flash";
+      if (params.startTime >= params.endTime) {
+        ezAlert({
+          title: "not A valide Time Periode",
+          body: "pls choose a valide time periode",
+          button: "OK",
+        });
+        return false;
+      }
     }
+
     params.description = "";
 
     CTFd.fetch("/api/v1/challenges", {
@@ -245,6 +354,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     .addEventListener("change", function (event) {
       swapCategoryWithEndTimeInput();
     });
+  document
+    .getElementById("time-selector-input")
+    .addEventListener("click", function (event) {
+      event.preventDefault();
+      changeTimePeriode(event);
+    });
+
   // Handle form submission
   // document.getElementById('create-challenge-form').addEventListener('submit', function(event) {
   //   console.log("New challenge form!")

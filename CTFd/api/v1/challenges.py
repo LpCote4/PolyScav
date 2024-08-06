@@ -7,6 +7,7 @@ import json
 from PIL import Image
 from io import BytesIO
 import base64
+import sqlite3
 from CTFd.utils.events import EventManager
 from CTFd.api.v1.helpers.request import validate_args
 from CTFd.api.v1.notifications import outgoingNotificationPost
@@ -107,11 +108,15 @@ def announceFlashChallenge(challenge, time=-1):
 
     return True
 
-app.events_manager = EventManager()
-with app.app_context():
-    
-    for challenge in FlashChallenge.query.filter_by(shout=False).all():
-        announceFlashChallenge(challenge)
+try:
+    app.events_manager = EventManager()
+    with app.app_context():
+        
+        for challenge in FlashChallenge.query.filter_by(shout=False).all():
+            announceFlashChallenge(challenge, FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime)
+except (sqlite3.OperationalError):
+    pass
+
 
 def resize_image(image_data, size=(100, 100)):
     # Open the image
@@ -638,7 +643,8 @@ class ChallengeList(Resource):
         challenge = challenge_class.create(request)
         
         if challenge.type == "flash":
-            announceFlashChallenge(challenge)
+            challenge.shout = False
+            announceFlashChallenge(challenge, FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime)
 
         response = challenge_class.read(challenge)
 
