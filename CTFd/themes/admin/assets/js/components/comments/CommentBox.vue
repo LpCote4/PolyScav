@@ -7,7 +7,7 @@
             class="form-control mb-2"
             rows="2"
             id="comment-input"
-            placeholder="Add comment"
+            placeholder="Ajouter un commentaire"
             v-model.lazy="comment"
           ></textarea>
           <button

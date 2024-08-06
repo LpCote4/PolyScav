@@ -8,13 +8,13 @@
         <ul class="nav nav-tabs" style="font-size:13px">
           <li class="nav-item">
             <button class="nav-link active" data-bs-target="#challenge" @click="showChallenge()" style="padding-left:8px !important;padding-right:8px !important;">
-              {% trans %}Challenge{% endtrans %}
+              {% trans %}Défis{% endtrans %}
             </button>
           </li>
           {% block solves %}
             <li class="nav-item">
               <button class="nav-link challenge-solves" data-bs-target="#solves" @click="showSolves()" style="padding-left:8px !important;padding-right:8px !important;">
-                {% trans %}Solves{% endtrans %}
+                {% trans %}Résolutions{% endtrans %}
               </button>
             </li>
           {% endblock %}
@@ -83,7 +83,7 @@
                     </details>
                     {% else %}
                     <details @toggle="showHint(event)">
-                      <summary>Unlock Hint for {{ hint.cost }} point{{ hint.cost|pluralize }}</summary>
+                      <summary>Débloquer l'indice pour {{ hint.cost }} point{{ hint.cost|pluralize }}</summary>
                       <div x-html="html"></div>
                     </details>
                     {% endif %}
@@ -164,8 +164,8 @@
                       </form>
                       <div style="align-items: end; text-align: end; width: 100%;">
                         <button id="replaceBytext" class="btn" style="border-style: outset;" onclick="hit()">
-                          <p id="text-input-fa">soumettre une réponse textuelle <i class="fa fa-file-text"  style="text-align: end;" aria-hidden="true"  ></i></p>
-                          <p id="file-input-fa" hidden>soumettre un media <i class="fa fa-upload"  aria-hidden="true" ></i></p>
+                          <p id="text-input-fa">Soumettre une réponse textuelle <i class="fa fa-file-text"  style="text-align: end;" aria-hidden="true"  ></i></p>
+                          <p id="file-input-fa" hidden>Soumettre un media <i class="fa fa-upload"  aria-hidden="true" ></i></p>
                         </button>
                       </div>
                       
@@ -181,7 +181,7 @@
                               class="challenge-submit btn btn-primary w-10 h-100 float-end" type="submit" 
                               @click.debounce.500ms="submitChallenge()"
                         >
-                          {% trans %}Submit{% endtrans %}
+                          {% trans %}Soumettre{% endtrans %}
                         </button>
                     {% else %}
                       
@@ -190,7 +190,7 @@
                               class="challenge-submit btn btn-primary w-10 h-100 float-end" type="submit" onclick="document.getElementById('challenge-submit').disabled = true;"
                               @click.debounce.500ms="submitManualChallenge('{{challenge.type}}')"
                           >
-                            {% trans %}Submit{% endtrans %}
+                            {% trans %}Soumettre{% endtrans %}
                           </button>
                          
                       
@@ -201,11 +201,11 @@
               </div>
             {% elif solved_by_me %}
             <h3 class="challenge-value text-center">
-              Challenge already solved!
+              Défi déjà complété!
             </h3>
             {% elif attempts > 0 %}
             <h3 class="challenge-value text-center">
-              Challenge already submitted. Please contact the admin if you think this is an error!
+              Défi soumis. Veuillez contacter un administrateur si vous penser qu'il s'agit d'une erreur!
             </h3>
            
             
@@ -226,7 +226,7 @@
                     <div x-show="(response.data.status == 'correct' || response.data.status == 'already_solved')">
                       <div x-show="getNextId()">
                         <button @click="nextChallenge()" class="btn btn-info mt-3">
-                          {% trans %}Next Challenge{% endtrans %}
+                          {% trans %}Prochain défi{% endtrans %}
                         </button>
                       </div>
                       {% if Configs.social_shares %}
