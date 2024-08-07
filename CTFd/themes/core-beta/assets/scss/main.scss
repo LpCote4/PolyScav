@@ -301,8 +301,7 @@ blockquote {
   font-family: "Rubik", sans-serif;
 }
 
-.landscape {
-  
+.landscape {cursor: pointer;
   width: 200px !important;
   height: auto !important;
   max-width: 100% !important;
@@ -310,6 +309,7 @@ blockquote {
 }
 
 .portrait {
+  cursor: pointer;
   width: auto !important;
   height: 225px !important;
 
@@ -354,4 +354,13 @@ blockquote {
     column-gap: 0%;
    
   }
+}
+
+.portrait-icon {
+  left: 15% !important;
+  top:82.5% !important;
+}
+.portrait-text {
+  left: 26% !important;
+  top:81% !important;
 }

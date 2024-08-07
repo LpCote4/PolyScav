@@ -25,7 +25,7 @@
         class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#base-navbars"
         aria-controls="base-navbars" aria-expanded="false" aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+      <span class="navbar-toggler-icon"><span x-data="" x-show="$store.unread_count > 0" x-text="$store.unread_count" class="badge rounded-pill bg-danger badge-notification" style="position: relative;right: -25px !important;top: -4px;"></span></span>
     </button>
 
     <div class="collapse navbar-collapse" id="base-navbars">

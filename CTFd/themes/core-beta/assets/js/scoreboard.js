@@ -281,6 +281,12 @@ this.showXMore = async function(e){
         if (mediaContents) {
           
           let thumbsnailAvailable = false;
+          let videoContent = false;
+          for (let i = 0; i < mediaContents.length; i++) {
+            if (mediaContents[i]["type"] == "video/webm"){
+              videoContent = true;
+            }
+          }
           for (let i = 0; i < mediaContents.length; i++) {
             if (mediaContents[i]["type"] == "thumbsnail") {
               thumbsnailAvailable = true;
@@ -290,10 +296,27 @@ this.showXMore = async function(e){
               thumbsnail.style["display"]= "block";
               thumbsnail.style["height"] = "auto";
               
-              thumbsnail.onload = function(thumbsnail){stylingImage(thumbsnail);};
+              thumbsnail.onload = function(thumbsnail){stylingImage(thumbsnail, mediaContents.length)};
               
               if (element.getElementsByClassName("imageContainer")[0].value != true){
+                if (videoContent){
+                  element.getElementsByClassName("imageContainer")[0].innerHTML += `<svg
+                  style="position: absolute;z-index: 10;top: 10%;left: -10%;pointer-events: none;"
+                    width="200"
+                    height="200"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path d="M15 12.3301L9 16.6603L9 8L15 12.3301Z" fill="#212529" />
+               
+                  </svg>`;
+                }
+                
+                
+                
                 element.getElementsByClassName("imageContainer")[0].appendChild(thumbsnail);
+                console.log(thumbsnail.className);
                 element.getElementsByClassName("imageContainer")[0].value = true;
               }
               
@@ -303,6 +326,7 @@ this.showXMore = async function(e){
               
               element.value = provide;
             }
+            
           }
           if (!thumbsnailAvailable) {
             let text = document.createElement("p");
@@ -344,7 +368,7 @@ this.showXMore = async function(e){
   }  
   
 };
-this.stylingImage = function(event) {
+this.stylingImage = function(event, mediaContentsLength) {
   const img = event.target;
 
   if (img.naturalWidth > img.naturalHeight) {
@@ -358,6 +382,8 @@ this.stylingImage = function(event) {
     img.parentElement.parentElement.parentElement.classList.add('portrait-td');
     
   }
+
+  
   let rotation = ((Math.random() > 0.50 ? -1:1)*(Math.random()*6));
   img.parentElement.parentElement.parentElement["style"]["transform"] += "rotate("+rotation+"deg)";
   let splashes = img.parentElement.parentElement.parentElement.getElementsByClassName("splash")
@@ -380,7 +406,8 @@ this.stylingImage = function(event) {
     drawLines();
   }
 
-  
+  img.parentElement.parentElement.getElementsByClassName("imageContainer")[0].innerHTML += `<i class='fa fa-image `+ (img.className == "portrait"? "portrait-icon":"")+`' style="position: absolute;color: #212529;z-index: 50;top:75%;left: 5%"></i><p class='`+ (img.className == "portrait"? "portrait-text":"")+`' style="position: absolute;color: #212529;z-index: 50;top:72.5%;left: 15%">`+(mediaContentsLength-1)+`</p>`;
+  img.parentElement.parentElement.getElementsByClassName("imageContainer")[0].innerHTML += ``
 
 }
 this.drawLines = function(){
