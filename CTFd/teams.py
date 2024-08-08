@@ -66,21 +66,21 @@ def invite():
 
     user = get_current_user_attrs()
     if user.team_id:
-        errors.append("You are already in a team. You cannot join another.")
+        errors.append("Vous êtes déjà dans une équipe. Vous ne pouvez pas en rejoindre une autre.")
 
     try:
         team = Teams.load_invite_code(code)
     except TeamTokenExpiredException:
-        abort(403, description="This invite URL has expired")
+        abort(403, description="Cette URL d'invitation a expiré")
     except TeamTokenInvalidException:
-        abort(403, description="This invite URL is invalid")
+        abort(403, description="Cette URL d'invitation n'est pas valide")
 
     team_size_limit = get_config("team_size", default=0)
 
     if request.method == "GET":
         if team_size_limit:
             infos.append(
-                "Teams are limited to {limit} member{plural}".format(
+                "Les équipes sont limitées à {limit} membre{plural}".format(
                     limit=team_size_limit, plural=pluralize(number=team_size_limit)
                 )
             )
@@ -100,7 +100,7 @@ def invite():
 
         if team_size_limit and len(team.members) >= team_size_limit:
             errors.append(
-                "{name} has already reached the team size limit of {limit}".format(
+                "{name} a déjà atteint le nomre maximum de membres {limit}".format(
                     name=team.name, limit=team_size_limit
                 )
             )
@@ -131,14 +131,14 @@ def join():
 
     user = get_current_user_attrs()
     if user.team_id:
-        errors.append("You are already in a team. You cannot join another.")
+        errors.append("Vous êtes déjà dans une équipe. Vous ne pouvez pas en rejoindre une autre.")
 
     if request.method == "GET":
         team_size_limit = get_config("team_size", default=0)
         if team_size_limit:
             plural = "" if team_size_limit == 1 else "s"
             infos.append(
-                "Teams are limited to {limit} member{plural}".format(
+                "Les équipes sont limitées à {limit} membre{plural}".format(
                     limit=team_size_limit, plural=plural
                 )
             )
@@ -160,7 +160,7 @@ def join():
             team_size_limit = get_config("team_size", default=0)
             if team_size_limit and len(team.members) >= team_size_limit:
                 errors.append(
-                    "{name} has already reached the team size limit of {limit}".format(
+                    "{name} a déjà atteint la limite de membres {limit}".format(
                         name=team.name, limit=team_size_limit
                     )
                 )
@@ -181,7 +181,7 @@ def join():
 
             return redirect(url_for("challenges.listing"))
         else:
-            errors.append("That information is incorrect")
+            errors.append("Cette information est incorrecte")
             return render_template("teams/join_team.html", infos=infos, errors=errors)
 
 
@@ -203,20 +203,20 @@ def new():
     if num_teams_limit and num_teams >= num_teams_limit:
         abort(
             403,
-            description=f"Reached the maximum number of teams ({num_teams_limit}). Please join an existing team.",
+            description=f"Nombre maximum d'équipes atteint ({num_teams_limit}). Veuillez rejoindre une équipe existante.",
         )
 
     user = get_current_user_attrs()
     
     if user.team_id:
-        errors.append("You are already in a team. You cannot join another.")
+        errors.append("Vous êtes déjà dans une équipe. Vous ne pouvez pas en rejoindre une autre.")
 
     if request.method == "GET":
         team_size_limit = get_config("team_size", default=0)
         if team_size_limit:
             plural = "" if team_size_limit == 1 else "s"
             infos.append(
-                "Teams are limited to {limit} member{plural}".format(
+                "Les équipes sont limitées à {limit} membre{plural}".format(
                     limit=team_size_limit, plural=plural
                 )
             )
@@ -236,9 +236,9 @@ def new():
 
         existing_team = Teams.query.filter_by(name=teamname).first()
         if existing_team:
-            errors.append("That team name is already taken")
+            errors.append("Ce nom d'équipe est déjà pris")
         if not teamname:
-            errors.append("That team name is invalid")
+            errors.append("Ce nom d'équipe est invalide")
 
         # Process additional user fields
         fields = {}
@@ -249,7 +249,7 @@ def new():
         for field_id, field in fields.items():
             value = request.form.get(f"fields[{field_id}]", "").strip()
             if field.required is True and (value is None or value == ""):
-                errors.append("Please provide all required fields")
+                errors.append("Veuillez fournir tous les champs requis")
                 break
 
             if field.field_type == "boolean":
@@ -287,13 +287,13 @@ def new():
             valid_country = True
 
         if valid_website is False:
-            errors.append("Websites must be a proper URL starting with http or https")
+            errors.append("Les sites Web doivent avoir une URL appropriée commençant par http ou https")
         if valid_affiliation is False:
-            errors.append("Please provide a shorter affiliation")
+            errors.append("Veuillez fournir une affiliation plus courte")
         if valid_country is False:
-            errors.append("Invalid country")
+            errors.append("Pays invalide")
         if valid_bracket is False:
-            errors.append("Please provide a valid bracket")
+            errors.append("Veuillez fournir une catégorie valide")
 
         if errors:
             return render_template("teams/new_team.html", errors=errors), 403
@@ -363,7 +363,7 @@ def private():
     score = team.get_score(admin=True)
 
     if config.is_scoreboard_frozen():
-        infos.append("Scoreboard has been frozen")
+        infos.append("Le classement a été gelé")
     
     return render_template(
         "teams/private.html",
@@ -410,7 +410,7 @@ def public(team_id):
         return render_template("teams/public.html", team=team, errors=errors)
 
     if config.is_scoreboard_frozen():
-        infos.append("Scoreboard has been frozen")
+        infos.append("Le classement a été gelé")
 
     return render_template(
         "teams/public.html",

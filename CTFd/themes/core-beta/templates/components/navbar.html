@@ -51,14 +51,14 @@
         {% if Configs.account_visibility != 'public' %}
           <li class="nav-item">
             <a class="nav-link" href="{{ url_for('users.listing') }}">
-              {% trans %}Users{% endtrans %}
+              {% trans %}Utilisateurs{% endtrans %}
             </a>
           </li>
 
           {% if Configs.user_mode == 'teams' %}
             <li class="nav-item">
               <a class="nav-link" href="{{ url_for('teams.listing') }}">
-                {% trans %}Teams{% endtrans %}
+                {% trans %}Équipes{% endtrans %}
               </a>
             </li>
           {% endif %}
@@ -78,7 +78,7 @@
                 </span>
                 <span class="d-sm-inline d-md-none d-lg-inline">
                   <i class="fas fa-wrench pe-1"></i>
-                  {% trans %}Admin Panel{% endtrans %}
+                  {% trans %}Paneau d'administration{% endtrans %}
                 </span>
               </a>
             </li>
@@ -105,7 +105,7 @@
                 </span>
                 <span class="d-sm-inline d-md-none d-lg-inline">
                   <i class="fas fa-users pe-1"></i>
-                  {% trans %}Team{% endtrans %}
+                  {% trans %}Équipe{% endtrans %}
                 </span>
               </a>
             </li>
@@ -118,7 +118,7 @@
               </span>
               <span class="d-sm-inline d-md-none d-lg-inline">
                 <i class="fas fa-user-circle pe-1"></i>
-                {% trans %}Profile{% endtrans %}
+                {% trans %}Profil{% endtrans %}
               </span>
             </a>
           </li>
@@ -130,7 +130,7 @@
               </span>
               <span class="d-sm-inline d-md-none d-lg-inline">
                 <i class="fas fa-cogs pe-1"></i>
-                {% trans %}Settings{% endtrans %}
+                {% trans %}Réglages{% endtrans %}
               </span>
             </a>
           </li>
@@ -142,7 +142,7 @@
               </span>
               <span class="d-sm-inline d-md-none d-lg-inline">
                 <i class="fas fa-sign-out-alt pe-1"></i><span class="d-lg-none">
-                  {% trans %}Logout{% endtrans %}
+                  {% trans %}Se déconnecter{% endtrans %}
                 </span>
               </span>
             </a>
@@ -157,7 +157,7 @@
                 </span>
                 <span class="d-sm-inline d-md-none d-lg-inline">
                   <i class="fas fa-user-plus pe-1"></i>
-                  {% trans %}Register{% endtrans %}
+                  {% trans %}Créer un compte{% endtrans %}
                 </span>
               </a>
             </li>
@@ -170,7 +170,7 @@
               </span>
               <span class="d-sm-inline d-md-none d-lg-inline">
                 <i class="fas fa-sign-in-alt pe-1"></i>
-                {% trans %}Login{% endtrans %}
+                {% trans %}Se connecter{% endtrans %}
               </span>
             </a>
           </li>
