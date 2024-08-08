@@ -41,11 +41,11 @@ def confirm(data=None):
             user_email = unserialize(data, max_age=1800)
         except (BadTimeSignature, SignatureExpired):
             return render_template(
-                "confirm.html", errors=["Your confirmation link has expired"]
+                "confirm.html", errors=["Votre lien de confirmation a expiré"]
             )
         except (BadSignature, TypeError, base64.binascii.Error):
             return render_template(
-                "confirm.html", errors=["Your confirmation token is invalid"]
+                "confirm.html", errors=["Votre token de confirmation est invalide"]
             )
 
         user = Users.query.filter_by(email=user_email).first_or_404()
@@ -55,7 +55,7 @@ def confirm(data=None):
         user.verified = True
         log(
             "registrations",
-            format="[{date}] {ip} - successful confirmation for {name}",
+            format="[{date}] {ip} - confirmation réussie pour {name}",
             name=user.name,
         )
         db.session.commit()
@@ -141,7 +141,7 @@ def reset_password(data=None):
             clear_user_session(user_id=user.id)
             log(
                 "logins",
-                format="[{date}] {ip} - successful password reset for {name}",
+                format="[{date}] {ip} - changement de mot de passe réussi pour {name}",
                 name=user.name,
             )
             db.session.close()
@@ -194,7 +194,7 @@ def register():
     if num_users_limit and num_users >= num_users_limit:
         abort(
             403,
-            description=f"Reached the maximum number of users ({num_users_limit}).",
+            description=f"Nombre maximum d'utilisateurs atteint ({num_users_limit}).",
         )
 
     if request.method == "POST":
@@ -227,7 +227,7 @@ def register():
                 registration_code.lower()
                 != str(get_config("registration_code", default="")).lower()
             ):
-                errors.append("The registration code you entered was incorrect")
+                errors.append("Le code d'enregistrement que vous avez entré était incorrect")
 
         # Process additional user fields
         fields = {}
@@ -238,7 +238,7 @@ def register():
         for field_id, field in fields.items():
             value = request.form.get(f"fields[{field_id}]", "").strip()
             if field.required is True and (value is None or value == ""):
-                errors.append("Please provide all required fields")
+                errors.append("Veuillez fournir tous les champs requis")
                 break
 
             if field.field_type == "boolean":
@@ -276,29 +276,29 @@ def register():
                 valid_bracket = True
 
         if not valid_email:
-            errors.append("Please enter a valid email address")
+            errors.append("Veuillez entrer une adresse courriel valide")
         if email.check_email_is_whitelisted(email_address) is False:
-            errors.append("Your email address is not from an allowed domain")
+            errors.append("Votre adresse courriel ne provient pas d'un domaine autorisé")
         if names:
-            errors.append("That user name is already taken")
+            errors.append("Ce nom d'utilisateur est déjà pris")
         if team_name_email_check is True:
-            errors.append("Your user name cannot be an email address")
+            errors.append("Votre nom d'utilisateur ne peut pas être une adresse courriel")
         if emails:
-            errors.append("That email has already been used")
+            errors.append("Ce courriel a déjà été utilisé")
         if pass_short:
-            errors.append("Pick a longer password")
+            errors.append("Choisissez un mot de passe plus long")
         if pass_long:
-            errors.append("Pick a shorter password")
+            errors.append("Choisissez un mot de passe plus court")
         if name_len:
-            errors.append("Pick a longer user name")
+            errors.append("Choisissez un nom d'utilisateur plus long")
         if valid_website is False:
-            errors.append("Websites must be a proper URL starting with http or https")
+            errors.append("Les sites Web doivent avoir une URL appropriée commençant par http ou https")
         if valid_country is False:
-            errors.append("Invalid country")
+            errors.append("Pays invalide")
         if valid_affiliation is False:
-            errors.append("Please provide a shorter affiliation")
+            errors.append("Veuillez fournir une affiliation plus courte")
         if valid_bracket is False:
-            errors.append("Please provide a valid bracket")
+            errors.append("Veuillez fournir un support valide")
 
         if len(errors) > 0:
             return render_template(
@@ -347,7 +347,7 @@ def register():
                 ):  # Confirming users is enabled and we can send email.
                     log(
                         "registrations",
-                        format="[{date}] {ip} - {name} registered (UNCONFIRMED) with {email}",
+                        format="[{date}] {ip} - {name} enregistré (NON CONFIRMÉ) avec {email}",
                         name=user.name,
                         email=user.email,
                     )
@@ -362,7 +362,7 @@ def register():
 
         log(
             "registrations",
-            format="[{date}] {ip} - {name} registered with {email}",
+            format="[{date}] {ip} - {name} enregistré avec {email}",
             name=user.name,
             email=user.email,
         )
@@ -392,8 +392,8 @@ def login():
         if user:
             if user.password is None:
                 errors.append(
-                    "Your account was registered with a 3rd party authentication provider. "
-                    "Please try logging in with a configured authentication provider."
+                    "Votre compte a été enregistré auprès d'un fournisseur d'authentification tiers."
+                    "Veuillez essayer de vous connecter avec un fournisseur d'authentification configuré."
                 )
                 return render_template("login.html", errors=errors)
 
@@ -401,7 +401,7 @@ def login():
                 session.regenerate()
 
                 login_user(user)
-                log("logins", "[{date}] {ip} - {name} logged in", name=user.name)
+                log("logins", "[{date}] {ip} - {name} connecté", name=user.name)
 
                 db.session.close()
                 if request.args.get("next") and validators.is_safe_url(
@@ -414,16 +414,16 @@ def login():
                 # This user exists but the password is wrong
                 log(
                     "logins",
-                    "[{date}] {ip} - submitted invalid password for {name}",
+                    "[{date}] {ip} - mauvais mot de passe pour {name}",
                     name=user.name,
                 )
-                errors.append("Your username or password is incorrect")
+                errors.append("Votre mot de passe ou nom d'utilisateur est incorrect")
                 db.session.close()
                 return render_template("login.html", errors=errors)
         else:
             # This user just doesn't exist
-            log("logins", "[{date}] {ip} - submitted invalid account information")
-            errors.append("Your username or password is incorrect")
+            log("logins", "[{date}] {ip} - soumis des informations invalides")
+            errors.append("Votre mot de passe ou nom d'utilisateur est incorrect")
             db.session.close()
             return render_template("login.html", errors=errors)
     else:
@@ -450,7 +450,7 @@ def oauth_login():
         error_for(
             endpoint="auth.login",
             message="OAuth Settings not configured. "
-            "Ask your CTF administrator to configure MajorLeagueCyber integration.",
+            "Demandez à votre administrateur CTF de configurer l'intégration de MajorLeagueCyber.",
         )
         return redirect(url_for("auth.login"))
 
@@ -466,8 +466,8 @@ def oauth_redirect():
     oauth_code = request.args.get("code")
     state = request.args.get("state")
     if session["nonce"] != state:
-        log("logins", "[{date}] {ip} - OAuth State validation mismatch")
-        error_for(endpoint="auth.login", message="OAuth State validation mismatch.")
+        log("logins", "[{date}] {ip} - Incompatibilité de validation de l'état OAuth")
+        error_for(endpoint="auth.login", message="Incompatibilité de validation de l'état OAuth.")
         return redirect(url_for("auth.login"))
 
     if oauth_code:
@@ -516,7 +516,7 @@ def oauth_redirect():
                 if num_users_limit and num_users >= num_users_limit:
                     abort(
                         403,
-                        description=f"Reached the maximum number of users ({num_users_limit}).",
+                        description=f"Nombre maximum d'utilisateurs atteint ({num_users_limit}).",
                     )
 
                 # Check if we are allowing registration before creating users
@@ -530,10 +530,10 @@ def oauth_redirect():
                     db.session.add(user)
                     db.session.commit()
                 else:
-                    log("logins", "[{date}] {ip} - Public registration via MLC blocked")
+                    log("logins", "[{date}] {ip} - Inscription publique via MLC bloquée")
                     error_for(
                         endpoint="auth.login",
-                        message="Public registration is disabled. Please try again later.",
+                        message="L'inscription publique est désactivée. Veuillez réessayer plus tard.",
                     )
                     return redirect(url_for("auth.login"))
 
@@ -550,7 +550,7 @@ def oauth_redirect():
                     if num_teams_limit and num_teams >= num_teams_limit:
                         abort(
                             403,
-                            description=f"Reached the maximum number of teams ({num_teams_limit}). Please join an existing team.",
+                            description=f"Nombre maximum d'équipes atteint ({num_teams_limit}). Merci de rejoindre une équipe existante.",
                         )
 
                     team = Teams(name=team_name, oauth_id=team_id, captain_id=user.id)
@@ -561,7 +561,7 @@ def oauth_redirect():
                 team_size_limit = get_config("team_size", default=0)
                 if team_size_limit and len(team.members) >= team_size_limit:
                     plural = "" if team_size_limit == 1 else "s"
-                    size_error = "Teams are limited to {limit} member{plural}.".format(
+                    size_error = "Équipe limités à {limit} membre{plural}.".format(
                         limit=team_size_limit, plural=plural
                     )
                     error_for(endpoint="auth.login", message=size_error)
@@ -580,13 +580,13 @@ def oauth_redirect():
 
             return redirect(url_for("challenges.listing"))
         else:
-            log("logins", "[{date}] {ip} - OAuth token retrieval failure")
-            error_for(endpoint="auth.login", message="OAuth token retrieval failure.")
+            log("logins", "[{date}] {ip} - Échec de récupération du jeton OAuth")
+            error_for(endpoint="auth.login", message="Échec de récupération du jeton OAuth.")
             return redirect(url_for("auth.login"))
     else:
-        log("logins", "[{date}] {ip} - Received redirect without OAuth code")
+        log("logins", "[{date}] {ip} - Redirection reçue sans code OAuth")
         error_for(
-            endpoint="auth.login", message="Received redirect without OAuth code."
+            endpoint="auth.login", message="Redirection reçue sans code OAuth."
         )
         return redirect(url_for("auth.login"))
 

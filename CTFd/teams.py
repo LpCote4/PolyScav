@@ -195,7 +195,7 @@ def new():
     if bool(get_config("team_creation", default=False)) is False:
         abort(
             403,
-            description="Team creation is currently disabled. Please join an existing team.",
+            description="La création d'équipe est désactivée. Veuillez rejoindre une équipe.",
         )
 
     num_teams_limit = int(get_config("num_teams", default=0))
