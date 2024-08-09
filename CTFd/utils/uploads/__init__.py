@@ -50,6 +50,8 @@ def upload_file(*args, **kwargs):
     sha1sum = hash_file(fp=file_obj)
 
     uploader = get_uploader()
+    print("filou")
+    print(file_obj)
     location = uploader.upload(file_obj=file_obj, filename=filename.lower(), path=parent)
     print(location)
     model_args["location"] = location
@@ -93,6 +95,10 @@ def upload_file(*args, **kwargs):
             location = location.split('.')[0] + ".webm"
     model_args["sha1sum"] = sha1sum
     model_args["location"] = location
+    print("semaine")
+    print(sha1sum)
+    print(location)
+    print(file_type)
     existing_file = Files.query.filter_by(location=location).first()
     if existing_file:
         for k, v in model_args.items():

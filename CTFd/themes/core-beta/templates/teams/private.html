@@ -215,7 +215,7 @@
         {% else %}
         <div style="height: 15vw;width: 15vw;display: block;"></div>
         {% endif %}
-      <div class="container"><h1 id="team-id" team-id="{{ team.id }}">{{ team.name }}</h1>
+      <div class="container"><h1 id="team-id" team-id="{{ team.id }}">{{ team.name }}</h1><img src="./files/{{team.id}}TeamQrCode_n.png" height="150" width="150">
         {% if team.oauth_id %}
           <a href="https://majorleaguecyber.org/t/{{ team.name }}">
             <h3><span class="badge bg-primary">{% trans %}Official{% endtrans %}</span></h3>

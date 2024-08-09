@@ -1,7 +1,7 @@
 import copy
 from typing import List
 
-from flask import abort, request, session
+from flask import abort, request, session, current_app
 from flask_restx import Namespace, Resource
 
 from CTFd.api.v1.helpers.request import validate_args
@@ -16,7 +16,8 @@ from CTFd.cache import (
     clear_team_session,
     clear_user_session,
 )
-
+import qrcode
+from CTFd.utils import uploads
 from CTFd.constants import RawEnum
 from CTFd.models import Awards, Submissions, Teams, Unlocks, Users, db, Fails
 from CTFd.schemas.awards import AwardSchema
@@ -34,6 +35,12 @@ from CTFd.constants.users import UserAttrs
 from CTFd.utils.helpers.models import build_model_filters
 from CTFd.utils.user import get_current_team, get_current_user_type, is_admin, get_current_user, get_user_attrs
 import json
+from CTFd.config import Config
+from CTFd.models import ChallengeFiles, Files, PageFiles, db
+
+
+
+
 teams_namespace = Namespace("teams", description="Endpoint to retrieve Teams")
 
 TeamModel = sqlalchemy_to_pydantic(Teams)
@@ -203,6 +210,8 @@ class TeamList(Resource):
 
         if response.errors:
             return {"success": False, "errors": response.errors}, 400
+        
+        #obj = uploads.upload_file(file=img)
 
         db.session.add(response.data)
         db.session.commit()
@@ -210,6 +219,18 @@ class TeamList(Resource):
         response = schema.dump(response.data)
         db.session.close()
 
+        print()
+        data = request.url_root+"teams/invite?code="+Teams.query.filter_by(id=response.data["id"]).first_or_404().get_invite_code()
+      
+        img = qrcode.make(data)
+        print("filou")
+        print(img)
+        img.save('./CTFd/uploads/'+str(response.data["id"])+"TeamQrCode"+'_n.png')
+        model_args = {"type": "standard", "sha1sum": str(response.data["id"])+"TeamQrCode", "location":str(response.data["id"])+"TeamQrCode"+"_n.png"}
+        model = Files
+        file_row = model(**model_args)
+        db.session.add(file_row)
+        db.session.commit()
         clear_standings()
         clear_challenges()
 

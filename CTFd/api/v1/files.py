@@ -182,6 +182,8 @@ class FilesList(Resource):
         objs = []
         #on genere un fichier de plus qui seras remplacer par la thumbsnail
         files += files[0],
+
+        print(files[0])
         vraietype = []
         first = True
         for f in files:
@@ -208,6 +210,9 @@ class FilesList(Resource):
         
         schema = FileSchema(many=True)
         response = schema.dump(objs)
+        print("du message")
+        print(objs)
+        print(schema)
         
         width = 800
         widthThumbsnail = 150
