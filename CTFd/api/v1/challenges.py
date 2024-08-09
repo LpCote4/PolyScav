@@ -979,7 +979,8 @@ class ChallengeSolves(Resource):
                 freeze = False
 
         response = get_solves_for_challenge_id(challenge_id=challenge_id, freeze=freeze)
-
+        
+        print(response)
         return {"success": True, "data": response}
 
 

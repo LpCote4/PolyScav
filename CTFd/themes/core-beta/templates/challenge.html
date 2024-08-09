@@ -14,7 +14,7 @@
           {% block solves %}
             <li class="nav-item">
               <button class="nav-link challenge-solves" data-bs-target="#solves" @click="showSolves()" style="padding-left:8px !important;padding-right:8px !important;">
-                {% trans %}Résolutions{% endtrans %}
+                {% trans %}Soumissions{% endtrans %}
               </button>
             </li>
           {% endblock %}
@@ -30,13 +30,13 @@
         <div class="tab-content">
           <div role="tabpanel" class="tab-pane fade show active" id="challenge">
            
-            <h2 class="challenge-name text-center pt-3">
+            <h1 class="challenge-name text-center pt-3">
               {{ challenge.name }}
-            </h2>
-            <h3 class="challenge-value text-center">
+            </h1>
+            <h2 class="challenge-value text-center">
               {{ challenge.value }}
               
-            </h3>
+            </h2>
 
 
             {% if tags %}
@@ -264,10 +264,16 @@
                   <thead>
                   <tr>
                     <td>
-                      <b>{% trans %}Name{% endtrans %}</b>
+                      <b>{% trans %}Équipe{% endtrans %}</b>
+                    </td>
+                    <td>
+                      <b>{% trans %}Nom{% endtrans %}</b>
                     </td>
                     <td>
                       <b>{% trans %}Date{% endtrans %}</b>
+                    </td>
+                    <td>
+                      <b>{% trans %}Statut{% endtrans %}</b>
                     </td>
                   </tr>
                   </thead>
@@ -277,7 +283,13 @@
                       <td>
                         <a :href="solve.account_url" x-text="solve.name"></a>
                       </td>
+                      <td>
+                        <a x-text="solve.user_name"></a>
+                      </td>
                       <td x-text="solve.date"></td>
+                      <td>
+                        <a x-text="solve.status"></a>
+                      </td>
                     </tr>
                   </template>
                   </tbody>

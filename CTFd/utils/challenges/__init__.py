@@ -5,7 +5,7 @@ from sqlalchemy import func as sa_func
 from sqlalchemy.sql import and_, false, true
 
 from CTFd.cache import cache
-from CTFd.models import Challenges, Solves, Users, db
+from CTFd.models import Challenges, Solves, Users, db, Submissions, Fails
 from CTFd.schemas.tags import TagSchema
 from CTFd.utils import get_config
 from CTFd.utils.dates import isoformat, unix_time_to_utc
@@ -66,24 +66,45 @@ def get_solves_for_challenge_id(challenge_id, freeze=False):
         )
         .order_by(Solves.date.asc())
     )
+    fails = Fails.query.filter_by(
+        team_id=Model.id, challenge_id=challenge_id
+    ).all()
+    print(fails)
     if freeze:
         freeze_time = get_config("freeze")
         if freeze_time:
             dt = datetime.datetime.utcfromtimestamp(freeze_time)
             solves = solves.filter(Solves.date < dt)
     results = []
-
+    
     for solve in solves:
+  
         # Seperate out the account name and the Solve object from the SQLAlchemy tuple
         solve, account_name = solve
         results.append(
             {
+                "user_name" :solve.user.name,
                 "account_id": solve.account_id,
                 "name": account_name,
                 "date": isoformat(solve.date),
                 "account_url": generate_account_url(account_id=solve.account_id),
+                "status":"accepté",
             }
         )
+    for fail in fails:
+ 
+        # Seperate out the account name and the Solve object from the SQLAlchemy tuple
+        if fail.challenge.type == "flash" or fail.challenge.type =="manual" or fail.challenge.type == "manualRecursive":
+            results.append(
+                {
+                    "user_name" :fail.user.name,
+                    "account_id": fail.account_id,
+                    "name": fail.team.name,
+                    "date": isoformat(fail.date),
+                    "account_url": generate_account_url(account_id=fail.account_id),
+                    "status":"en attente",
+                }
+            )
     return results
 
 

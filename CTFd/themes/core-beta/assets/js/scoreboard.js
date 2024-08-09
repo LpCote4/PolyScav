@@ -300,8 +300,8 @@ this.showXMore = async function(e){
               
               if (element.getElementsByClassName("imageContainer")[0].value != true){
                 if (videoContent){
-                  element.getElementsByClassName("imageContainer")[0].innerHTML += `<svg
-                  style="position: absolute;z-index: 10;top: 10%;left: -10%;pointer-events: none;"
+                  element.getElementsByClassName("imageContainer")[0].innerHTML += `<svg class="video-icon"
+                  style="position: absolute;z-index: 10;top: -5%;left: -0%;pointer-events: none;"
                     width="200"
                     height="200"
                     viewBox="0 0 24 24"
@@ -405,9 +405,17 @@ this.stylingImage = function(event, mediaContentsLength) {
   if (window.laoded == window.allSubmited.length || window.laoded == window.maxCount ){
     drawLines();
   }
-
-  img.parentElement.parentElement.getElementsByClassName("imageContainer")[0].innerHTML += `<i class='fa fa-image `+ (img.className == "portrait"? "portrait-icon":"")+`' style="position: absolute;color: #212529;z-index: 50;top:75%;left: 5%"></i><p class='`+ (img.className == "portrait"? "portrait-text":"")+`' style="position: absolute;color: #212529;z-index: 50;top:72.5%;left: 15%">`+(mediaContentsLength-1)+`</p>`;
-  img.parentElement.parentElement.getElementsByClassName("imageContainer")[0].innerHTML += ``
+  if (img.className == "portrait"){
+    img.parentElement.parentElement.getElementsByClassName("video-icon")[0].style.top =  "15%";
+    img.parentElement.parentElement.getElementsByClassName("video-icon")[0].style.left =  "-2.5%";
+  }
+  console.log();
+  img.parentElement.parentElement.getElementsByClassName("imageContainer")[0].innerHTML += `<i class='fa fa-image `+ (img.className == "portrait"? "portrait-icon":"")+`' style="position: absolute;color: #212529;z-index: 50;top:70%;left: 5%;-webkit-text-stroke-width: 0.25px;
+  -webkit-text-stroke-color: white;"></i><p class='`+ (img.className == "portrait"? "portrait-text":"")+`' style="position: absolute;color: #212529;z-index: 50;top:68.5%;left: 15%;-webkit-text-stroke-width: 0.25px;
+  -webkit-text-stroke-color: white;"">`+(mediaContentsLength-1)+`</p>`;
+  
+  
+  
 
 }
 this.drawLines = function(){

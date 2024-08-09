@@ -359,8 +359,18 @@ blockquote {
 .portrait-icon {
   left: 15% !important;
   top:82.5% !important;
+  
+
 }
 .portrait-text {
   left: 26% !important;
   top:81% !important;
+  
+}
+
+.portrait-pause{
+  position: absolute;
+  z-index: 10;
+  top: 10%;
+  left: -10%;
 }

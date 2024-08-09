@@ -114,6 +114,8 @@ Alpine.data("Challenge", () => ({
 
   async showSolves() {
     this.solves = await CTFd.pages.challenge.loadSolves(this.id);
+    console.log("heello")
+    console.log(this.solves);
     this.solves.forEach(solve => {
       solve.date = dayjs(solve.date).format("MMMM Do, h:mm:ss A");
       return solve;
