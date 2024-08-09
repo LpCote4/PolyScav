@@ -15,7 +15,9 @@ from CTFd.utils.helpers import get_errors, get_infos
 from CTFd.utils.humanize.words import pluralize
 from CTFd.utils.user import get_current_user, get_current_user_attrs
 from CTFd.utils.validators import ValidationError
-
+from CTFd.config import Config
+from CTFd.models import ChallengeFiles, Files, PageFiles, db
+import qrcode
 teams = Blueprint("teams", __name__)
 
 
@@ -328,6 +330,17 @@ def new():
         db.session.commit()
 
         user.team_id = team.id
+        db.session.commit()
+
+        data = team.get_invite_code()
+      
+        img = qrcode.make(data)
+      
+        img.save('./CTFd/uploads/'+str(team.id)+"TeamQrCode"+'_n.png')
+        model_args = {"type": "standard", "sha1sum": str(team.id)+"TeamQrCode", "location":str(team.id)+"TeamQrCode"+"_n.png"}
+        model = Files
+        file_row = model(**model_args)
+        db.session.add(file_row)
         db.session.commit()
 
         clear_user_session(user_id=user.id)

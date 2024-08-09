@@ -219,12 +219,11 @@ class TeamList(Resource):
         response = schema.dump(response.data)
         db.session.close()
 
-        print()
+
         data = request.url_root+"teams/invite?code="+Teams.query.filter_by(id=response.data["id"]).first_or_404().get_invite_code()
       
         img = qrcode.make(data)
-        print("filou")
-        print(img)
+      
         img.save('./CTFd/uploads/'+str(response.data["id"])+"TeamQrCode"+'_n.png')
         model_args = {"type": "standard", "sha1sum": str(response.data["id"])+"TeamQrCode", "location":str(response.data["id"])+"TeamQrCode"+"_n.png"}
         model = Files
