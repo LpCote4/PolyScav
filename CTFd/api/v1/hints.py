@@ -128,7 +128,7 @@ class Hint(Resource):
                 return (
                     {
                         "success": False,
-                        "errors": {"cost": ["You must login to unlock this hint"]},
+                        "errors": {"cost": ["Vous devez être connecter pour avoir un indice"]},
                     },
                     403,
                 )

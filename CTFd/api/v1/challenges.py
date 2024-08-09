@@ -3,6 +3,7 @@ import logging
 from flask import abort, render_template, request, url_for, current_app as app
 from flask_restx import Namespace, Resource
 from sqlalchemy.sql import and_
+from sqlalchemy.exc import OperationalError
 import json
 from PIL import Image
 from io import BytesIO
@@ -109,13 +110,13 @@ def announceFlashChallenge(challenge, time=-1):
     return True
 
 try:
-    app.events_manager = EventManager()
-    with app.app_context():
-        
-        for challenge in FlashChallenge.query.filter_by(shout=False).all():
-            announceFlashChallenge(challenge, FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime)
-except (sqlite3.OperationalError):
-    pass
+    # app.events_manager = EventManager()
+    # with app.app_context():
+    
+    for challenge in FlashChallenge.query.filter_by(shout=False).all():
+        announceFlashChallenge(challenge, FlashChallenge.query.filter_by(id=challenge.id).first_or_404().startTime)
+except (OperationalError, sqlite3.OperationalError):
+    print("The flash_challenge table does not exist yet. Skipping query.")
 
 
 def resize_image(image_data, size=(100, 100)):

@@ -607,16 +607,20 @@ msgstr "(Optionnel)"
 #: CTFd/themes/core-beta/templates/teams/join_team.html:6
 #: CTFd/themes/core-beta/templates/teams/team_enrollment.html:36
 msgid "Join Team"
-msgstr "Rejoindre l'équipe"
+msgstr "Rejoindre une équipe"
 
 #: CTFd/themes/core-beta/templates/teams/invite.html:15
 #: CTFd/themes/core-beta/templates/teams/team_enrollment.html:12
 msgid "Welcome to"
 msgstr "Bienvenue sur"
 
+#: CTFd/themes/core-beta/templates/teams/team_enrollment.html:12
+msgid "Color"
+msgstr "Couleur"
+
 #: CTFd/themes/core-beta/templates/teams/invite.html:19
 msgid "Click the button below to join the team!"
-msgstr "Cliquer sur le bouton ci-dessous pour rejoindre l'équipe !"
+msgstr "Cliquer sur le bouton ci-dessous pour rejoindre une équipe !"
 
 #: CTFd/themes/core-beta/templates/teams/new_team.html:6
 #: CTFd/themes/core-beta/templates/teams/team_enrollment.html:39
